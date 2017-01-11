@@ -14,7 +14,7 @@
    */
   const source$ = clicks$
     .do(() => console.log('Source is emitting'))
-    .publishReplay(2) // Replays the last n values on late subscribers
+    .publishReplay(1) // Replays the last n values on late subscribers
     .refCount();
   
   // source$.connect();
@@ -25,6 +25,6 @@
   clicks$
     .take(1)
     .delay(2000)
-    .do(() => source$.subscribe(() => console.log('Third subscriber')))
+    .do(() => source$.subscribe(() => console.log('Third late subscriber')))
     .subscribe(); // Without subscribe the observable doesn't run
 })();
