@@ -14,6 +14,7 @@
    */
   const source$ = clicks$
     .do(() => console.log('Source is emitting'))
+    // This is literally equivalent to `.multicast(new Rx.ReplaySubject(1))`
     .publishReplay(1) // Replays the last n values on late subscribers
     .refCount();
   
