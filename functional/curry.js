@@ -8,7 +8,7 @@ const words = function(str) {
 
 const fwords = R.split(' ');
 
-console.log(fwords('Jingle bells Batman smells'));
+// console.log(fwords('Jingle bells Batman smells'));
 
 // Exercise 1a
 //==============
@@ -18,7 +18,7 @@ const sentences = ['Jingle bells Batman smells', 'Robin laid an egg'];
 
 const fAllWords = R.pipe(R.map(fwords), R.flatten);
 
-console.log(fAllWords(sentences));
+// console.log(fAllWords(sentences));
 
 // Exercise 2
 //==============
@@ -36,10 +36,7 @@ const filterQs = function(xs) {
 
 const fFilterQs = R.filter(match(/q/i));
 
-console.log(
-  filterQs(['quick', 'camels', 'quarry', 'over', 'quails']),
-  fFilterQs(['quick', 'camels', 'quarry', 'over', 'quails'])
-);
+// console.log(fFilterQs(['quick', 'camels', 'quarry', 'over', 'quails']));
 
 // Exercise 3
 //==============
@@ -63,7 +60,7 @@ const max = function(xs) {
 
 const fMax = R.reduce(_keepHighest, -Infinity);
 
-console.log(max([323, 523, 554, 123, 5234]), fMax([323, 523, 554, 123, 5234]));
+// console.log(max([323, 523, 554, 123, 5234]), fMax([323, 523, 554, 123, 5234]));
 
 // Bonus 1:
 // ============
@@ -73,7 +70,7 @@ const slice = R.curry(function(from, to, array) {
   return array.slice(from, to);
 });
 
-console.log(slice(1, 3)(['a', 'b', 'c']));
+// console.log(slice(1, 3)(['a', 'b', 'c']));
 
 // Bonus 2:
 // ============
@@ -83,4 +80,4 @@ const take = R.curry(function(end, array) {
   return slice(0, end)(array);
 });
 
-console.log(take(2)(['a', 'b', 'c']));
+// console.log(take(2)(['a', 'b', 'c']));
