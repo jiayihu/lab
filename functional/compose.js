@@ -23,14 +23,14 @@ const isLastInStock = function(cars) {
 
 const fIsLastInStock = R.compose(R.prop('in_stock'), R.last);
 
-console.log(isLastInStock(CARS), fIsLastInStock(CARS));
+// console.log(isLastInStock(CARS), fIsLastInStock(CARS));
 
 // Exercise 2:
 // ============
 // use R.compose(), R.prop() and R.head() to retrieve the name of the first car
 const nameOfFirstCar = R.compose(R.prop('name'), R.head);
 
-console.log(nameOfFirstCar(CARS));
+// console.log(nameOfFirstCar(CARS));
 
 // Exercise 3:
 // ============
@@ -48,7 +48,7 @@ const averageDollarValue = function(cars) {
 
 const fAvarageDollarValue = R.compose(_average, R.map(R.prop('dollar_value')));
 
-console.log(averageDollarValue(CARS), fAvarageDollarValue(CARS));
+// console.log(averageDollarValue(CARS), fAvarageDollarValue(CARS));
 
 // Exercise 4:
 // ============
@@ -58,7 +58,7 @@ const _underscore = R.replace(/\W+/g, '_'); //<-- leave this alone and use to sa
 
 const sanitizeNames = R.compose(R.map(_underscore), R.map(R.toLower), R.map(R.prop('name')));
 
-console.log(sanitizeNames(CARS));
+// console.log(sanitizeNames(CARS));
 
 // Bonus 1:
 // ============
@@ -84,7 +84,7 @@ const fAvailablePrices = R.compose(
   R.filter(R.prop('in_stock'))
 );
 
-console.log(availablePrices(CARS), fAvailablePrices(CARS));
+// console.log(availablePrices(CARS), fAvailablePrices(CARS));
 
 // Bonus 2:
 // ============
@@ -105,4 +105,4 @@ const fFastestCar = R.compose(
   R.sortBy(R.prop('horsepower'))
 );
 
-console.log(fastestCar(CARS), fFastestCar(CARS));
+// console.log(fastestCar(CARS), fFastestCar(CARS));
