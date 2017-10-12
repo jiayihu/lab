@@ -11,8 +11,10 @@ quadruple x = double (double x)
 factorial :: Int -> Int
 factorial n = product [1..n]
 
-avarage :: [Int] -> Int
-avarage ns = div (sum ns) (length ns)
+-- avarage must be defined twice, one for Integral and one for Fractional
+-- because `div` is defined twice for both
+avarage :: Integral a => [a] -> a
+avarage ns = (sum ns) `div` (fromIntegral (length ns))
 
 last :: [a] -> a
 last ns = (drop (length ns - 1) ns) !! 0
