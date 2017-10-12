@@ -9,7 +9,6 @@ toDigits x = reverse (reversedToDigits x)
 doubleEveryOther :: [Int] -> [Int]
 doubleEveryOther [] = []
 doubleEveryOther [x] = [x]
-doubleEveryOther [x, y] = [x * 2, y]
 doubleEveryOther (x:y:xs)
   | length xs `mod` 2 == 0 = [x * 2, y] ++ doubleEveryOther xs
   | otherwise = [x, y * 2] ++ doubleEveryOther xs
