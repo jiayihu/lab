@@ -62,6 +62,13 @@ dropWhile' p (x:xs)
   | p x = dropWhile' p xs
   | otherwise = x:xs
 
+doubleall :: Num a => [a] -> [a]
+doubleall = foldr ((:) . double) []
+  where double x = 2 * x
+
+map'' :: (a -> b) -> [a] -> [b]
+map'' f = foldr ((:) . f) []
+
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x xs -> f x : xs) []
 
