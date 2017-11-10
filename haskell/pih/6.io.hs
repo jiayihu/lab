@@ -147,3 +147,6 @@ playNim board player = do
 
 nim :: IO ()
 nim = playNim initial 1
+
+main :: IO ()
+main = nim
