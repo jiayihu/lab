@@ -55,7 +55,6 @@ const SpeechRenderer = Reconciler({
     return emptyObject;
   },
 
-  resetTextContent(instance) {},
   shouldSetTextContent(type, props) {
     return false;
   },
@@ -76,7 +75,7 @@ const SpeechRenderer = Reconciler({
     insertBefore(parentInstance, child, beforeChild) {},
 
     // Actually apply the new props
-    commitUpdate(instance, updatePayload, type, oldProps, newProps) {},
+    commitUpdate(instance, updatePayload, type, oldProps, newProps, internalInstanceHandle) {},
 
     commitMount(instance, type, newProps, internalInstanceHandle) {
       if (typeof newProps.children === 'string') {
@@ -85,6 +84,8 @@ const SpeechRenderer = Reconciler({
     },
 
     commitTextUpdate(textInstance, oldText, newText) {},
+
+    resetTextContent(instance) {},
   },
 });
 
