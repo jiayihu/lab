@@ -7,6 +7,11 @@ const root = {
 };
 
 module.exports = {
+  devServer: {
+    historyApiFallback: true,
+    noInfo: false,
+    port: 3000,
+  },
   devtool: 'eval',
   entry: {
     main: root.src,
