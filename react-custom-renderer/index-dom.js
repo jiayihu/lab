@@ -10,7 +10,10 @@ class HelloWorld extends React.Component {
   }
 
   componentDidMount() {
-    window.setTimeout(() => this.setState({ value: this.state.value + 1 }), 2000);
+    window.setTimeout(() => {
+      console.clear();
+      this.setState({ value: this.state.value + 1 });
+    }, 2000);
   }
 
   render() {

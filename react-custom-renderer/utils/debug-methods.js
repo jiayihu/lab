@@ -1,10 +1,12 @@
-export function debugMethods(obj) {
+export function debugMethods(obj, excludes) {
   return new Proxy(obj, {
     get: function(target, name, receiver) {
-      if (typeof name === 'function') {
+      if (typeof target[name] === 'function' && !excludes.includes(name)) {
         return function(...args) {
           const methodName = name;
-          console.log(methodName);
+          console.group(methodName);
+          console.log(...args);
+          console.groupEnd();
           return target[name](...args);
         };
       } else {

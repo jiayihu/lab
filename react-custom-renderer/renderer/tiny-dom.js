@@ -125,27 +125,23 @@ const hostConfig = {
   },
 };
 
-const TinyDOMRenderer = Reconciler(debugMethods(hostConfig));
-
-function renderSubtreeIntoContainer(children, domContainer, callback) {
-  let root = domContainer._reactRootContainer;
-
-  if (!root) {
-    // Remove all children of the domContainer
-    let rootSibling;
-    while ((rootSibling = domContainer.lastChild)) {
-      domContainer.removeChild(rootSibling);
-    }
-
-    const newRoot = TinyDOMRenderer.createContainer(domContainer);
-    root = domContainer._reactRootContainer = newRoot;
-  }
-
-  TinyDOMRenderer.updateContainer(children, root, null, callback);
-}
+const TinyDOMRenderer = Reconciler(debugMethods(hostConfig, ['now']));
 
 export const ReactTinyDOM = {
   render(element, domContainer, callback) {
-    return renderSubtreeIntoContainer(element, domContainer, callback);
+    let root = domContainer._reactRootContainer;
+
+    if (!root) {
+      // Remove all children of the domContainer
+      let rootSibling;
+      while ((rootSibling = domContainer.lastChild)) {
+        domContainer.removeChild(rootSibling);
+      }
+
+      const newRoot = TinyDOMRenderer.createContainer(domContainer);
+      root = domContainer._reactRootContainer = newRoot;
+    }
+
+    return TinyDOMRenderer.updateContainer(element, root, null, callback);
   },
 };

@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 const root = {
   src: path.join(__dirname, 'index-dom.js'),
-  dest: path.join(__dirname, 'dist'),
+  dest: path.join(__dirname),
 };
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
   },
   output: {
     path: root.dest,
-    filename: 'main.js',
+    filename: 'dist/main.js',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
