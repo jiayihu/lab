@@ -1,5 +1,9 @@
 <?php
 
+namespace Core;
+use Core\Database\Connection;
+use Core\Database\QueryBuilder;
+
 require_once 'core/functions.php';
 $config = require_once 'core/config.php';
 require_once 'core/App.php';

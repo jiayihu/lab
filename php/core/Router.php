@@ -1,5 +1,7 @@
 <?php
 
+namespace Core;
+
 class Router {
   private $routes = [
     'GET' => [],
@@ -31,7 +33,7 @@ class Router {
 
   public function direct($uri, $method) {
     if (array_key_exists($method, $this->routes) && array_key_exists($uri, $this->routes[$method])) {
-      $route = explode('@', $this->routes[$method][$uri]);
+      $route = \explode('@', $this->routes[$method][$uri]);
       $controller = $route[0];
       $action = $route[1];
 
@@ -42,11 +44,12 @@ class Router {
   }
 
   private function callAction($controller, $action) {
-    require_once "controllers/{$controller}.php";
+    require_once "app/controllers/{$controller}.php";
 
-    $instance = new $controller;
+    $name = "App\\Controllers\\{$controller}";
+    $instance = new $name;
 
-    if (!method_exists($instance, $action)) {
+    if (!\method_exists($instance, $action)) {
       throw new Exception("{$action} does not exist on controller {$controller}");
     }
 
@@ -54,13 +57,13 @@ class Router {
   }
 
   private function parseRoutes($routes) {
-    if (array_key_exists('GET', $routes)) {
+    if (\array_key_exists('GET', $routes)) {
       foreach ($routes['GET'] as $uri => $controller) {
         $this->get($uri, $controller);
       }
     }
 
-    if (array_key_exists('POST', $routes)) {
+    if (\array_key_exists('POST', $routes)) {
       foreach ($routes['POST'] as $uri => $controller) {
         $this->post($uri, $controller);
       }

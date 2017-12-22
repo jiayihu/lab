@@ -1,9 +1,11 @@
 <?php
 
+namespace Core;
+
 function view($name, $data = []) {
   extract($data);
   
-  return require_once "views/{$name}.view.php";
+  return require_once "app/views/{$name}.view.php";
 }
 
 function redirect($path) {

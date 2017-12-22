@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models;
+
 class Task {
   public $description;
   private $completed = false;

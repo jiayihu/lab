@@ -1,5 +1,7 @@
 <?php
 
+namespace Core\Database;
+
 class QueryBuilder {
   private $pdo;
 
@@ -11,16 +13,16 @@ class QueryBuilder {
     $statement = $this->pdo->prepare("select * from {$table};");
     $statement->execute();
     
-    $results = $statement->fetchAll(PDO::FETCH_OBJ);
+    $results = $statement->fetchAll(\PDO::FETCH_OBJ);
 
     return $results;
   }
 
   public function insert($table, $parameters) {
-    $columns = implode(', ', array_keys($parameters));
-    $placeholders = implode(
+    $columns = \implode(', ', array_keys($parameters));
+    $placeholders = \implode(
       ', ',
-      array_map(function ($key) { return ":{$key}"; }, array_keys($parameters))
+      \array_map(function ($key) { return ":{$key}"; }, \array_keys($parameters))
     );
     $query = printf('insert into %s (%s) values (%s)', $table, $placeholders);
 
