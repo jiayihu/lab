@@ -7,18 +7,8 @@
   <title>Learning PhP</title>
 </head>
 <body>
-  <ul>
-    <?php foreach ($tasks as $task) : ?>
-      <li>
-        <?php
-          if ($task->isComplete()) {
-            echo "<strike>{$task->description}</strike>";
-          } else {
-            echo $task->description;
-          }
-        ?>
-      </li>
-    <?php endforeach; ?>
-  </ul>
+  <h1>Homepage</h1>
+
+  <?php echo $tasks; ?>
 </body>
 </html>

@@ -31,10 +31,26 @@ class Router {
 
   public function direct($uri, $method) {
     if (array_key_exists($method, $this->routes) && array_key_exists($uri, $this->routes[$method])) {
-      return $this->routes[$method][$uri];
+      $route = explode('@', $this->routes[$method][$uri]);
+      $controller = $route[0];
+      $action = $route[1];
+
+      return $this->callAction($controller, $action);
     } else {
       return $this->routes['GET']['404'];
     }
+  }
+
+  private function callAction($controller, $action) {
+    require_once "controllers/{$controller}.php";
+
+    $instance = new $controller;
+
+    if (!method_exists($instance, $action)) {
+      throw new Exception("{$action} does not exist on controller {$controller}");
+    }
+
+    return $instance->$action();
   }
 
   private function parseRoutes($routes) {
