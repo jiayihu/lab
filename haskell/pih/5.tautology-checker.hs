@@ -3,10 +3,10 @@
 -}
 
 data Prop = Const Bool
-| Var Char
-| Not Prop
-| And Prop Prop
-| Imply Prop Prop
+  | Var Char
+  | Not Prop
+  | And Prop Prop
+  | Imply Prop Prop
 
 p1 :: Prop
 p1 = (Var 'A') `And` (Not (Var 'A'))
@@ -48,11 +48,11 @@ rmdups (x:xs) = x : filter (/= x) (rmdups xs)
 bools :: Int -> [[Bool]]
 bools 0 = [[]]
 bools n = map (False:) bss ++ map (True:) bss
-where bss = bools (n - 1)
+  where bss = bools (n - 1)
 
 substs :: Prop -> [Subst]
 substs p = map (zip vs) (bools (length vs))
-where vs = rmdups (vars p)
+  where vs = rmdups (vars p)
 
 isTaut :: Prop -> Bool
 isTaut p = and [eval s p | s <- substs p]

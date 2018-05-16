@@ -17,7 +17,7 @@ avarage :: Integral a => [a] -> a
 avarage ns = (sum ns) `div` (fromIntegral (length ns))
 
 last :: [a] -> a
-last ns = (drop (length ns - 1) ns) !! 0
+last ns = head (reverse ns)
 
 init :: [a] -> [a]
 init ns = take (length ns - 1) ns

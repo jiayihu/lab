@@ -48,6 +48,32 @@ diag g = [g !! n !! n | n <- [0..size -1]]
 won :: Grid -> Bool
 won g = wins O g || wins X g
 
+-- Making a move
+
+valid :: Grid -> Int -> Bool
+valid g i = 0 <= i && i < size^2 && concat g !! i == B
+
+move :: Grid -> Int -> Player -> [Grid]
+move g i p =
+  if valid g i then [chop size (xs ++ [p] ++ ys)] else []
+  where (xs, B:ys) = splitAt i (concat g)
+
+chop :: Int -> [a] -> [[a]]
+chop _ [] = []
+chop n xs = take n xs : chop n (drop n xs)
+
+-- Reading a number
+
+getNat :: String -> IO Int
+getNat prompted = do
+  putStr prompted
+  xs <- getLine
+  if xs /= [] && all isDigit xs then
+    return (read xs)
+  else do
+    putStrLn "ERROR: Invalid number"
+    getNat prompted
+
 -- IO
 
 showPlayer :: Player -> [String]
@@ -65,3 +91,41 @@ putGrid :: Grid -> IO ()
 putGrid = putStrLn . unlines . concat . interleave bar . map showRow
   where bar = [replicate ((size * 4) - 1) '-']
 
+-- Human vs Human
+
+cls :: IO ()
+cls = putStr "\ESC[2J"
+
+type Pos = (Int, Int)
+
+goto :: Pos -> IO ()
+goto (x, y) = putStr ("\ESC[" ++ show y ++ ";" ++ show x ++ "H")
+
+prompt :: Player -> String
+prompt p = "Player " ++ show p ++ ", enter your move: "
+
+run :: Grid -> Player -> IO ()
+run g p = do 
+  cls
+  goto (1, 1)
+  putGrid g
+  run' g p
+
+run' :: Grid -> Player -> IO ()
+run' g p
+  | wins O g = putStrLn "Player 0 wins!\n"
+  | wins X g = putStrLn "Player X wins!\n"
+  | full g = putStrLn "It's a draw!\n"
+  | otherwise = do
+    i <- getNat(prompt p)
+    case move g i p of
+      [] -> do
+        putStrLn "ERROR: Invalid move"
+        run' g p
+      [g'] -> run g' (next p)
+
+tictactoe :: IO ()
+tictactoe = run empty O
+
+main :: IO ()
+main = tictactoe
