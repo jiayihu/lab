@@ -5,9 +5,6 @@
   "main": "index.js",
   "author": "Jiayi Hu <jiayi.ghu@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "start": "browser-sync start --server --no-notify --files ./**/*.html ./**/*.js"
-  },
   "dependencies": {
     "bootstrap": "4.0.0-alpha.6",
     "co": "^4.6.0",
@@ -15,8 +12,5 @@
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
     "rxjs": "^5.0.3"
-  },
-  "devDependencies": {
-    "browser-sync": "^2.18.6"
   }
 }
