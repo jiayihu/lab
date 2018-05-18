@@ -1,5 +1,0 @@
-\contentsline {chapter}{\numberline {1}First Chapter}{2}
-\contentsline {section}{\numberline {1.1}Introduction}{2}
-\contentsline {section}{\numberline {1.2}Second Section}{2}
-\contentsline {subsection}{\numberline {1.2.1}First Subsection}{2}
-\contentsline {section}{Unnumbered Section}{2}
