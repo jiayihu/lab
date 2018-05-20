@@ -1,6 +1,7 @@
 module ISO where
 
 import Data.Bifunctor
+import Data.Maybe
 import Data.Either
 import Data.Void
 -- A type of `Void` have no value.
@@ -24,9 +25,15 @@ type ISO a b = (a -> b, b -> a)
 substL :: ISO a b -> (a -> b)
 substL = fst
 
+to :: ISO a b -> (a -> b)
+to = substL
+
 -- and vice versa
 substR :: ISO a b -> (b -> a)
 substR = snd
+
+from :: ISO a b -> (b -> a)
+from = substR
 
 -- There can be more than one ISO a b
 isoBool :: ISO Bool Bool
@@ -62,20 +69,20 @@ isoEither :: ISO a b -> ISO c d -> ISO (Either a c) (Either b d)
 isoEither (ab, ba) (cd, dc) = (\e -> bimap ab cd e, \e -> bimap ba dc e)
 
 isoFunc :: ISO a b -> ISO c d -> ISO (a -> c) (b -> d)
-isoFunc (ab, ba) (cd, dc) = undefined
+isoFunc (ab, ba) (cd, dc) = (\ac -> (\b -> (cd $ ac $ ba b)), \bd -> (\a -> (dc $ bd $ ab a)))
 
 -- Going another way is hard (and is generally impossible)
 isoUnMaybe :: ISO (Maybe a) (Maybe b) -> ISO a b
 -- Remember, for all valid ISO, converting and converting back
 -- Is the same as the original value.
 -- You need this to prove some case are impossible.
-isoUnMaybe = undefined
+isoUnMaybe (mab, mba) = (\a -> fromMaybe (absurd undefined) $ mab (Just a), \b -> fromMaybe (absurd undefined) $ mba (Just b))
 
 -- We cannot have
 -- isoUnEither :: ISO (Either a b) (Either c d) -> ISO a c -> ISO b d.
 -- Note that we have
 isoEU :: ISO (Either [()] ()) (Either [()] Void)
-isoEU = (\e -> if isLeft e then bimap id (absurd undefined) e else Left [()], \e -> if isLeft e then bimap id (absurd undefined) e else Left [()])
+isoEU = (\e -> if isLeft e then bimap id undefined e else Left [()], \e -> bimap id undefined e)
 -- where (), the empty tuple, has 1 value, and Void has 0 value
 -- If we have isoUnEither,
 -- We have ISO () Void by calling isoUnEither isoEU
@@ -84,4 +91,4 @@ isoEU = (\e -> if isLeft e then bimap id (absurd undefined) e else Left [()], \e
 
 -- And we have isomorphism on isomorphism!
 isoSymm :: ISO (ISO a b) (ISO b a)
-isoSymm = error "do isoSymm"
+isoSymm = (\(ab, ba) -> (ba, ab), \(ba, ab) -> (ab, ba))
