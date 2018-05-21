@@ -2,7 +2,6 @@ module ISO where
 
 import Data.Bifunctor
 import Data.Maybe
-import Data.Either
 import Data.Void
 -- A type of `Void` have no value.
 -- So it is impossible to construct `Void`,
@@ -72,17 +71,26 @@ isoFunc :: ISO a b -> ISO c d -> ISO (a -> c) (b -> d)
 isoFunc (ab, ba) (cd, dc) = (\ac -> (\b -> (cd $ ac $ ba b)), \bd -> (\a -> (dc $ bd $ ab a)))
 
 -- Going another way is hard (and is generally impossible)
-isoUnMaybe :: ISO (Maybe a) (Maybe b) -> ISO a b
 -- Remember, for all valid ISO, converting and converting back
 -- Is the same as the original value.
 -- You need this to prove some case are impossible.
-isoUnMaybe (mab, mba) = (\a -> fromMaybe (absurd undefined) $ mab (Just a), \b -> fromMaybe (absurd undefined) $ mba (Just b))
+isoUnMaybe :: ISO (Maybe a) (Maybe b) -> ISO a b
+isoUnMaybe (mab, mba) = (ab, ba)
+  where
+    ab = \a -> fromMaybe (fromJust $ mab Nothing) $ mab (Just a)
+    ba = \b -> fromMaybe (fromJust $ mba Nothing) $ mba (Just b)
 
 -- We cannot have
 -- isoUnEither :: ISO (Either a b) (Either c d) -> ISO a c -> ISO b d.
 -- Note that we have
 isoEU :: ISO (Either [()] ()) (Either [()] Void)
-isoEU = (\e -> if isLeft e then bimap id undefined e else Left [()], \e -> bimap id undefined e)
+isoEU = (f, g)
+ where
+  f (Left xs) = Left $ () : xs
+  f _         = Left []
+  g (Left []    ) = Right ()
+  g (Left (_:xs)) = Left xs
+  g _             = undefined
 -- where (), the empty tuple, has 1 value, and Void has 0 value
 -- If we have isoUnEither,
 -- We have ISO () Void by calling isoUnEither isoEU
