@@ -8,7 +8,7 @@ data Expr a
   | EAp (Expr a) (Expr a)             -- Applications
   | ELet IsRec [(a, Expr a)] (Expr a) -- Let isRecursive definitions body
   | ECase (Expr a) [Alter a]          -- Case expression alternatives
-  | Elam [a] (Expr a)                 -- Lamba arguments expression
+  | ELam [a] (Expr a)                 -- Lamba arguments expression
   deriving Show
 
 type Name = String
@@ -56,6 +56,22 @@ preludeDefs = [
     ("twice", ["f"], EAp (EAp (EVar "compose") (EVar "f")) (EVar "f"))
   ]
 
+programEx :: CoreProgram
+programEx = [
+    ("I", ["x"], EVar "x"),
+    ("K", ["x", "y"], EVar "x"),
+    ("K1", ["x", "y"], EVar "y"),
+    ("S", ["f", "g", "x"], EAp (EAp (EVar "f") (EVar "x")) (EAp (EVar "g") (EVar "x"))),
+    ("compose", ["f", "g", "x"], EAp (EVar "f") (EAp (EVar "g") (EVar "x"))),
+    ("twice", ["f"], EAp (EAp (EVar "compose") (EVar "f")) (EVar "f")),
+    ("Branch", [], EConstr 2 2),
+    ("isBranch", ["x"], ECase (EAp (EAp (EVar "x") (EVar ">")) (ENum 0)) [
+      (1, ["a"], EVar "False"), -- False
+      (2, ["l", "r"], EVar "True") -- True
+    ]),
+    ("isPositive", [], ELam ["x", "y"] (EAp (EAp (EVar "x") (EVar ">")) (EVar "y")))
+  ]
+
 
 {----------------------------------------------------
   PRETTY PRINTER (an example of compiler transformer)
@@ -86,7 +102,8 @@ iConcat (seq:seqs) = seq `iAppend` (iConcat seqs)
 
 iInterleave :: Iseq -> [Iseq] -> Iseq
 iInterleave _ [] = INil
-iInterleave s (seq:seqs) = iConcat [seq, s, iInterleave s seqs]
+iInterleave _ (seq:[]) = seq
+iInterleave s (seq1:seq2:seqs) = iConcat [seq1, s, iInterleave s (seq2:seqs)]
 
 iNewline :: Iseq
 iNewline = IStr "\n"
@@ -115,10 +132,21 @@ pprDefns :: [(Name, CoreExpr)] -> Iseq
 pprDefns defns = iInterleave sep (map pprDefn defns)
   where sep = iConcat [iStr ";", iNewline]
 
+pprAlter :: CoreAlt -> Iseq
+pprAlter (tag, vars, expr) = iConcat [
+    iStr "<",
+    iStr (show tag),
+    iStr "> ",
+    iInterleave (IStr " ") (map iStr vars),
+    iStr " -> ",
+    pprExpr expr
+  ]
+
 -- Expression printer
 pprExpr :: CoreExpr -> Iseq
-pprExpr (ENum n) = iStr (show n)
 pprExpr (EVar v) = iStr v
+pprExpr (ENum n) = iStr (show n)
+pprExpr (EConstr tag arity) = iConcat [iStr "Pack{", pprExpr (ENum tag), iStr ", ", pprExpr (ENum arity), iStr "}"]
 pprExpr (EAp e1 e2) = iConcat [pprExpr e1, iStr " ", pprAExpr e2]
 pprExpr (ELet isrec defns expr) =
   iConcat [ 
@@ -127,17 +155,25 @@ pprExpr (ELet isrec defns expr) =
       iStr "in ", pprExpr expr
     ]
   where keyword = if not isrec then "let" else "letrec"
--- TODO: handle case and lambda expressions
+pprExpr (ECase expr alters) = iConcat [
+    iStr "case ",
+    pprExpr expr,
+    iStr " of ",
+    iNewline,
+    iIndent (iInterleave sep (map pprAlter alters))
+  ]
+  where sep = iConcat [iStr ";", iNewline]
+pprExpr (ELam args expr) = iConcat [iStr "\\", iInterleave (iStr " ") (map iStr args), iStr " -> ", pprExpr expr]
 
 -- Atomic or composed expression printer
 pprAExpr :: CoreExpr -> Iseq
 pprAExpr e
   | isAtomicExpr e = pprExpr e
-  | otherwise = iConcat [IStr "(", pprExpr e, iStr ")"]
+  | otherwise = iConcat [iStr "(", pprExpr e, iStr ")"]
 
 pprScDefn :: CoreScDefn -> Iseq
-pprScDefn (name, args, expr) = iConcat [iStr name, iStr " ", iConcat (map pprArg args), iStr " = ", pprExpr expr]
-  where pprArg = \arg -> (iStr arg) `iAppend` (iStr " ")
+pprScDefn (name, args, expr) = iConcat [iStr name, sep, iInterleave (iStr " ") (map iStr args), iStr " = ", pprExpr expr]
+  where sep = if null args then iStr "" else iStr " "
 
 pprProgram :: [ScDefn Name] -> Iseq
 pprProgram scDefns = iInterleave iNewline (map pprScDefn scDefns)
