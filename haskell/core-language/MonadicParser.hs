@@ -39,7 +39,7 @@ instance Applicative Parser where
   -- pure :: a -> Parser a
   pure v = P (\inToks -> [(v, inToks)])
 
-  -- <*> :: Parser (a->b) -> a -> Parser b
+  -- <*> :: Parser (a->b) -> Parser a -> Parser b
   pg <*> px = P (\inToks -> case parse pg inToks of
     [] -> []
     [(g, outToks)] -> parse (fmap g px) outToks)
