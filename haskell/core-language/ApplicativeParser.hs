@@ -1,4 +1,4 @@
-module MonadicParser where
+module ApplicativeParser where
 import Language
 import Data.Char (isDigit, isAlpha, isSpace)
 import Control.Applicative
@@ -92,60 +92,39 @@ pDefns :: Parser [(String, CoreExpr)]
 pDefns = pSomeWithSep pDefn (pLit ";")
 
 pDefn :: Parser (String, CoreExpr)
-pDefn = do
-  var <- pVar 
-  pLit "="
-  expr <- pExpr
-  return (var, expr)
+pDefn = pure mk_def <*> pVar <*> (pLit "=") <*> pExpr
+  where
+    mk_def var _ expr = (var, expr)
 
 pAlters :: Parser [CoreAlt]
 pAlters = pSomeWithSep pAlter (pLit ";")
 
 pAlter :: Parser CoreAlt
-pAlter = do
-  tag <- pTag
-  args <- many pVar
-  pLit "->"
-  expr <- pExpr
-  return (tag, args, expr)
+pAlter = pure mk_Alter <*> pTag <*> (many pVar) <*> (pLit "->") <*> pExpr
   where
-    pTag = do
-      pLit "<"
-      tag <- pNum
-      pLit ">"
-      return tag
+    mk_Alter tag args _ expr = (tag, args, expr)
+    pTag = pure mk_tag <*> (pLit "<") <*> pNum <*> (pLit ">")
+    mk_tag _ tag _ = tag
 
 pLet :: Parser CoreExpr
-pLet = do
-  pLit "let"
-  defns <- pDefns
-  pLit "in"
-  body <- pExpr
-  return (ELet False defns body)
+pLet = pure mk_ELet <*> (pLit "let") <*> pDefns <*> (pLit "in") <*> pExpr
+  where
+    mk_ELet _ defns _ body = ELet False defns body
 
 pLetrec :: Parser CoreExpr
-pLetrec = do
-  pLit "letrec"
-  defns <- pDefns
-  pLit "in"
-  body <- pExpr
-  return (ELet True defns body)
+pLetrec = pure mk_ELetRec <*> (pLit "letrec") <*> pDefns <*> (pLit "in") <*> pExpr
+  where
+    mk_ELetRec _ defns _ body = ELet True defns body
 
 pCase :: Parser CoreExpr
-pCase = do
-  pLit "case"
-  expr <- pExpr
-  pLit "of"
-  alters <- pAlters
-  return (ECase expr alters)
+pCase = pure mk_ECase <*> (pLit "case") <*> pExpr <*> (pLit "of") <*> pAlters
+  where
+    mk_ECase _ expr _ alters = ECase expr alters
 
 pLam :: Parser CoreExpr
-pLam = do
-  pLit "\\"
-  args <- some pVar
-  pLit "->"
-  expr <- pExpr
-  return (ELam args expr)
+pLam = pure mk_ELam <*> (pLit "\\") <*> (some pVar) <*> (pLit "->") <*> pExpr
+  where
+    mk_ELam _ args _ expr = ELam args expr
 
 pAExpr :: Parser CoreExpr
 pAExpr = pEVar <|> pENum <|> pEContr <|> pPExpr
@@ -153,31 +132,21 @@ pAExpr = pEVar <|> pENum <|> pEContr <|> pPExpr
     pEVar = fmap EVar pVar
     pENum = fmap ENum pNum
 
-    pEContr = do
-      pLit "Pack"
-      pLit "{"
-      tag <- pNum
-      pLit ","
-      arity <- pNum
-      pLit "}"
-      return (EConstr tag arity)
+    pEContr = pure mk_EConstr <*> pIgnored <*> pNumPair <*> (pLit "}")
+    mk_EConstr _ (tag, arity) _ = EConstr tag arity
+    pIgnored = pure (\a _ -> a) <*> (pLit "Pack") <*> (pLit "{")
+    pNumPair = pure (\x _ y -> (x, y)) <*> pNum <*> (pLit ",") <*> pNum
 
-    pPExpr = do
-      pLit "("
-      expr <- pExpr
-      pLit ")" -- Parenthesised expressio
-      return expr
+    pPExpr = pure mk_parens <*> (pLit "(") <*> pExpr <*> (pLit ")") -- Parenthesised expression
+    
+    mk_parens _ expr _ = expr
 
 pExpr :: Parser CoreExpr
 pExpr = pLet <|> pLetrec <|> pCase <|> pLam <|> pAExpr
 
 pSc :: Parser CoreScDefn
-pSc = do
-  name <- pVar
-  args <- many pVar
-  pLit "="
-  body <- pExpr
-  return (name, args, body)
+pSc = pure mk_sc <*> pVar <*> (many pVar) <*> (pLit "=") <*> pExpr
+  where mk_sc name args _ body = (name, args, body)
 
 pProgram :: Parser CoreProgram
 pProgram = pSomeWithSep pSc (pLit ";")
@@ -199,11 +168,8 @@ pHelloOrGoodbye :: Parser String
 pHelloOrGoodbye = (pLit "hello") <|> (pLit "goodbye")
 
 pGreeting :: Parser (String, String)
-pGreeting = do
-  hg <- pHelloOrGoodbye
-  name <- pVar
-  pLit "!"
-  return (hg, name)
+pGreeting = pure mk_greeting <*> pHelloOrGoodbye <*> pVar <*> (pLit "!")
+  where mk_greeting hg name _ = (hg, name)
 
 pGreetings :: Parser [(String, String)]
 pGreetings = many pGreeting
