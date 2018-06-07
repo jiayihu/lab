@@ -1,6 +1,6 @@
 import System.IO
 import Language
-import Parser
+import MonadicParser
 import Prettier
 
 readF :: IO String

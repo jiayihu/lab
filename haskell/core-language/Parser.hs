@@ -64,7 +64,7 @@ pSat _ [] = []
 pSat predicate (tok:toks) = if predicate tok then [(tok, toks)] else []
 
 -- Literal parser
-pLit :: String -> Parser String -- (can be seen as `String -> [Token] -> [(String, [Token])]`)
+pLit :: String -> Parser String
 pLit s = pSat (==s)
 
 pVar :: Parser String
@@ -102,7 +102,7 @@ pLetrec = pThen4 mk_ELetRec (pLit "letrec") pDefns (pLit "in") pExpr
     mk_ELetRec _ defns _ body = ELet True defns body
 
 pCase :: Parser CoreExpr
-pCase =  pThen4 mk_ECase (pLit "case") pExpr (pLit "of") pAlters
+pCase = pThen4 mk_ECase (pLit "case") pExpr (pLit "of") pAlters
   where
     mk_ECase _ expr _ alters = ECase expr alters
 
