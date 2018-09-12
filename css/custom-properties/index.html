@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CSS Custom Properties</title>
+
+  <style>
+    :root {
+      --bg: orange;
+    }
+
+    .el {
+      display: inline-block;
+      margin: 2px;
+      width: 10px;
+      height: 10px;
+      background: var(--bg);
+      /* background: orange; */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container"></div>
+
+  <script>
+    const container = document.querySelector('.container');
+
+    for (let i = 0; i < 25000; i++) {
+      const el = document.createElement('span');
+      el.className = 'el';
+      container.appendChild(el);
+    }
+
+    function makeButton(text, callback) {
+      var button = document.createElement('button');
+      button.innerText = text;
+      document.body.insertBefore(button, document.body.firstChild);
+      button.addEventListener('click', callback || function () { });
+    }
+
+    makeButton('Log Results', () => {
+      var items = window.performance.getEntriesByType('measure');
+      console.table(items);
+      for (let i = 0; i < items.length; ++i) {
+        console.log(items[i].name, items[i].duration, items[i]);
+      }
+    });
+
+    makeButton('Set Var on Parent', function () {
+      performance.mark('parent start');
+      container.style.setProperty('--bg', 'teal');
+      container.clientWidth;
+      container.style.setProperty('--bg', 'aqua');
+      container.clientWidth;
+      performance.mark('parent end');
+      performance.measure('variable on parent', 'parent start', 'parent end')
+    });
+
+    makeButton('Set Var on Child', function () {
+      const child = container.firstChild;
+      performance.mark('child start');
+      child.style.setProperty('--bg', 'green');
+      child.clientWidth;
+      child.style.setProperty('--bg', 'tomato');
+      child.clientWidth;
+      performance.mark('child end');
+      performance.measure('variable on child', 'child start', 'child end')
+    });
+
+    makeButton('Set inline styles', function () {
+      performance.mark('inline start');
+      Array.from(container.children).forEach(child => child.style.background = 'teal')
+      container.clientWidth;
+      Array.from(container.children).forEach(child => child.style.background = 'rebeccapurple')
+      container.clientWidth;
+      performance.mark('inline end');
+      performance.measure('inline styles', 'parent start', 'parent end')
+    });
+  </script>
+</body>
+
+</html>
