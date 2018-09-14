@@ -214,7 +214,34 @@
     <li><img src="http://placehold.it/200x300" alt="placeholder"></li>
     <li><img src="http://placehold.it/200x300" alt="placeholder"></li>
     <li><img src="http://placehold.it/200x300" alt="placeholder"></li>
- </ul>
+  </ul>
+
+  <p>responsive layout with fluid columns</p>
+  <div class="grid21">
+    <header class="main-head">The header</header>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="">Nav 1</a></li>
+            <li><a href="">Nav 2</a></li>
+            <li><a href="">Nav 3</a></li>
+        </ul>
+    </nav>
+    <article class="content">
+        <h1>Main article area</h1>
+        <p>In this layout, we display the areas in source order for any screen less that 500 pixels wide. We go to a two column layout, and then to a three column layout by redefining the grid, and the placement of items on the grid.</p>
+    </article> 
+    <aside class="side">Sidebar</aside>
+    <div class="ad">Advertising</div>
+    <footer class="main-footer">The footer</footer>
+  </div>
+
+  <p>12-column layout</p>
+  <div class="grid22">
+    <div class="item1">Start column line 1, span 3 column tracks.</div>
+    <div class="item2">Start column line 6, span 4 column tracks. 2 row tracks.</div>
+    <div class="item3">Start row 2 column line 2, span 2 column tracks.</div>
+    <div class="item4">Start at column line 3, span to the end of the grid (-1).</div>
+  </div>
 </body>
 
 </html>
