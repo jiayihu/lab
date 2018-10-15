@@ -355,3 +355,9 @@ p {
   grid-column: col-start 3 / -1;
   grid-row: 3;
 }
+
+.grid23 {
+  grid-auto-rows: 50px;
+  grid-gap: 20px;
+  grid-template-columns: fit-content(10em) 1fr 1fr;
+}
