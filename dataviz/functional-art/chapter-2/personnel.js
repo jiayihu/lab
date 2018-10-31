@@ -16,13 +16,13 @@
       'font-size': '12px',
     })
 
-  const container = svg.append('g')
+  // const container = svg.append('g')
   // const zoom = d3
   //   .zoom()
   //   .scaleExtent([1, 10])
   //   .translateExtent([[-900, -600], [900, 600]])
   //   .on('zoom', function() {
-  //     container.attr('transform', d3.event.transform)
+  //     svg.attr('transform', d3.event.transform)
   //   })
   // svg.call(zoom)
 
@@ -76,13 +76,13 @@
     .scaleLinear()
     .domain(personnelMinMax)
     .range([height, 0])
-  const aScale = d3
+  const areaScale = d3
     .scaleSqrt()
     .domain(expenditureMinMax)
     .range([3, 20])
 
   // Grid
-  container
+  svg
     .append('g')
     .selectAll('line')
     .data(yScale.ticks())
@@ -95,7 +95,7 @@
     .attr('fill', 'none')
     .attr('stroke', '#BDBDBD')
     .attr('stroke-dasharray', 2)
-  container
+  svg
     .append('g')
     .selectAll('line')
     .data(xScale.ticks())
@@ -110,7 +110,7 @@
     .attr('stroke-dasharray', 2)
 
   const formatExpenditure = d3.format('.2r')
-  container
+  svg
     .append('g')
     .selectAll('circle')
     .data(dataset)
@@ -119,13 +119,13 @@
     .attrs({
       cx: d => xScale(d.population),
       cy: d => yScale(d.personnel),
-      r: d => aScale(d.expenditure),
+      r: d => areaScale(d.expenditure),
       fill: d3.schemePastel1[0],
     })
     .append('title')
-    .text(d => `Military expenditure: ${formatExpenditure(d.expenditure)}% of GDP`)
+    .text(d => `${d.country} military expenditure: ${formatExpenditure(d.expenditure)}% of GDP`)
 
-  container
+  svg
     .append('g')
     .selectAll('circle')
     .data(dataset)
@@ -138,20 +138,21 @@
       fill: 'white',
     })
 
-  container
+  svg
     .append('g')
     .selectAll('text')
     .data(dataset)
     .enter()
+    .filter(d => d.personnel > 50000)
     .append('text')
     .text(d => d.country)
     .attrs({
-      x: d => xScale(d.population) + aScale(d.expenditure),
+      x: d => xScale(d.population) + areaScale(d.expenditure),
       y: d => yScale(d.personnel),
     })
 
   const regression = leastSquares(dataset.map(x => x.population), dataset.map(x => x.personnel))
-  container.append('line').attrs({
+  svg.append('line').attrs({
     x1: xScale(populationMinMax[0]),
     y1: yScale(regression(populationMinMax[0])),
     x2: xScale(populationMinMax[1]),
@@ -163,24 +164,75 @@
   const xAxis = d3.axisBottom(xScale)
   const yAxis = d3.axisLeft(yScale)
 
-  container
+  svg
     .append('g')
     .attr('transform', `translate(0, ${height})`)
     .call(xAxis)
-  container.append('g').call(yAxis)
+  svg.append('g').call(yAxis)
 
   // Axis names
-  container
+  svg
     .append('text')
     .attr('transform', `translate(${width}, ${height + 40})`)
     .attr('text-anchor', 'end')
     .text('POPULATION (2016)')
-  container
+  svg
     .append('text')
     .attr('transform', `translate(-${margin.left}, 0), rotate(90)`)
     .text('ARMED FORCES PERSONNEL (2016)')
 
-  container
+  // Annotation
+  const type = d3.annotationCustomType(d3.annotationCalloutElbow, {
+    className: 'custom',
+    connector: { type: 'elbow' },
+    note: {
+      lineType: 'vertical',
+      align: 'middle',
+    },
+  })
+
+  const annotations = [
+    {
+      note: {
+        label: 'The closer the circles are to this line. the more correlated the variables are.',
+        title: 'Trend line',
+        wrap: 150,
+      },
+      data: { population: 55000000, personnel: regression(55000000) },
+      dy: -25,
+      dx: -200,
+    },
+  ]
+
+  const makeAnnotations = d3
+    .annotation()
+    .accessors({
+      x: d => xScale(d.population),
+      y: d => yScale(d.personnel),
+    })
+    .notePadding(10)
+    .type(type)
+    .annotations(annotations)
+
+  svg.append('g').call(makeAnnotations)
+
+  // Legend
+  const legend = d3
+    .legendSize()
+    .scale(areaScale)
+    .shape('circle')
+    .shapePadding(30)
+    .orient('horizontal')
+    .labels(({ i, generatedLabels }) => `${generatedLabels[i]}%`)
+    .labelOffset(15)
+    .title('Size of circles proportional to the budget as % of the GDP')
+  svg
+    .append('g')
+    .attr('transform', `translate(50, 50)`)
+    .call(legend)
+
+  // Data source
+  svg
     .append('text')
     .text('Source: World Bank')
     .attr('transform', `translate(${-margin.left}, ${height + margin.bottom})`)
