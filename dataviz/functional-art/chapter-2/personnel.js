@@ -194,7 +194,7 @@
   const annotations = [
     {
       note: {
-        label: 'The closer the circles are to this line. the more correlated the variables are.',
+        label: 'The closer the circles are to this line, the more correlated the variables are.',
         title: 'Trend line',
         wrap: 150,
       },
