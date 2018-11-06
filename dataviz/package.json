@@ -1,0 +1,13 @@
+{
+  "name": "experiments",
+  "version": "1.0.0",
+  "description": "Esperiments",
+  "main": "index.js",
+  "author": "Jiayi Hu <jiayi.ghu@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/d3": "^5.0.0",
+    "@types/d3-selection-multi": "^1.0.7"
+  }
+}

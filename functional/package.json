@@ -1,0 +1,14 @@
+{
+  "name": "experiments",
+  "version": "1.0.0",
+  "description": "Esperiments",
+  "main": "index.js",
+  "author": "Jiayi Hu <jiayi.ghu@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "4.0.0-alpha.6",
+    "folktale": "^2.0.1",
+    "ramda": "^0.24.1",
+    "ramda-fantasy": "^0.8.0"
+  }
+}

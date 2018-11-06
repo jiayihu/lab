@@ -7,14 +7,6 @@
   "license": "MIT",
   "dependencies": {
     "bootstrap": "4.0.0-alpha.6",
-    "co": "^4.6.0",
-    "folktale": "^2.0.1",
-    "ramda": "^0.24.1",
-    "ramda-fantasy": "^0.8.0",
-    "rxjs": "^5.0.3"
-  },
-  "devDependencies": {
-    "@types/d3": "^5.0.0",
-    "@types/d3-selection-multi": "^1.0.7"
+    "co": "^4.6.0"
   }
 }

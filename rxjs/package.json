@@ -1,0 +1,12 @@
+{
+  "name": "experiments",
+  "version": "1.0.0",
+  "description": "Esperiments",
+  "main": "index.js",
+  "author": "Jiayi Hu <jiayi.ghu@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "4.0.0-alpha.6",
+    "rxjs": "^5.0.3"
+  }
+}
