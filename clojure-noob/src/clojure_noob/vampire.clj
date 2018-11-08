@@ -1,4 +1,4 @@
-(ns fwdp.core)
+(ns clojure-noob.vampire)
 
 (def filename "suspects.csv")
 (def vamp-keys [:name :glitter-index])
