@@ -7,5 +7,4 @@
   (go (>! c2 (clojure.string/upper-case (<! c1))))
   (go (>! c3 (clojure.string/reverse (<! c2))))
   (go (println (<! c3)))
-  (>!! c1 "redrum")
-  (Thread/sleep 200))
+  (>!! c1 "redrum"))
