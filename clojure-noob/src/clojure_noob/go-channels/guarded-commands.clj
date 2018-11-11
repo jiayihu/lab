@@ -16,7 +16,7 @@
   [c1 c2]
   (let [c (chan)]
     (go (while true
-          (let [[value channel] (alts! [c1 c2 (timeout 500)])]
+          (let [[value channel] (alts! [c1 c2])]
             (>! c value))))
     c))
 
