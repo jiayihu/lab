@@ -1,0 +1,24 @@
+:root {
+  --backgroundColor: red;
+}
+
+:host {
+  --text: black;
+}
+
+.header {
+  background-color: red;
+  color: undefined;
+}
+
+.header:hover {
+  background-color: orange;
+}
+
+.header:hover {
+  --backgroundColor: orange;
+}
+
+.header.is-about-page {
+  --backgroundColor: yellow;
+}

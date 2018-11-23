@@ -1,0 +1,18 @@
+@import 'variables.css';
+
+:host {
+  --text: black;
+}
+
+.header {
+  background-color: var(--backgroundColor, white);
+  color: var(--text);
+}
+
+.header:hover {
+  --backgroundColor: orange;
+}
+
+.header.is-about-page {
+  --backgroundColor: yellow;
+}

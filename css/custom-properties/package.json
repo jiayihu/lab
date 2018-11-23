@@ -1,0 +1,21 @@
+{
+  "name": "custom-properties",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jiayi Hu <jiayi.ghu@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "postcss": "^7.0.6",
+    "postcss-css-variables": "^0.11.0",
+    "postcss-custom-properties": "^8.0.9",
+    "postcss-import": "^12.0.1"
+  },
+  "devDependencies": {
+    "postcss-cli": "^6.0.1"
+  }
+}
