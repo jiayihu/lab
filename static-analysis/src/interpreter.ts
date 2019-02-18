@@ -37,51 +37,43 @@ export const evalBexpr: EvalBexpr = (expr: Bexpr) => (s: State): T => {
 };
 
 export const freeVariablesAexpr = (expr: Aexpr): Name[] => {
-  const rec = (aexpr: Aexpr, fvs: Set<Name>): Set<Name> => {
-    switch (aexpr.type) {
-      case 'Num':
-        return fvs;
-      case 'Var':
-        return new Set(fvs).add(aexpr.value);
-      case 'Add':
-      case 'Mult':
-      case 'Sub': {
-        const fvA1 = rec(aexpr.a1, fvs);
-        const fvA2 = rec(aexpr.a2, fvs);
+  switch (expr.type) {
+    case 'Num':
+      return [];
+    case 'Var':
+      return [expr.value];
+    case 'Add':
+    case 'Mult':
+    case 'Sub': {
+      const fvA1 = freeVariablesAexpr(expr.a1);
+      const fvA2 = freeVariablesAexpr(expr.a2);
 
-        return new Set([...fvA1, ...fvA2]);
-      }
+      return Array.from(new Set([...fvA1, ...fvA2]));
     }
-  };
-
-  return Array.from(rec(expr, new Set()));
+  }
 };
 
 export const freeVariablesBexpr = (expr: Bexpr): Name[] => {
-  const rec = (bexpr: Bexpr, fvs: Set<Name>): Set<Name> => {
-    switch (bexpr.type) {
-      case 'True':
-      case 'False':
-        return fvs;
-      case 'Eq':
-      case 'Le': {
-        const fvA1 = freeVariablesAexpr(bexpr.a1);
-        const fvA2 = freeVariablesAexpr(bexpr.a2);
+  switch (expr.type) {
+    case 'True':
+    case 'False':
+      return [];
+    case 'Eq':
+    case 'Le': {
+      const fvA1 = freeVariablesAexpr(expr.a1);
+      const fvA2 = freeVariablesAexpr(expr.a2);
 
-        return new Set([...fvA1, ...fvA2]);
-      }
-      case 'Neg':
-        return rec(bexpr.value, fvs);
-      case 'And': {
-        const fvB1 = rec(bexpr.b1, fvs);
-        const fvB2 = rec(bexpr.b2, fvs);
-
-        return new Set([...fvB1, ...fvB2]);
-      }
+      return Array.from(new Set([...fvA1, ...fvA2]));
     }
-  };
+    case 'Neg':
+      return freeVariablesBexpr(expr.value);
+    case 'And': {
+      const fvB1 = freeVariablesBexpr(expr.b1);
+      const fvB2 = freeVariablesBexpr(expr.b2);
 
-  return Array.from(rec(expr, new Set()));
+      return Array.from(new Set([...fvB1, ...fvB2]));
+    }
+  }
 };
 
 export const substAexpr = (a: Aexpr) => (y: Name) => (a0: Aexpr): Aexpr => {

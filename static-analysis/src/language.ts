@@ -75,4 +75,10 @@ export class While {
   constructor(readonly b: Bexpr, readonly s: Stm) {}
 }
 
+export type Program = Stm[];
+
 export type State = (name: Name) => Z;
+
+export const twoCharOps = ['<='];
+
+export const keywords = ['if', 'then', 'else', 'while', 'do'];
