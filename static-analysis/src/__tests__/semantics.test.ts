@@ -1,5 +1,5 @@
 import { deriveSeq, InterConfig, semantic } from '../semantics';
-import { factorial, initialState } from '../fixtures';
+import { factorial, initialState } from './fixtures';
 
 describe('deriveSeq', () => {
   it('should derive the configuration', () => {
