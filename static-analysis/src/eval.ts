@@ -10,11 +10,11 @@ export const evalAexpr: EvalAexpr = (expr: Aexpr) => (s: State): Z => {
     case 'Var':
       return s(expr.value);
     case 'Add':
-      return evalAexpr(expr.a1)(s) + evalAexpr(expr.a2)(s);
+      return evalAexpr(expr.aexpr1)(s) + evalAexpr(expr.aexpr2)(s);
     case 'Mult':
-      return evalAexpr(expr.a1)(s) * evalAexpr(expr.a2)(s);
+      return evalAexpr(expr.aexpr1)(s) * evalAexpr(expr.aexpr2)(s);
     case 'Sub':
-      return evalAexpr(expr.a1)(s) - evalAexpr(expr.a2)(s);
+      return evalAexpr(expr.aexpr1)(s) - evalAexpr(expr.aexpr2)(s);
   }
 };
 
@@ -25,13 +25,13 @@ export const evalBexpr: EvalBexpr = (expr: Bexpr) => (s: State): T => {
     case 'False':
       return expr.value;
     case 'Eq':
-      return evalAexpr(expr.a1)(s) === evalAexpr(expr.a2)(s);
+      return evalAexpr(expr.aexpr1)(s) === evalAexpr(expr.aexpr2)(s);
     case 'Le':
-      return evalAexpr(expr.a1)(s) <= evalAexpr(expr.a2)(s);
+      return evalAexpr(expr.aexpr1)(s) <= evalAexpr(expr.aexpr2)(s);
     case 'Neg':
       return evalBexpr(expr.value)(s) === false;
     case 'And': {
-      return evalBexpr(expr.b1)(s) === evalBexpr(expr.b2)(s);
+      return evalBexpr(expr.bexpr1)(s) === evalBexpr(expr.bexpr2)(s);
     }
   }
 };
@@ -45,8 +45,8 @@ export const freeVariablesAexpr = (expr: Aexpr): Name[] => {
     case 'Add':
     case 'Mult':
     case 'Sub': {
-      const fvA1 = freeVariablesAexpr(expr.a1);
-      const fvA2 = freeVariablesAexpr(expr.a2);
+      const fvA1 = freeVariablesAexpr(expr.aexpr1);
+      const fvA2 = freeVariablesAexpr(expr.aexpr2);
 
       return Array.from(new Set([...fvA1, ...fvA2]));
     }
@@ -60,16 +60,16 @@ export const freeVariablesBexpr = (expr: Bexpr): Name[] => {
       return [];
     case 'Eq':
     case 'Le': {
-      const fvA1 = freeVariablesAexpr(expr.a1);
-      const fvA2 = freeVariablesAexpr(expr.a2);
+      const fvA1 = freeVariablesAexpr(expr.aexpr1);
+      const fvA2 = freeVariablesAexpr(expr.aexpr2);
 
       return Array.from(new Set([...fvA1, ...fvA2]));
     }
     case 'Neg':
       return freeVariablesBexpr(expr.value);
     case 'And': {
-      const fvB1 = freeVariablesBexpr(expr.b1);
-      const fvB2 = freeVariablesBexpr(expr.b2);
+      const fvB1 = freeVariablesBexpr(expr.bexpr1);
+      const fvB2 = freeVariablesBexpr(expr.bexpr2);
 
       return Array.from(new Set([...fvB1, ...fvB2]));
     }
@@ -83,11 +83,11 @@ export const substAexpr = (a: Aexpr) => (y: Name) => (a0: Aexpr): Aexpr => {
     case 'Var':
       return a.value === y ? a0 : a;
     case 'Add':
-      return new Add(substAexpr(a.a1)(y)(a0), substAexpr(a.a2)(y)(a0));
+      return new Add(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
     case 'Mult':
-      return new Mult(substAexpr(a.a1)(y)(a0), substAexpr(a.a2)(y)(a0));
+      return new Mult(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
     case 'Sub':
-      return new Sub(substAexpr(a.a1)(y)(a0), substAexpr(a.a2)(y)(a0));
+      return new Sub(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
   }
 };
 
@@ -98,11 +98,11 @@ export const substBexpr = (b: Bexpr) => (y: Name) => (a0: Aexpr): Bexpr => {
       return b;
     case 'Eq':
     case 'Le':
-      return new Eq(substAexpr(b.a1)(y)(a0), substAexpr(b.a2)(y)(a0));
+      return new Eq(substAexpr(b.aexpr1)(y)(a0), substAexpr(b.aexpr2)(y)(a0));
     case 'Neg':
       return new Neg(substBexpr(b.value)(y)(a0));
     case 'And':
-      return new And(substBexpr(b.b1)(y)(a0), substBexpr(b.b2)(y)(a0));
+      return new And(substBexpr(b.bexpr1)(y)(a0), substBexpr(b.bexpr2)(y)(a0));
   }
 };
 

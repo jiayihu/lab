@@ -1,0 +1,898 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`deriveSeq should derive the configuration 1`] = `
+Array [
+  InterConfig {
+    "state": [Function],
+    "stm": Comp {
+      "stm1": Ass {
+        "aexpr": Num {
+          "type": "Num",
+          "value": 1,
+        },
+        "name": "y",
+        "type": "Ass",
+      },
+      "stm2": While {
+        "bexpr": Neg {
+          "type": "Neg",
+          "value": Eq {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Eq",
+          },
+        },
+        "stm": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "type": "While",
+      },
+      "type": "Comp",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": While {
+      "bexpr": Neg {
+        "type": "Neg",
+        "value": Eq {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Eq",
+        },
+      },
+      "stm": Comp {
+        "stm1": Ass {
+          "aexpr": Mult {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "y",
+            },
+            "aexpr2": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "type": "Mult",
+          },
+          "name": "y",
+          "type": "Ass",
+        },
+        "stm2": Ass {
+          "aexpr": Sub {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Sub",
+          },
+          "name": "x",
+          "type": "Ass",
+        },
+        "type": "Comp",
+      },
+      "type": "While",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": If {
+      "bexpr": Neg {
+        "type": "Neg",
+        "value": Eq {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Eq",
+        },
+      },
+      "stm1": Comp {
+        "stm1": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "stm2": While {
+          "bexpr": Neg {
+            "type": "Neg",
+            "value": Eq {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Eq",
+            },
+          },
+          "stm": Comp {
+            "stm1": Ass {
+              "aexpr": Mult {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "y",
+                },
+                "aexpr2": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "type": "Mult",
+              },
+              "name": "y",
+              "type": "Ass",
+            },
+            "stm2": Ass {
+              "aexpr": Sub {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "aexpr2": Num {
+                  "type": "Num",
+                  "value": 1,
+                },
+                "type": "Sub",
+              },
+              "name": "x",
+              "type": "Ass",
+            },
+            "type": "Comp",
+          },
+          "type": "While",
+        },
+        "type": "Comp",
+      },
+      "stm2": Skip {
+        "type": "Skip",
+      },
+      "type": "If",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": Comp {
+      "stm1": Comp {
+        "stm1": Ass {
+          "aexpr": Mult {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "y",
+            },
+            "aexpr2": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "type": "Mult",
+          },
+          "name": "y",
+          "type": "Ass",
+        },
+        "stm2": Ass {
+          "aexpr": Sub {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Sub",
+          },
+          "name": "x",
+          "type": "Ass",
+        },
+        "type": "Comp",
+      },
+      "stm2": While {
+        "bexpr": Neg {
+          "type": "Neg",
+          "value": Eq {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Eq",
+          },
+        },
+        "stm": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "type": "While",
+      },
+      "type": "Comp",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": Comp {
+      "stm1": Ass {
+        "aexpr": Sub {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Sub",
+        },
+        "name": "x",
+        "type": "Ass",
+      },
+      "stm2": While {
+        "bexpr": Neg {
+          "type": "Neg",
+          "value": Eq {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Eq",
+          },
+        },
+        "stm": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "type": "While",
+      },
+      "type": "Comp",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": While {
+      "bexpr": Neg {
+        "type": "Neg",
+        "value": Eq {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Eq",
+        },
+      },
+      "stm": Comp {
+        "stm1": Ass {
+          "aexpr": Mult {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "y",
+            },
+            "aexpr2": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "type": "Mult",
+          },
+          "name": "y",
+          "type": "Ass",
+        },
+        "stm2": Ass {
+          "aexpr": Sub {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Sub",
+          },
+          "name": "x",
+          "type": "Ass",
+        },
+        "type": "Comp",
+      },
+      "type": "While",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": If {
+      "bexpr": Neg {
+        "type": "Neg",
+        "value": Eq {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Eq",
+        },
+      },
+      "stm1": Comp {
+        "stm1": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "stm2": While {
+          "bexpr": Neg {
+            "type": "Neg",
+            "value": Eq {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Eq",
+            },
+          },
+          "stm": Comp {
+            "stm1": Ass {
+              "aexpr": Mult {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "y",
+                },
+                "aexpr2": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "type": "Mult",
+              },
+              "name": "y",
+              "type": "Ass",
+            },
+            "stm2": Ass {
+              "aexpr": Sub {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "aexpr2": Num {
+                  "type": "Num",
+                  "value": 1,
+                },
+                "type": "Sub",
+              },
+              "name": "x",
+              "type": "Ass",
+            },
+            "type": "Comp",
+          },
+          "type": "While",
+        },
+        "type": "Comp",
+      },
+      "stm2": Skip {
+        "type": "Skip",
+      },
+      "type": "If",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": Comp {
+      "stm1": Comp {
+        "stm1": Ass {
+          "aexpr": Mult {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "y",
+            },
+            "aexpr2": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "type": "Mult",
+          },
+          "name": "y",
+          "type": "Ass",
+        },
+        "stm2": Ass {
+          "aexpr": Sub {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Sub",
+          },
+          "name": "x",
+          "type": "Ass",
+        },
+        "type": "Comp",
+      },
+      "stm2": While {
+        "bexpr": Neg {
+          "type": "Neg",
+          "value": Eq {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Eq",
+          },
+        },
+        "stm": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "type": "While",
+      },
+      "type": "Comp",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": Comp {
+      "stm1": Ass {
+        "aexpr": Sub {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Sub",
+        },
+        "name": "x",
+        "type": "Ass",
+      },
+      "stm2": While {
+        "bexpr": Neg {
+          "type": "Neg",
+          "value": Eq {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Eq",
+          },
+        },
+        "stm": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "type": "While",
+      },
+      "type": "Comp",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": While {
+      "bexpr": Neg {
+        "type": "Neg",
+        "value": Eq {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Eq",
+        },
+      },
+      "stm": Comp {
+        "stm1": Ass {
+          "aexpr": Mult {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "y",
+            },
+            "aexpr2": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "type": "Mult",
+          },
+          "name": "y",
+          "type": "Ass",
+        },
+        "stm2": Ass {
+          "aexpr": Sub {
+            "aexpr1": Var {
+              "type": "Var",
+              "value": "x",
+            },
+            "aexpr2": Num {
+              "type": "Num",
+              "value": 1,
+            },
+            "type": "Sub",
+          },
+          "name": "x",
+          "type": "Ass",
+        },
+        "type": "Comp",
+      },
+      "type": "While",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": If {
+      "bexpr": Neg {
+        "type": "Neg",
+        "value": Eq {
+          "aexpr1": Var {
+            "type": "Var",
+            "value": "x",
+          },
+          "aexpr2": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "type": "Eq",
+        },
+      },
+      "stm1": Comp {
+        "stm1": Comp {
+          "stm1": Ass {
+            "aexpr": Mult {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "y",
+              },
+              "aexpr2": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "type": "Mult",
+            },
+            "name": "y",
+            "type": "Ass",
+          },
+          "stm2": Ass {
+            "aexpr": Sub {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Sub",
+            },
+            "name": "x",
+            "type": "Ass",
+          },
+          "type": "Comp",
+        },
+        "stm2": While {
+          "bexpr": Neg {
+            "type": "Neg",
+            "value": Eq {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Eq",
+            },
+          },
+          "stm": Comp {
+            "stm1": Ass {
+              "aexpr": Mult {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "y",
+                },
+                "aexpr2": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "type": "Mult",
+              },
+              "name": "y",
+              "type": "Ass",
+            },
+            "stm2": Ass {
+              "aexpr": Sub {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "aexpr2": Num {
+                  "type": "Num",
+                  "value": 1,
+                },
+                "type": "Sub",
+              },
+              "name": "x",
+              "type": "Ass",
+            },
+            "type": "Comp",
+          },
+          "type": "While",
+        },
+        "type": "Comp",
+      },
+      "stm2": Skip {
+        "type": "Skip",
+      },
+      "type": "If",
+    },
+    "type": "InterConfig",
+  },
+  InterConfig {
+    "state": [Function],
+    "stm": Skip {
+      "type": "Skip",
+    },
+    "type": "InterConfig",
+  },
+  FinalConfig {
+    "state": [Function],
+    "type": "FinalConfig",
+  },
+]
+`;

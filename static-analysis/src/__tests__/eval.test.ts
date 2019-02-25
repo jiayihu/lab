@@ -1,5 +1,5 @@
 import { Aexpr, Var, Add, Num, Z, State, Bexpr, Neg, Eq, Mult } from '../language';
-import { evalAexpr, evalBexpr, freeVariablesAexpr, substAexpr } from '../interpreter';
+import { evalAexpr, evalBexpr, freeVariablesAexpr, substAexpr } from '../eval';
 
 describe('evalAexpr', () => {
   it('should return the correct evaluation', () => {

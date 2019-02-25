@@ -14,15 +14,15 @@ export class Var {
 }
 export class Add {
   type: 'Add' = 'Add';
-  constructor(readonly a1: Aexpr, readonly a2: Aexpr) {}
+  constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
 }
 export class Mult {
   type: 'Mult' = 'Mult';
-  constructor(readonly a1: Aexpr, readonly a2: Aexpr) {}
+  constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
 }
 export class Sub {
   type: 'Sub' = 'Sub';
-  constructor(readonly a1: Aexpr, readonly a2: Aexpr) {}
+  constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
 }
 
 export type Bexpr = True | False | Eq | Le | Neg | And;
@@ -37,11 +37,11 @@ export class False {
 }
 export class Eq {
   type: 'Eq' = 'Eq';
-  constructor(readonly a1: Aexpr, readonly a2: Aexpr) {}
+  constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
 }
 export class Le {
   type: 'Le' = 'Le';
-  constructor(readonly a1: Aexpr, readonly a2: Aexpr) {}
+  constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
 }
 export class Neg {
   type: 'Neg' = 'Neg';
@@ -49,14 +49,14 @@ export class Neg {
 }
 export class And {
   type: 'And' = 'And';
-  constructor(readonly b1: Bexpr, readonly b2: Bexpr) {}
+  constructor(readonly bexpr1: Bexpr, readonly bexpr2: Bexpr) {}
 }
 
 export type Stm = Ass | Skip | Comp | If | While;
 
 export class Ass {
   type: 'Ass' = 'Ass';
-  constructor(readonly name: Name, readonly a: Aexpr) {}
+  constructor(readonly name: Name, readonly aexpr: Aexpr) {}
 }
 export class Skip {
   type: 'Skip' = 'Skip';
@@ -64,21 +64,19 @@ export class Skip {
 }
 export class Comp {
   type: 'Comp' = 'Comp';
-  constructor(readonly s1: Stm, readonly s2: Stm) {}
+  constructor(readonly stm1: Stm, readonly stm2: Stm) {}
 }
 export class If {
   type: 'If' = 'If';
-  constructor(readonly b: Bexpr, readonly s1: Stm, readonly s2: Stm) {}
+  constructor(readonly bexpr: Bexpr, readonly stm1: Stm, readonly stm2: Stm) {}
 }
 export class While {
   type: 'While' = 'While';
-  constructor(readonly b: Bexpr, readonly s: Stm) {}
+  constructor(readonly bexpr: Bexpr, readonly stm: Stm) {}
 }
-
-export type Program = Stm[];
 
 export type State = (name: Name) => Z;
 
-export const twoCharOps = ['<='];
+export const twoCharOps = [':=', '<='];
 
 export const keywords = ['if', 'then', 'else', 'while', 'do'];
