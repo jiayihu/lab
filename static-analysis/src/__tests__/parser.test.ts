@@ -1,5 +1,6 @@
-// import { Aexpr, Add, Var, Num } from "../language";
-import { strToChars, tokenizer, charsToStr, pAexpr } from '../parser';
+import { Add, Var, Num, Eq } from '../language';
+import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr } from '../parser';
+import { some } from 'fp-ts/lib/Option';
 
 describe('tokenizer', () => {
   it('should split in tokens', () => {
@@ -28,6 +29,12 @@ describe('parser', () => {
   it('should parse simple arithmetic expressions', () => {
     const tokens = ['x', '+', '1'].map(strToChars);
 
-    console.log(pAexpr.parse(tokens));
+    expect(pAexpr.parse(tokens)).toEqual(some([new Add(new Var('x'), new Num(1)), []]));
+  });
+
+  it('should parse simple boolean expressions', () => {
+    const tokens = ['3', '=', '2'].map(strToChars);
+
+    expect(pBexpr.parse(tokens)).toEqual(some([new Eq(new Num(3), new Num(2)), []]));
   });
 });

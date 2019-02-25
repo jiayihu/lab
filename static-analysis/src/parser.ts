@@ -1,7 +1,23 @@
 import { span, split, isEmpty } from 'fp-ts/lib/Array';
 import { Char } from 'newtype-ts/lib/Char';
 import { iso } from 'newtype-ts';
-import { twoCharOps, keywords, Var, Num, Aexpr, Add, Mult, Sub } from './language';
+import {
+  twoCharOps,
+  keywords,
+  Var,
+  Num,
+  Aexpr,
+  Add,
+  Mult,
+  Sub,
+  True,
+  False,
+  Eq,
+  Le,
+  Neg,
+  And,
+  Bexpr,
+} from './language';
 import { Option, some, none } from 'fp-ts/lib/Option';
 import { pair } from './utils';
 
@@ -113,9 +129,8 @@ const pSat = (pred: (token: Token) => boolean): Parser<Token> => {
 const pLit = (c: Token): Parser<Token> => pSat(x => x.join('') === c.join(''));
 
 /**
- * No operational parser which allows lazy parser definition
+ * Arithmetic expression parsers
  */
-const pNoop: Parser<null> = new Parser(tokens => some(pair([null, tokens])));
 
 export const pVar: Parser<Var> = pSat(
   token => !keywords.includes(charsToStr(token)) && isAlpha(token[0]),
@@ -125,37 +140,81 @@ export const pNum: Parser<Num> = pSat(token => token.every(isDigit)).map(
   token => new Num(Number(token.join(''))),
 );
 
-export const pParExpr: Parser<Aexpr> = pLit(strToChars('('))
-  .chain(() => pAexpr)
-  .chain(a => pLit(strToChars(')')).chain(() => Parser.of(a)));
+export const pBasisAexpr: Parser<Aexpr> = (pVar as Parser<Aexpr>).alt(pNum);
 
-export const pAdd: Parser<Add> = pNoop
-  .chain(() => pAexpr)
-  .chain(a1 =>
-    pLit(strToChars('+'))
-      .chain(() => pAexpr)
-      .chain(a2 => Parser.of(new Add(a1, a2))),
-  );
+export const pParAexpr: Parser<Aexpr> = pLit(strToChars('('))
+  .chain(() => pBasisAexpr)
+  .chain(a => pLit(strToChars(')')).map(() => a));
 
-export const pMult: Parser<Mult> = pNoop
-  .chain(() => pAexpr)
-  .chain(a1 =>
-    pLit(strToChars('*'))
-      .chain(() => pAexpr)
-      .chain(a2 => Parser.of(new Mult(a1, a2))),
-  );
+export const pAdd: Parser<Add> = pBasisAexpr.chain(a1 =>
+  pLit(strToChars('+'))
+    .chain(() => pBasisAexpr)
+    .map(a2 => new Add(a1, a2)),
+);
 
-export const pSub: Parser<Sub> = pNoop
-  .chain(() => pAexpr)
-  .chain(a1 =>
-    pLit(strToChars('-'))
-      .chain(() => pAexpr)
-      .chain(a2 => Parser.of(new Sub(a1, a2))),
-  );
+export const pMult: Parser<Mult> = pBasisAexpr.chain(a1 =>
+  pLit(strToChars('*'))
+    .chain(() => pBasisAexpr)
+    .map(a2 => new Mult(a1, a2)),
+);
 
-export const pAexpr: Parser<Aexpr> = (pVar as Parser<Aexpr>)
-  .alt(pNum)
-  .alt(pAdd)
+export const pSub: Parser<Sub> = pBasisAexpr.chain(a1 =>
+  pLit(strToChars('-'))
+    .chain(() => pBasisAexpr)
+    .map(a2 => new Sub(a1, a2)),
+);
+
+export const pAexpr: Parser<Aexpr> = (pAdd as Parser<Aexpr>)
   .alt(pMult)
   .alt(pSub)
-  .alt(pParExpr);
+  .alt(pBasisAexpr)
+  .alt(pParAexpr);
+
+/**
+ * Boolean expression parsers
+ */
+
+export const pTrue: Parser<True> = pSat(token => charsToStr(token) === 'true').map(
+  () => new True(true),
+);
+
+export const pFalse: Parser<False> = pSat(token => charsToStr(token) === 'false').map(
+  () => new False(false),
+);
+
+export const pEq: Parser<Eq> = pAexpr.chain(a1 =>
+  pLit(strToChars('='))
+    .chain(() => pAexpr)
+    .map(a2 => new Eq(a1, a2)),
+);
+
+export const pLe: Parser<Le> = pAexpr.chain(a1 =>
+  pLit(strToChars('<'))
+    .chain(() => pLit(strToChars('=')))
+    .chain(() => pAexpr)
+    .map(a2 => new Le(a1, a2)),
+);
+
+export const pBasisBexpr: Parser<Bexpr> = (pTrue as Parser<Bexpr>)
+  .alt(pFalse)
+  .alt(pEq)
+  .alt(pLe);
+
+export const pNeg: Parser<Neg> = pLit(strToChars('¬'))
+  .chain(() => pBexpr)
+  .map(b => new Neg(b));
+
+export const pAnd: Parser<And> = pBasisBexpr.chain(a1 =>
+  pLit(strToChars('∧'))
+    .chain(() => pBasisBexpr)
+    .map(a2 => new And(a1, a2)),
+);
+
+export const pParBexpr: Parser<Bexpr> = pLit(strToChars('('))
+  .chain(() => pBasisBexpr)
+  .chain(a => pLit(strToChars(')')).map(() => a));
+
+export const pBexpr: Parser<Bexpr> = (pNeg as Parser<Bexpr>)
+  .alt(pAnd)
+  .alt(pBasisBexpr)
+  .alt(pParBexpr);
