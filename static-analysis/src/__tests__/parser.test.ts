@@ -1,5 +1,5 @@
-import { Add, Var, Num, Eq } from '../language';
-import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr } from '../parser';
+import { Add, Var, Num, Eq, Ass, Neg } from '../language';
+import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg } from '../parser';
 import { some } from 'fp-ts/lib/Option';
 
 describe('tokenizer', () => {
@@ -27,14 +27,37 @@ describe('tokenizer', () => {
 
 describe('parser', () => {
   it('should parse simple arithmetic expressions', () => {
-    const tokens = ['x', '+', '1'].map(strToChars);
+    const input = strToChars('x + 1');
+    const tokens = tokenizer(input);
 
     expect(pAexpr.parse(tokens)).toEqual(some([new Add(new Var('x'), new Num(1)), []]));
   });
 
-  it('should parse simple boolean expressions', () => {
-    const tokens = ['3', '=', '2'].map(strToChars);
+  it('should parse basis boolean expressions', () => {
+    const input = strToChars('3 = 2');
+    const tokens = tokenizer(input);
 
     expect(pBexpr.parse(tokens)).toEqual(some([new Eq(new Num(3), new Num(2)), []]));
+  });
+
+  it('should parse neg boolean expressions', () => {
+    const input = strToChars('¬(x = 1)');
+    const tokens = tokenizer(input);
+
+    expect(pBexpr.parse(tokens)).toEqual(some([new Neg(new Eq(new Var('x'), new Num(1))), []]));
+  });
+
+  it('should parse simple statements', () => {
+    const input = strToChars('y := 1');
+    const tokens = tokenizer(input);
+
+    expect(pProg.parse(tokens)).toEqual(some([new Ass('y', new Num(1)), []]));
+  });
+
+  it('should parse factorial statement', () => {
+    const input = strToChars('y := 1; while ¬(x = 1) do (y := y * x; x := x - 1)');
+    const tokens = tokenizer(input);
+
+    expect(pProg.parse(tokens)).toMatchSnapshot();
   });
 });

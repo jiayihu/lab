@@ -17,6 +17,12 @@ import {
   Neg,
   And,
   Bexpr,
+  Stm,
+  Ass,
+  Skip,
+  Comp,
+  If,
+  While,
 } from './language';
 import { Option, some, none } from 'fp-ts/lib/Option';
 import { pair } from './utils';
@@ -112,13 +118,12 @@ const item: Parser<Token> = new Parser(tokens => {
   return some(pair([x, xs]));
 });
 
-const pWithSep = <A, B>(pa: Parser<A>) => (pb: Parser<B>): Parser<A[]> => {
+const pOneOrMoreWithSep = <A, B>(pa: Parser<A>) => (pb: Parser<B>): Parser<A[]> => {
   return pa.chain(a =>
     pb
-      .chain(() => pWithSep(pa)(pb))
-      .chain(as => {
-        return Parser.of([a, ...as]).alt(Parser.of([a]));
-      }),
+      .chain(() => pOneOrMoreWithSep(pa)(pb))
+      .chain(as => Parser.of([a, ...as]))
+      .alt(Parser.of([a])),
   );
 };
 
@@ -126,7 +131,7 @@ const pSat = (pred: (token: Token) => boolean): Parser<Token> => {
   return item.chain(token => (pred(token) ? Parser.of(token) : Parser.empty()));
 };
 
-const pLit = (c: Token): Parser<Token> => pSat(x => x.join('') === c.join(''));
+const pLit = (c: Token): Parser<Token> => pSat(token => token.join('') === c.join(''));
 
 /**
  * Arithmetic expression parsers
@@ -141,10 +146,6 @@ export const pNum: Parser<Num> = pSat(token => token.every(isDigit)).map(
 );
 
 export const pBasisAexpr: Parser<Aexpr> = (pVar as Parser<Aexpr>).alt(pNum);
-
-export const pParAexpr: Parser<Aexpr> = pLit(strToChars('('))
-  .chain(() => pBasisAexpr)
-  .chain(a => pLit(strToChars(')')).map(() => a));
 
 export const pAdd: Parser<Add> = pBasisAexpr.chain(a1 =>
   pLit(strToChars('+'))
@@ -163,6 +164,10 @@ export const pSub: Parser<Sub> = pBasisAexpr.chain(a1 =>
     .chain(() => pBasisAexpr)
     .map(a2 => new Sub(a1, a2)),
 );
+
+export const pParAexpr: Parser<Aexpr> = pLit(strToChars('('))
+  .chain(() => pAexpr)
+  .chain(a => pLit(strToChars(')')).map(() => a));
 
 export const pAexpr: Parser<Aexpr> = (pAdd as Parser<Aexpr>)
   .alt(pMult)
@@ -211,10 +216,59 @@ export const pAnd: Parser<And> = pBasisBexpr.chain(a1 =>
 );
 
 export const pParBexpr: Parser<Bexpr> = pLit(strToChars('('))
-  .chain(() => pBasisBexpr)
+  .chain(() => pBexpr)
   .chain(a => pLit(strToChars(')')).map(() => a));
 
 export const pBexpr: Parser<Bexpr> = (pNeg as Parser<Bexpr>)
   .alt(pAnd)
   .alt(pBasisBexpr)
   .alt(pParBexpr);
+
+/**
+ * Statement parsers
+ */
+
+export const pAss: Parser<Ass> = pSat(token => isAlpha(token[0])).chain(name =>
+  pLit(strToChars(':='))
+    .chain(() => pAexpr)
+    .map(a2 => new Ass(name.join(''), a2)),
+);
+
+export const pSkip: Parser<Skip> = pLit(strToChars('skip')).map(() => new Skip());
+
+export const pIf: Parser<If> = pLit(strToChars('if'))
+  .chain(() => pBexpr)
+  .chain(bexpr =>
+    pLit(strToChars('then'))
+      .chain(() => pStm)
+      .chain(stm1 =>
+        pLit(strToChars('else'))
+          .chain(() => pStm)
+          .map(stm2 => new If(bexpr, stm1, stm2)),
+      ),
+  );
+
+export const pWhile: Parser<While> = pLit(strToChars('while'))
+  .chain(() => pBexpr)
+  .chain(bexpr =>
+    pLit(strToChars('do'))
+      .chain(() => pProg)
+      .map(stm => new While(bexpr, stm)),
+  );
+
+export const pStm: Parser<Stm> = (pAss as Parser<Stm>)
+  .alt(pSkip)
+  .alt(pIf)
+  .alt(pWhile);
+
+export const pParStm: Parser<Stm> = pLit(strToChars('('))
+  .chain(() => pProg)
+  .chain(stm => pLit(strToChars(')')).map(() => stm));
+
+export const pProg: Parser<Stm> = pOneOrMoreWithSep(pStm.alt(pParStm))(pLit(strToChars(';'))).map(
+  stms =>
+    stms.reduce<Stm>((comp, stm) => {
+      // Cannot avoid putting Skip as initial value so if the program is only one stm avoid Comp
+      return comp.type === 'Skip' ? stm : new Comp(comp, stm);
+    }, new Skip()),
+);
