@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`deriveSeq should derive the configuration 1`] = `
+exports[`operational semantic should derive the configuration 1`] = `
 Array [
   InterConfig {
     "state": [Function],

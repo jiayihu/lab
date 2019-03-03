@@ -14,11 +14,11 @@ export class FinalConfig {
 
 export type Config = InterConfig | FinalConfig;
 
-function isFinal(config: Config): config is FinalConfig {
+const isFinal = (config: Config): config is FinalConfig => {
   return config instanceof FinalConfig;
-}
+};
 
-export function transition(config: Config): Config {
+export const transition = (config: Config): Config => {
   if (isFinal(config)) return config;
 
   const { stm, state } = config;
@@ -53,18 +53,18 @@ export function transition(config: Config): Config {
       );
     }
   }
-}
+};
 
-export function deriveSeq(config: Config): Config[] {
+export const deriveSeq = (config: Config): Config[] => {
   if (isFinal(config)) return [config];
 
   return [config, ...deriveSeq(transition(config))];
-}
+};
 
-export function semantic(stm: Stm, state: State): State {
+export const semantic = (stm: Stm) => (state: State): State => {
   const derivation = deriveSeq(new InterConfig(stm, state));
 
   return last(derivation)
     .map(config => config.state)
     .getOrElse(state);
-}
+};
