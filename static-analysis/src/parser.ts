@@ -134,7 +134,13 @@ const pSat = (pred: (token: Token) => boolean): Parser<Token> => {
 const pLit = (c: Token): Parser<Token> => pSat(token => token.join('') === c.join(''));
 
 /**
- * Arithmetic expression parsers, it handles right-associativity and Mult precedence
+ * Arithmetic expression parsers, it handles right-associativity and Mult precedence.
+ * Based on the following grammar:
+ *
+ * aexpr ::= term (+ aexpr | ε) | term (- aexpr | ε)
+ * term ::= factor (* aexpr | ε)
+ * factor ::= (aexpr) | basis
+ * basic ::= Var | Num
  */
 
 const pVar: Parser<Var> = pSat(
