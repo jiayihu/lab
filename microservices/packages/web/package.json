@@ -1,0 +1,39 @@
+{
+  "name": "ygo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && NODE_ENV=production webpack",
+    "deploy": "now && now alias && now remove microreads --safe",
+    "start": "webpack-dev-server --config ./webpack.config.js --port 3000",
+    "now-start": "serve --single ./dist"
+  },
+  "now": {
+    "name": "microreads",
+    "alias": "microreads"
+  },
+  "keywords": [],
+  "author": "Jiayi Hu <jiayi.ghu@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^10.5.1",
+    "@types/webpack": "^4.4.11",
+    "copy-webpack-plugin": "^4.5.2",
+    "html-webpack-plugin": "^3.2.0",
+    "now": "^12.1.5",
+    "raw-loader": "^0.5.1",
+    "serve": "^10.0.0",
+    "ts-loader": "^5.3.0",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
+    "hyperhtml": "^2.13.2",
+    "hyperhtml-app": "^0.2.3",
+    "hyperhtml-element": "^3.0.1"
+  }
+}

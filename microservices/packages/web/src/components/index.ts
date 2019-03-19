@@ -1,0 +1,3 @@
+// Core
+
+import './App/App';
