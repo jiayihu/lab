@@ -1,7 +1,7 @@
 import HyperHTMLElement from 'hyperhtml-element';
-import hyperApp from 'hyperhtml-app';
 
 import style from './App.css';
+import { context } from '../../lib/context';
 
 type State = {};
 
@@ -13,7 +13,7 @@ export class App extends HyperHTMLElement<State> {
   }
 
   private routerOutletEl: HTMLElement = document.createElement('div');
-  private router = new hyperApp();
+  private router = context.get('router');
   private renderRoute = bind(this.routerOutletEl);
 
   constructor() {
@@ -27,7 +27,7 @@ export class App extends HyperHTMLElement<State> {
   }
 
   private handleHomeRoute() {
-    this.renderRoute`<h1>Homepage</h1>`;
+    this.renderRoute`<mr-heading level="1">Homepage</mr-heading>`;
     this.resetScroll();
   }
 

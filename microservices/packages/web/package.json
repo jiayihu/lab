@@ -18,11 +18,17 @@
   "author": "Jiayi Hu <jiayi.ghu@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/classnames": "^2.2.7",
+    "@types/luxon": "^1.11.1",
     "@types/node": "^10.5.1",
     "@types/webpack": "^4.4.11",
+    "autoprefixer": "^9.5.0",
     "copy-webpack-plugin": "^4.5.2",
     "html-webpack-plugin": "^3.2.0",
     "now": "^12.1.5",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
     "raw-loader": "^0.5.1",
     "serve": "^10.0.0",
     "ts-loader": "^5.3.0",
@@ -32,8 +38,11 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "hyperhtml": "^2.13.2",
     "hyperhtml-app": "^0.2.3",
-    "hyperhtml-element": "^3.0.1"
+    "hyperhtml-element": "^3.0.1",
+    "luxon": "^1.11.4",
+    "redux": "^4.0.1"
   }
 }

@@ -1,4 +1,5 @@
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
+export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
+export type ValueOf<T> = T[keyof T];
 
 export function debounce<F extends (...params: Array<any>) => void>(fn: F, delay: number): F {
   let timer: number;

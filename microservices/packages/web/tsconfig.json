@@ -25,6 +25,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "resolveJsonModule": true,
+    "strictNullChecks": false,
     "strict": true
   },
   "include": [

@@ -45,7 +45,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ['raw-loader'],
+        use: ['raw-loader', 'postcss-loader'],
       },
       { test: /\.tsx?$/, loader: 'ts-loader' },
       {
