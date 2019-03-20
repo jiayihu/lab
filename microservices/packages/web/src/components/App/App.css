@@ -5,3 +5,7 @@
   contain: content;
   display: block;
 }
+
+.container {
+  padding: 0 1rem;
+}

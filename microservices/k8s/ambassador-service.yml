@@ -9,7 +9,7 @@ spec:
   type: LoadBalancer
   ports:
   - name: ambassador
-    port: 3000
+    port: 4200
     targetPort: 80
   selector:
     service: ambassador

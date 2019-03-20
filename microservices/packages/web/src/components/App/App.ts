@@ -27,7 +27,7 @@ export class App extends HyperHTMLElement<State> {
   }
 
   private handleHomeRoute() {
-    this.renderRoute`<mr-heading level="1">Homepage</mr-heading>`;
+    this.renderRoute`<mr-homepage />`;
     this.resetScroll();
   }
 

@@ -1,5 +1,10 @@
+import { FeedsState, feedsReducer } from './feeds.reducer';
+import { combineReducers } from 'redux';
+
 export type RootState = {
-  test: number;
+  feeds: FeedsState;
 };
 
-export const rootReducer = (state: RootState = { test: 1 }) => state;
+export const rootReducer = combineReducers<RootState>({
+  feeds: feedsReducer,
+});

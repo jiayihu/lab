@@ -1,126 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: editor
+  name: social
   labels:
-    app: editor
+    app: social
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: editor
+      app: social
   template:
     metadata:
       labels:
-        app: editor
+        app: social
     spec:
       containers:
-      - name: editor
-        image: jiayihu/letsbox-editor:latest
-        ports:
-        - containerPort: 8080
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: hub
-  labels:
-    app: hub
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: hub
-  template:
-    metadata:
-      labels:
-        app: hub
-    spec:
-      containers:
-      - name: hub
-        image: jiayihu/letsbox-hub:latest
-        ports:
-        - containerPort: 8080
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: workshops
-  labels:
-    app: workshops
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: workshops
-  template:
-    metadata:
-      labels:
-        app: workshops
-    spec:
-      containers:
-      - name: workshops
-        image: jiayihu/letsbox-workshops:latest
+      - name: social
+        image: jiayihu/microreads-social:latest
         ports:
         - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: editor
+  name: social
   annotations:
     getambassador.io/config: |
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
-      name:  editor_mapping
-      prefix: /editor/
-      service: editor
+      name:  social_mapping
+      prefix: /social/
+      service: social
+      cors:
+        origins: "*"
 spec:
   selector:
-    app: editor
+    app: social
   ports:
   - port: 80
-    name: http-editor
+    name: http-social
     targetPort: 8080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: hub
-  annotations:
-    getambassador.io/config: |
-      ---
-      apiVersion: ambassador/v1
-      kind:  Mapping
-      name:  hub_mapping
-      prefix: /hub/
-      service: hub
-spec:
-  selector:
-    app: hub
-  ports:
-  - port: 80
-    name: http-hub
-    targetPort: 8080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: workshops
-  annotations:
-    getambassador.io/config: |
-      ---
-      apiVersion: ambassador/v1
-      kind:  Mapping
-      name:  workshops_mapping
-      prefix: /workshops/
-      service: workshops
-spec:
-  selector:
-    app: workshops
-  ports:
-  - port: 80
-    name: http-workshops
-    targetPort: 8080
-

@@ -1,4 +1,4 @@
-import { Store, Unsubscribe } from 'redux';
+import { Store, Unsubscribe, Action } from 'redux';
 import { context } from './context';
 import HyperHTMLElement from 'hyperhtml-element';
 
@@ -41,6 +41,10 @@ export const connect = <S>(store: Store<S>) => <T extends Constructor<CustomElem
      * The `stateChanged(state)` method will be called when the state is updated.
      */
     stateChanged(_state: S) {}
+
+    dispatch(action: Action) {
+      store.dispatch(action);
+    }
   };
 
 export const ConnectedHyperElement = connect(context.get('store'))(HyperHTMLElement);

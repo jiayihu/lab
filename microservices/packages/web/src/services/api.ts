@@ -1,9 +1,9 @@
-export const BASE_URL = 'https://ygo-api.now.sh/https://yugiohprices.com/api/';
+export const BASE_URL = 'http://localhost:4200';
 
 export default function request(resource: string, options?: RequestInit): Promise<any> {
   return fetch(`${BASE_URL}/${resource}`, {
     mode: 'cors',
-    ...options
+    ...options,
   })
     .then(response => {
       if (response.status >= 200 && response.status < 400) {

@@ -1,0 +1,16 @@
+@import '_normalize/box-sizing.css';
+
+:host {
+  contain: content;
+  display: block;
+}
+
+.book-preview {
+  display: flex;
+}
+
+.book-preview img {
+  padding: 0.5rem;
+  height: 10rem;
+  width: 7rem;
+}

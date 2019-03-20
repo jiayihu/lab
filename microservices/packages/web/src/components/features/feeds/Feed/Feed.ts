@@ -6,7 +6,7 @@ import { TLike } from '../../../../domain/feeds';
 export class Feed extends HyperHTMLElement {
   user: TUser;
   date: string;
-  likes: TLike;
+  likes: TLike[];
 
   static get observedAttributes(): Array<keyof Feed> {
     return ['user', 'date', 'likes'];
@@ -28,8 +28,10 @@ export class Feed extends HyperHTMLElement {
     return this.html`
       <div class="feed">
         <div class="header">
-          <mr-routerlink>${this.user.name}</mr-routerlink>
-          <slot name="action"></slot>
+          <span>
+            <mr-routerlink>${this.user.name}</mr-routerlink>
+            <slot name="action"></slot>
+          </span>
           <span>${elapsedDate}</span>
         </div>
         <div class="content">
