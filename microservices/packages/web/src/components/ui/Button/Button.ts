@@ -1,9 +1,9 @@
-import HyperHTMLElement from 'hyperhtml-element';
+import { MicroReadElement } from '../../../lib/MicroReadsElement';
 import classnames from 'classnames';
 import style from './Button.css';
 
-export class Button extends HyperHTMLElement {
-  kind: 'primary' | 'secondary' | 'link';
+export class Button extends MicroReadElement {
+  kind: 'primary' | 'secondary' | 'link' = 'primary';
 
   static get observedAttributes(): Array<keyof Button> {
     return ['kind'];

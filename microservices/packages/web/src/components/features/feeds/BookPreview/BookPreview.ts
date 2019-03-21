@@ -1,8 +1,8 @@
 import style from './BookPreview.css';
-import HyperHTMLElement from 'hyperhtml-element';
+import { MicroReadElement } from '../../../../lib/MicroReadsElement';
 import { TBook } from '../../../../domain/book';
 
-export class BookPreview extends HyperHTMLElement {
+export class BookPreview extends MicroReadElement {
   book: TBook;
 
   static get observedAttributes(): Array<keyof BookPreview> {

@@ -1,7 +1,7 @@
-import HyperHTMLElement from 'hyperhtml-element';
+import { MicroReadElement } from '../../../lib/MicroReadsElement';
 import style from './Heading.css';
 
-export class Heading extends HyperHTMLElement {
+export class Heading extends MicroReadElement {
   level: number;
 
   static get observedAttributes(): Array<keyof Heading> {

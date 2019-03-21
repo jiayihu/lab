@@ -10,7 +10,7 @@ export class Homepage extends ConnectedHyperElement {
   feeds: TFeed[] = [];
 
   static get observedAttributes(): Array<keyof Homepage> {
-    return [];
+    return ['feeds'];
   }
 
   constructor() {
@@ -42,7 +42,7 @@ export class Homepage extends ConnectedHyperElement {
       <div class="homepage">
         <h1>Hello</h1>
         <div class="feeds">
-          ${this.feeds.map(feed => wire()`<mr-feedwantstoread feed=${feed} />`)}
+          ${this.feeds.map(feed => wire(feed)`<mr-feedwantstoread feed=${feed} />`)}
         </div>
       </div>
     `;

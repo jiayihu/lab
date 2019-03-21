@@ -1,7 +1,7 @@
-import HyperHTMLElement from 'hyperhtml-element';
+import { MicroReadElement } from '../../../../lib/MicroReadsElement';
 import { TFeedWantsToRead } from '../../../../domain/feeds';
 
-export class FeedWantsToRead extends HyperHTMLElement {
+export class FeedWantsToRead extends MicroReadElement {
   feed: TFeedWantsToRead;
 
   static get observedAttributes(): Array<keyof FeedWantsToRead> {

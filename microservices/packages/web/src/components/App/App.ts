@@ -1,13 +1,12 @@
-import HyperHTMLElement from 'hyperhtml-element';
-
 import style from './App.css';
+import { MicroReadElement } from '../../lib/MicroReadsElement';
 import { context } from '../../lib/context';
 
 type State = {};
 
-const { bind } = HyperHTMLElement;
+const { bind } = MicroReadElement;
 
-export class App extends HyperHTMLElement<State> {
+export class App extends MicroReadElement<State> {
   get defaultState(): State {
     return {};
   }

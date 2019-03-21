@@ -1,7 +1,7 @@
-import HyperHTMLElement from 'hyperhtml-element';
+import { MicroReadElement } from '../../../../lib/MicroReadsElement';
 import { context } from '../../../../lib/context';
 
-export class RouterLink extends HyperHTMLElement {
+export class RouterLink extends MicroReadElement {
   route: string;
   router = context.get('router');
 

@@ -1,9 +1,9 @@
-import HyperHTMLElement from 'hyperhtml-element';
+import { MicroReadElement } from '../../../../lib/MicroReadsElement';
 import { DateTime } from 'luxon';
 import { TUser } from '../../../../domain/users';
 import { TLike } from '../../../../domain/feeds';
 
-export class Feed extends HyperHTMLElement {
+export class Feed extends MicroReadElement {
   user: TUser;
   date: string;
   likes: TLike[];

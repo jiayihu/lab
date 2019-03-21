@@ -1,6 +1,6 @@
 import { Store, Unsubscribe, Action } from 'redux';
 import { context } from './context';
-import HyperHTMLElement from 'hyperhtml-element';
+import { MicroReadElement } from './MicroReadsElement';
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -47,4 +47,4 @@ export const connect = <S>(store: Store<S>) => <T extends Constructor<CustomElem
     }
   };
 
-export const ConnectedHyperElement = connect(context.get('store'))(HyperHTMLElement);
+export const ConnectedHyperElement = connect(context.get('store'))(MicroReadElement);
