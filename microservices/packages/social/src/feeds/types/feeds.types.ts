@@ -1,5 +1,3 @@
-import { Document } from 'mongoose';
-
 export type TUser = {
   id: string;
   name: string;
@@ -18,13 +16,3 @@ export type TLike = {
   userId: string;
   userName: string;
 };
-
-export type TFeed = {
-  user: TUser;
-  date: string;
-  likes: TLike[];
-  type: 'WantsToRead';
-  book: TBook;
-};
-
-export type FeedDoc = Document & TFeed;

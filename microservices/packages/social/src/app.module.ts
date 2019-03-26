@@ -4,7 +4,7 @@ import { FeedsModule } from './feeds/feeds.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`${process.env.MONGO || 'mongodb://localhost:27017'}/feeds`),
+    MongooseModule.forRoot(`${process.env.MONGO || 'mongodb://localhost:27017'}/social`),
     FeedsModule,
   ],
   controllers: [],

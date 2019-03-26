@@ -1,24 +1,10 @@
 import { Schema } from 'mongoose';
 
-export const FeedSchema = new Schema({
-  user: {
-    id: Schema.Types.ObjectId,
-    name: String,
-    picture: String,
-  },
+const feedSchema = new Schema({
+  userId: Schema.Types.ObjectId,
   date: Date,
   type: String,
-  likes: [
-    {
-      id: Schema.Types.ObjectId,
-      userId: Schema.Types.ObjectId,
-      userName: String,
-    },
-  ],
-  book: {
-    title: String,
-    author: String,
-    cover: String,
-    summary: String,
-  },
+  bookId: Schema.Types.ObjectId,
 });
+
+export { feedSchema };

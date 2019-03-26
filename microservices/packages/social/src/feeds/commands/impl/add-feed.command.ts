@@ -1,22 +1,8 @@
-export type AddFeedDTO =
-  | {
-      userId: string;
-      date: string;
-      likes: [];
-      type: 'WantsToRead';
-      bookId: string;
-    }
-  | {
-      userId: string;
-      date: string;
-      likes: [];
-      type: 'Rating';
-      bookId: string;
-    };
+import { Feed } from 'src/feeds/domain/feed.model';
 
 export class AddFeedCommand {
   public type = 'ADD_FEED_COMMAND';
-  constructor(public payload: AddFeedDTO) {}
+  constructor(public payload: Feed) {}
 }
 
 export type FeedCommand = AddFeedCommand;

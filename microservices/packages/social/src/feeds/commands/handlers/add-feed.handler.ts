@@ -1,28 +1,22 @@
-import { CommandHandler, ICommandHandler, EventBus } from '@nestjs/cqrs';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { FeedDoc } from 'src/feeds/interfaces/feeds.doc';
+import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { AddFeedCommand } from '../impl/add-feed.command';
-import { FeedAddedEvent } from 'src/feeds/events/impl/feed-added.event';
+import { FeedsRepository } from 'src/feeds/repository/feeds.repository';
 
 @CommandHandler(AddFeedCommand)
 export class AddFeedHandler implements ICommandHandler<AddFeedCommand> {
-  constructor(
-    @InjectModel('Feed') private feedsModel: Model<FeedDoc>,
-    private eventBus: EventBus,
-  ) {}
+  constructor(private repository: FeedsRepository, private publisher: EventPublisher) {}
 
   execute(command: AddFeedCommand) {
     const { payload } = command;
 
-    /**
-     * @TODO populate userId and bookId
-     */
-    const feed = new this.feedsModel(payload);
+    return this.repository
+      .create(payload)
+      .then(feed => this.publisher.mergeObjectContext(feed))
+      .then(feed => {
+        feed.create();
+        feed.commit();
 
-    return feed.save().then(feed => {
-      this.eventBus.publish(new FeedAddedEvent(feed));
-      return feed;
-    });
+        return feed;
+      });
   }
 }
