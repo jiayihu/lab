@@ -25,7 +25,8 @@
     "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": "./"
   },
   "include": [
     "./src"
