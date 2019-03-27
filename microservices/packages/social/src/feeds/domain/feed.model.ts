@@ -1,5 +1,4 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { FeedAddedEvent } from '../events/impl/feed-added.event';
 
 export class Feed extends AggregateRoot {
   constructor(
@@ -9,9 +8,5 @@ export class Feed extends AggregateRoot {
     public bookId: string,
   ) {
     super();
-  }
-
-  create() {
-    this.apply(new FeedAddedEvent(this));
   }
 }
