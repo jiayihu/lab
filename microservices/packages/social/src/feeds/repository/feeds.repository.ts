@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Document } from 'mongoose';
-import { Feed } from '../domain/feed.model';
+import { Feed, createFeed } from '../domain/feed.model';
 
 @Injectable()
 export class FeedsRepository {
@@ -21,6 +21,6 @@ export class FeedsRepository {
   update() {}
 
   private asFeed(doc: Feed & Document): Feed {
-    return new Feed(doc.userId, doc.date, doc.type, doc.bookId);
+    return createFeed(doc.userId, doc.date, doc.type, doc.bookId);
   }
 }
