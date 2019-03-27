@@ -1,6 +1,7 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { AddFeedCommand } from '../impl/add-feed.command';
 import { FeedsRepository } from 'src/feeds/repository/feeds.repository';
+import { Feed } from 'src/feeds/domain/feed.model';
 
 @CommandHandler(AddFeedCommand)
 export class AddFeedHandler implements ICommandHandler<AddFeedCommand> {
@@ -9,14 +10,13 @@ export class AddFeedHandler implements ICommandHandler<AddFeedCommand> {
   execute(command: AddFeedCommand) {
     const { payload } = command;
 
-    return this.repository
-      .create(payload)
-      .then(feed => this.publisher.mergeObjectContext(feed))
-      .then(feed => {
-        feed.create();
-        feed.commit();
+    const feed = this.publisher.mergeObjectContext(
+      new Feed(payload.userId, payload.date, payload.type, payload.bookId),
+    );
 
-        return feed;
-      });
+    feed.create();
+    feed.commit();
+
+    return Promise.resolve(feed);
   }
 }

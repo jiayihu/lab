@@ -11,15 +11,16 @@ export class FeedsRepository {
     return this.feedODM
       .find()
       .exec()
-      .then(feeds => feeds.map(x => new Feed(x.userId, x.date, x.type, x.bookId)));
+      .then(feeds => feeds.map(this.asFeed));
   }
   findOne() {}
-  create(dto: Feed): Promise<Feed> {
-    /**
-     * @TODO populate userId and bookId
-     */
-    return this.feedODM.create(dto).then(x => new Feed(x.userId, x.date, x.type, x.bookId));
+  create(feed: Feed): Promise<Feed> {
+    return this.feedODM.create(feed).then(this.asFeed);
   }
   delete() {}
   update() {}
+
+  private asFeed(doc: Feed & Document): Feed {
+    return new Feed(doc.userId, doc.date, doc.type, doc.bookId);
+  }
 }
