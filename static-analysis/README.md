@@ -10,3 +10,8 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 
 - [What is a Y combinator](https://stackoverflow.com/questions/93526/what-is-a-y-combinator)
 - [Fixed point combinators in JS](https://blog.benestudio.co/fixed-point-combinators-in-javascript-c214c15ff2f6)
+
+##
+
+- TODO: S1; while b (do S; S) 
+- x non presente nello stato

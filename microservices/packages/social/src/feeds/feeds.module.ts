@@ -8,13 +8,28 @@ import { EventHandlers } from './events/handlers';
 import { CqrsModule } from '@nestjs/cqrs';
 import { QueryHandlers } from './queries/handlers';
 import { FeedsRepository } from './repository/feeds.repository';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Sagas } from './sagas';
 
 @Module({
-  imports: [CqrsModule, MongooseModule.forFeature([{ name: 'Feed', schema: feedSchema }])],
+  imports: [
+    CqrsModule,
+    MongooseModule.forFeature([{ name: 'Feed', schema: feedSchema }]),
+    ClientsModule.register([
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          port: 4201,
+        },
+      },
+    ]),
+  ],
   controllers: [FeedsController],
   providers: [
     FeedsService,
     FeedsRepository,
+    ...Sagas,
     ...CommandHandlers,
     ...EventHandlers,
     ...QueryHandlers,

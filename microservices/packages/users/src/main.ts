@@ -9,11 +9,11 @@ async function bootstrap() {
   const microservice = app.connectMicroservice({
     transport: Transport.TCP,
     options: {
-      port: Number(process.env.PORT) || 4200,
+      port: 4201,
     },
   });
 
-  microservice.listen(() => console.log('Feeds microservice up & running'));
+  microservice.listen(() => console.log('Users microservice up & running'));
 
   await app.listen(process.env.PORT || 8080);
 }

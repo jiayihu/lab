@@ -1,5 +1,5 @@
 {
-  "name": "@microreads/social",
+  "name": "@microreads/users",
   "version": "1.0.0",
   "description": "",
   "author": "",
@@ -18,9 +18,6 @@
     "@nestjs/microservices": "^6.0.4",
     "@nestjs/mongoose": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
-    "amqp-connection-manager": "^2.3.0",
-    "amqplib": "^0.5.3",
-    "hyperid": "^2.0.2",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3"

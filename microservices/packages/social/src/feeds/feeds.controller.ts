@@ -7,7 +7,7 @@ export class FeedsController {
   constructor(private readonly feedsService: FeedsService) {}
 
   @Post()
-  addFeed(@Body() dto: Feed): Promise<void> {
+  addFeed(@Body() dto: Feed): Promise<Feed> {
     return this.feedsService.addFeed(dto);
   }
 

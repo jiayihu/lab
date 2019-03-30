@@ -1,7 +1,7 @@
-import { Feed } from 'src/feeds/domain/feed.model';
+import { Feed } from '../../domain/feed.model';
 
 export class AddFeedCommand {
-  public type = 'ADD_FEED_COMMAND';
+  type = 'ADD_FEED_COMMAND';
   constructor(public payload: Feed) {}
 }
 
