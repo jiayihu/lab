@@ -1,4 +1,4 @@
-import { User } from '../../domain/user.model';
+import { User } from '../domain/user.model';
 
 export class AddUserCommand {
   type = 'ADD_USER_COMMAND' as 'ADD_USER_COMMAND';

@@ -26,6 +26,8 @@
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
+    "@types/amqp-connection-manager": "^2.0.2",
+    "@types/amqplib": "^0.5.11",
     "@types/express": "^4.16.0",
     "@types/node": "^10.12.18",
     "nodemon": "^1.18.9",

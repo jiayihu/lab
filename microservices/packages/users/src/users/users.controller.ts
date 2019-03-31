@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './domain/user.model';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern } from '@nestjs/microservices';
 import { UserCommand, ValidateUserCommand, AddUserCommand } from './commands/users.commands';
 import { CommandBus } from '@nestjs/cqrs';
 
@@ -19,7 +19,7 @@ export class UsersController {
     return this.usersService.getUsers();
   }
 
-  @MessagePattern('command')
+  @EventPattern('command')
   handleCommand(data: UserCommand): Promise<any> {
     switch (data.type) {
       case 'ADD_USER_COMMAND':

@@ -23,6 +23,6 @@ export class UsersRepository {
   update() {}
 
   private asUser(doc: User & Document): User {
-    return createUser(doc._id, doc.name, doc.picture);
+    return createUser(doc._id.toString(), doc.name, doc.picture);
   }
 }

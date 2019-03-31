@@ -1,12 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Feed, createFeed, approveFeed } from './domain/feed.model';
 import { FeedsRepository } from './repository/feeds.repository';
 import { FeedAddedEvent, FeedApprovedEvent, FeedRemovedEvent } from './events/feeds.events';
+import { EventSubscriber } from './events/event-subscriber';
 
 @Injectable()
 export class FeedsService {
-  constructor(private repository: FeedsRepository, private eventBus: EventBus) {}
+  constructor(
+    private repository: FeedsRepository,
+    private eventBus: EventBus,
+    @Inject('USERS_EVENTS') private usersEvents: EventSubscriber,
+  ) {
+    this.usersEvents.subscribe(event => this.eventBus.publish(event));
+  }
 
   addFeed(dto: Feed): Promise<Feed> {
     const feed = createFeed('', 'Pending', dto.userId, dto.date, dto.type, dto.bookId);
@@ -34,7 +41,6 @@ export class FeedsService {
       .findOne(feedId)
       .then(feed => {
         const approvedFeed = approveFeed(feed);
-        console.log(approvedFeed);
 
         return this.repository.update(approvedFeed);
       })

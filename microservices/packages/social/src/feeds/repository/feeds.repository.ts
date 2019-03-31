@@ -27,6 +27,13 @@ export class FeedsRepository {
   }
 
   private asFeed(doc: Feed & Document): Feed {
-    return createFeed(doc._id, doc.state, doc.userId, doc.date, doc.type, doc.bookId);
+    return createFeed(
+      doc._id.toString(),
+      doc.state,
+      doc.userId.toString(),
+      doc.date,
+      doc.type,
+      doc.bookId.toString(),
+    );
   }
 }
