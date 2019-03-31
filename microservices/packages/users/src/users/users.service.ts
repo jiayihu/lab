@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { User, createUser } from './domain/user.model';
 import { UsersRepository } from './repository/users.repository';
-import { UserAddedEvent, UserValidatedEvent } from './events/impl/users.event';
+import { UserAddedEvent, UserValidatedEvent } from './events/users.events';
 
 @Injectable()
 export class UsersService {

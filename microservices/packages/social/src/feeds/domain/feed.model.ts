@@ -18,6 +18,7 @@ export type Like = {
 };
 
 export type Feed = {
+  id: string;
   userId: string;
   date: string;
   type: 'WantsToRead' | 'Reading';
@@ -25,12 +26,14 @@ export type Feed = {
 };
 
 export function createFeed(
+  id: string,
   userId: string,
   date: string,
   type: 'WantsToRead' | 'Reading',
   bookId: string,
 ): Feed {
   return {
+    id,
     userId,
     date,
     type,

@@ -7,9 +7,11 @@ require('dotenv').config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const microservice = app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      port: 4201,
+      urls: [`amqp://localhost:5672`],
+      queue: 'users_queue',
+      queueOptions: {},
     },
   });
 

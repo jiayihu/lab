@@ -26,7 +26,11 @@
     "module": "commonjs",
     "resolveJsonModule": true,
     "strictNullChecks": false,
-    "strict": true
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@microreads/core/*": ["../core/src/*"]
+    }
   },
   "include": [
     "./src"

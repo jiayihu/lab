@@ -1,6 +1,6 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { GetFeedsQuery } from '../impl/feeds.queries';
-import { FeedsService } from '../../feeds.service';
+import { GetFeedsQuery } from './feeds.queries';
+import { FeedsService } from '../feeds.service';
 
 @QueryHandler(GetFeedsQuery)
 export class GetFeedsHandler implements IQueryHandler<GetFeedsQuery> {
@@ -10,3 +10,5 @@ export class GetFeedsHandler implements IQueryHandler<GetFeedsQuery> {
     return this.feedsService.getFeeds();
   }
 }
+
+export const QueryHandlers = [GetFeedsHandler];

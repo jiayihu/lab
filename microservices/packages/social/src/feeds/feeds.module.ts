@@ -3,10 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FeedsController } from './feeds.controller';
 import { FeedsService } from './feeds.service';
 import { feedSchema } from './schemas/feed.schema';
-import { CommandHandlers } from './commands/handlers';
-import { EventHandlers } from './events/handlers';
+import { CommandHandlers } from './commands/feeds.command-handlers';
+import { EventHandlers } from './events/feeds.event-handlers';
 import { CqrsModule } from '@nestjs/cqrs';
-import { QueryHandlers } from './queries/handlers';
+import { QueryHandlers } from './queries/feeds.query-handlers';
 import { FeedsRepository } from './repository/feeds.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Sagas } from './sagas';
@@ -18,9 +18,11 @@ import { Sagas } from './sagas';
     ClientsModule.register([
       {
         name: 'USER_SERVICE',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          port: 4201,
+          urls: [`amqp://localhost:5672`],
+          queue: 'users_queue',
+          queueOptions: {},
         },
       },
     ]),

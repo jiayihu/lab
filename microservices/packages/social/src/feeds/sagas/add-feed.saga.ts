@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Saga, IEvent, ICommand, ofType } from '@nestjs/cqrs';
 import { Observable } from 'rxjs';
-import { delay, tap, map, switchMap } from 'rxjs/operators/';
-import { FeedAddedEvent } from '../events/impl/feeds.events';
+import { tap, switchMap, map } from 'rxjs/operators/';
+import { FeedAddedEvent } from '../events/feeds.events';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApproveFeedCommand, RemoveFeedCommand } from '../commands/feeds.commands';
 
 @Injectable()
 export class AddFeedSaga {
@@ -13,12 +14,22 @@ export class AddFeedSaga {
   addedFeed = (events$: Observable<IEvent>): Observable<ICommand> => {
     return events$.pipe(
       ofType(FeedAddedEvent),
-      switchMap(event =>
-        this.userService.emit('command', {
-          type: 'VALIDATE_USER_COMMAND',
-          payload: { userId: event.payload.userId },
-        }),
-      ),
+      switchMap(event => {
+        const feed = event.payload;
+
+        return this.userService
+          .send('command', {
+            type: 'VALIDATE_USER_COMMAND',
+            payload: { userId: feed.userId },
+          })
+          .pipe(
+            map(isValid =>
+              isValid
+                ? new ApproveFeedCommand({ feedId: feed.id })
+                : new RemoveFeedCommand({ feedId: feed.id }),
+            ),
+          );
+      }),
     );
   };
 }

@@ -1,4 +1,4 @@
-import { User } from '../../domain/user.model';
+import { User } from '../domain/user.model';
 
 export class UserAddedEvent {
   type = 'USER_ADDED_EVENT';

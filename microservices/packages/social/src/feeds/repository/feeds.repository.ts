@@ -17,10 +17,12 @@ export class FeedsRepository {
   create(feed: Feed): Promise<Feed> {
     return this.feedODM.create(feed).then(this.asFeed);
   }
-  delete() {}
+  delete(feedId: string): Promise<Feed | null> {
+    return this.feedODM.findByIdAndDelete(feedId).exec();
+  }
   update() {}
 
   private asFeed(doc: Feed & Document): Feed {
-    return createFeed(doc.userId, doc.date, doc.type, doc.bookId);
+    return createFeed(doc._id, doc.userId, doc.date, doc.type, doc.bookId);
   }
 }

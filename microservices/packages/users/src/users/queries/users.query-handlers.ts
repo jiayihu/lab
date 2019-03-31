@@ -1,6 +1,6 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { GetUsersQuery } from '../impl/users.queries';
-import { UsersService } from '../../users.service';
+import { GetUsersQuery } from './users.queries';
+import { UsersService } from '../users.service';
 
 @QueryHandler(GetUsersQuery)
 export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
@@ -10,3 +10,5 @@ export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
     return this.usersService.getUsers();
   }
 }
+
+export const QueryHandlers = [GetUsersHandler];
