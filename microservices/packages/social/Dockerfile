@@ -13,7 +13,8 @@ COPY dist ./dist
 
 EXPOSE 8080
 
-ENV PORT=8080
-ENV MONGO_URI=mongodb://mongo:27017
+ENV PORT=8080 \
+    MONGO_URI=mongodb://mongo:27017 \
+    RABBITMQ=amqp://rabbitmq:5672
 
 CMD ["npm", "start"]

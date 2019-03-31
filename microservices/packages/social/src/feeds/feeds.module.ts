@@ -20,7 +20,7 @@ import { Sagas } from './sagas';
         name: 'USER_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: [`amqp://localhost:5672`],
+          urls: [process.env.RABBITMQ || 'amqp://localhost:5672'],
           queue: 'users_queue',
           queueOptions: {},
         },
