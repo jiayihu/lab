@@ -19,6 +19,7 @@ export type Like = {
 
 export type Feed = {
   id: string;
+  state: 'Pending' | 'Approved';
   userId: string;
   date: string;
   type: 'WantsToRead' | 'Reading';
@@ -27,6 +28,7 @@ export type Feed = {
 
 export function createFeed(
   id: string,
+  state: 'Pending' | 'Approved',
   userId: string,
   date: string,
   type: 'WantsToRead' | 'Reading',
@@ -34,9 +36,17 @@ export function createFeed(
 ): Feed {
   return {
     id,
+    state,
     userId,
     date,
     type,
     bookId,
+  };
+}
+
+export function approveFeed(feed: Feed): Feed {
+  return {
+    ...feed,
+    state: 'Approved',
   };
 }

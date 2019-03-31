@@ -13,16 +13,20 @@ export class FeedsRepository {
       .exec()
       .then(feeds => feeds.map(this.asFeed));
   }
-  findOne() {}
+  findOne(feedId: string): Promise<Feed | null> {
+    return this.feedODM.findById(feedId).then(x => (x ? this.asFeed(x) : null));
+  }
   create(feed: Feed): Promise<Feed> {
     return this.feedODM.create(feed).then(this.asFeed);
   }
   delete(feedId: string): Promise<Feed | null> {
     return this.feedODM.findByIdAndDelete(feedId).exec();
   }
-  update() {}
+  update(feed: Feed): Promise<Feed> {
+    return this.feedODM.findByIdAndUpdate(feed.id, feed, { new: true }).then(this.asFeed);
+  }
 
   private asFeed(doc: Feed & Document): Feed {
-    return createFeed(doc._id, doc.userId, doc.date, doc.type, doc.bookId);
+    return createFeed(doc._id, doc.state, doc.userId, doc.date, doc.type, doc.bookId);
   }
 }
