@@ -3,7 +3,7 @@ import { EventBus } from '@nestjs/cqrs';
 import { User, createUser } from './domain/user.model';
 import { UsersRepository } from './repository/users.repository';
 import { UserAddedEvent, UserValidatedEvent } from './events/users.events';
-import { EventPublisher } from './events/users.event-publisher';
+import { EventPublisher } from '@microreads/core/event-publisher';
 
 @Injectable()
 export class UsersService {

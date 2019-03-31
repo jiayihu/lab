@@ -21,18 +21,19 @@
     "@nestjs/platform-express": "^6.0.0",
     "amqp-connection-manager": "^2.3.0",
     "amqplib": "^0.5.3",
+    "mongoose": "^5.4.20",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
-    "@types/amqp-connection-manager": "^2.0.2",
-    "@types/amqplib": "^0.5.11",
     "@types/express": "^4.16.0",
+    "@types/mongoose": "^5.3.24",
     "@types/node": "^10.12.18",
+    "dotenv": "^7.0.0",
     "nodemon": "^1.18.9",
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.7.0",
-    "typescript": "^3.2.4"
+    "typescript": "^3.4.0"
   }
 }

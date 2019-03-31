@@ -3,7 +3,7 @@ import { EventBus } from '@nestjs/cqrs';
 import { Feed, createFeed, approveFeed } from './domain/feed.model';
 import { FeedsRepository } from './repository/feeds.repository';
 import { FeedAddedEvent, FeedApprovedEvent, FeedRemovedEvent } from './events/feeds.events';
-import { EventSubscriber } from './events/event-subscriber';
+import { EventSubscriber } from '@microreads/core/event-subscriber';
 
 @Injectable()
 export class FeedsService {

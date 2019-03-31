@@ -8,7 +8,7 @@ import { EventHandlers } from './events/users.event-handlers';
 import { CqrsModule } from '@nestjs/cqrs';
 import { QueryHandlers } from './queries/users.query-handlers';
 import { UsersRepository } from './repository/users.repository';
-import { EventPublisher } from './events/users.event-publisher';
+import { EventPublisher } from '@microreads/core/event-publisher';
 
 const usersEventsProvider: Provider = {
   provide: 'USERS_EVENTS',

@@ -10,7 +10,7 @@ import { QueryHandlers } from './queries/feeds.query-handlers';
 import { FeedsRepository } from './repository/feeds.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Sagas } from './sagas';
-import { EventSubscriber } from './events/event-subscriber';
+import { EventSubscriber } from '@microreads/core/event-subscriber';
 
 const usersEventsProvider: Provider = {
   provide: 'USERS_EVENTS',
