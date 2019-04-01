@@ -3,10 +3,10 @@ import { ConfirmChannel } from 'amqplib';
 import { IEvent } from '@nestjs/cqrs';
 import { RmqOptions } from '@nestjs/microservices';
 
-export class EventSubscriber {
+export class EventSubscriber<T extends IEvent> {
   connection: AmqpConnectionManager;
   channel: ChannelWrapper;
-  subscribers: Array<(event: IEvent) => void> = [];
+  subscribers: Array<(event: T) => void> = [];
 
   constructor(options: RmqOptions['options']) {
     this.connection = amqp.connect(options.urls);
@@ -28,15 +28,15 @@ export class EventSubscriber {
     });
   }
 
-  handleEvent(event: IEvent) {
+  handleEvent(event: T) {
     this.subscribers.forEach(fn => fn(event));
   }
 
-  subscribe(fn: (event: IEvent) => void) {
+  subscribe(fn: (event: T) => void) {
     this.subscribers = this.subscribers.concat(fn);
   }
 
-  unsubscribe(fn: (event: IEvent) => void) {
+  unsubscribe(fn: (event: T) => void) {
     this.subscribers = this.subscribers.filter(x => x !== fn);
   }
 }

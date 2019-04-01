@@ -15,10 +15,10 @@ import { EventSubscriber } from '@microreads/core/event-subscriber';
 import { FeedsRepository } from './repository/feeds.repository';
 
 const usersEventsProvider: Provider = {
-  provide: 'USERS_EVENTS',
+  provide: 'USERS_EVENTS_SUB',
   useValue: new EventSubscriber({
     urls: [process.env.RABBITMQ || 'amqp://localhost:5672'],
-    queue: 'users_commands',
+    queue: 'users_events',
     queueOptions: {},
   }),
 };

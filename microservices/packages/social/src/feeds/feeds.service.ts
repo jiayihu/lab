@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { EventBus } from '@nestjs/cqrs';
+import { EventBus, IEvent } from '@nestjs/cqrs';
 import { FeedState, createFeedState, approveFeed } from './domain/feed.model';
 import { FeedStateRepository } from './repository/feed-state.repository';
 import { FeedAddedEvent, FeedApprovedEvent, FeedRemovedEvent } from './events/feeds.events';
@@ -10,9 +10,9 @@ export class FeedsService {
   constructor(
     private repository: FeedStateRepository,
     private eventBus: EventBus,
-    @Inject('USERS_EVENTS') private usersEvents: EventSubscriber,
+    @Inject('USERS_EVENTS_SUB') private usersEventsSub: EventSubscriber<IEvent>,
   ) {
-    this.usersEvents.subscribe(event => this.eventBus.publish(event));
+    this.usersEventsSub.subscribe(event => this.eventBus.publish(event));
   }
 
   addFeed(dto: FeedState): Promise<FeedState> {
