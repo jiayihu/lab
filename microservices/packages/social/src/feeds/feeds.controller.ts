@@ -1,18 +1,20 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { FeedsService } from './feeds.service';
-import { Feed } from './domain/feed.model';
+import { FeedState, Feed } from './domain/feed.model';
+import { QueryBus } from '@nestjs/cqrs';
+import { GetFeedsQuery } from './queries/feeds.queries';
 
 @Controller('feeds')
 export class FeedsController {
-  constructor(private readonly feedsService: FeedsService) {}
+  constructor(private readonly feedsService: FeedsService, private readonly queryBus: QueryBus) {}
 
   @Post()
-  addFeed(@Body() dto: Feed): Promise<Feed> {
+  addFeed(@Body() dto: FeedState): Promise<FeedState> {
     return this.feedsService.addFeed(dto);
   }
 
   @Get()
   getFeeds(): Promise<Feed[]> {
-    return this.feedsService.getFeeds();
+    return this.queryBus.execute(new GetFeedsQuery());
   }
 }

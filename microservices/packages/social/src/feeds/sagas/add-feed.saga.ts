@@ -16,23 +16,15 @@ export class AddFeedSaga {
       ofType(FeedAddedEvent),
       switchMap(event => {
         const feed = event.payload;
-        const userValidationEvent$ = events$.pipe(
-          filter(
-            (event: any) =>
-              event.type === 'USER_VALIDATED_EVENT' && event.payload.userId === feed.userId,
-          ),
-          take(1),
-        );
 
         return this.userService
-          .emit('command', {
+          .send('command', {
             type: 'VALIDATE_USER_COMMAND',
             payload: { userId: feed.userId },
           })
           .pipe(
-            switchMap(() => userValidationEvent$),
-            map(event =>
-              event.payload.isValid
+            map((isValid: boolean) =>
+              isValid
                 ? new ApproveFeedCommand({ feedId: feed.id })
                 : new RemoveFeedCommand({ feedId: feed.id }),
             ),

@@ -1,3 +1,37 @@
+export type FeedState = {
+  id: string;
+  state: 'Pending' | 'Approved';
+  userId: string;
+  date: string;
+  type: 'WantsToRead' | 'Reading';
+  bookId: string;
+};
+
+export function createFeedState(
+  id: string,
+  state: 'Pending' | 'Approved',
+  userId: string,
+  date: string,
+  type: 'WantsToRead' | 'Reading',
+  bookId: string,
+): FeedState {
+  return {
+    id,
+    state,
+    userId,
+    date,
+    type,
+    bookId,
+  };
+}
+
+export function approveFeed(feed: FeedState): FeedState {
+  return {
+    ...feed,
+    state: 'Approved',
+  };
+}
+
 export type User = {
   id: string;
   name: string;
@@ -19,8 +53,7 @@ export type Like = {
 
 export type Feed = {
   id: string;
-  state: 'Pending' | 'Approved';
-  userId: string;
+  user: User;
   date: string;
   type: 'WantsToRead' | 'Reading';
   bookId: string;
@@ -28,25 +61,16 @@ export type Feed = {
 
 export function createFeed(
   id: string,
-  state: 'Pending' | 'Approved',
-  userId: string,
+  user: User,
   date: string,
   type: 'WantsToRead' | 'Reading',
   bookId: string,
 ): Feed {
   return {
     id,
-    state,
-    userId,
+    user,
     date,
     type,
     bookId,
-  };
-}
-
-export function approveFeed(feed: Feed): Feed {
-  return {
-    ...feed,
-    state: 'Approved',
   };
 }

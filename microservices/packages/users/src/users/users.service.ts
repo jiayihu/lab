@@ -21,10 +21,6 @@ export class UsersService {
     });
   }
 
-  getUsers(): Promise<User[]> {
-    return this.repository.find();
-  }
-
   validateUser(userId: string): Promise<boolean> {
     return this.repository
       .findOne(userId)

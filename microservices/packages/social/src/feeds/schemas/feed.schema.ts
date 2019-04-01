@@ -1,8 +1,11 @@
 import { Schema } from 'mongoose';
 
 const feedSchema = new Schema({
-  state: String,
-  userId: Schema.Types.ObjectId,
+  user: {
+    id: Schema.Types.ObjectId,
+    name: String,
+    picture: String,
+  },
   date: Date,
   type: String,
   bookId: Schema.Types.ObjectId,

@@ -1,9 +1,9 @@
-import { Feed } from '../domain/feed.model';
+import { FeedState } from '../domain/feed.model';
 
 export class FeedAddedEvent {
   type = 'FEED_ADDED_EVENT';
 
-  constructor(public payload: Feed) {}
+  constructor(public payload: FeedState) {}
 }
 
 export class FeedRemovedEvent {

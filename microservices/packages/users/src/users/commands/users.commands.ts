@@ -1,12 +1,12 @@
 import { User } from '../domain/user.model';
 
 export class AddUserCommand {
-  type = 'ADD_USER_COMMAND' as 'ADD_USER_COMMAND';
+  type = 'ADD_USER_COMMAND' as const;
   constructor(public payload: User) {}
 }
 
 export class ValidateUserCommand {
-  type = 'VALIDATE_USER_COMMAND' as 'VALIDATE_USER_COMMAND';
+  type = 'VALIDATE_USER_COMMAND' as const;
   constructor(public payload: { eventId: string; userId: string }) {}
 }
 

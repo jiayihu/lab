@@ -1,22 +1,22 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
-import { Feed, createFeed, approveFeed } from './domain/feed.model';
-import { FeedsRepository } from './repository/feeds.repository';
+import { FeedState, createFeedState, approveFeed } from './domain/feed.model';
+import { FeedStateRepository } from './repository/feed-state.repository';
 import { FeedAddedEvent, FeedApprovedEvent, FeedRemovedEvent } from './events/feeds.events';
 import { EventSubscriber } from '@microreads/core/event-subscriber';
 
 @Injectable()
 export class FeedsService {
   constructor(
-    private repository: FeedsRepository,
+    private repository: FeedStateRepository,
     private eventBus: EventBus,
     @Inject('USERS_EVENTS') private usersEvents: EventSubscriber,
   ) {
     this.usersEvents.subscribe(event => this.eventBus.publish(event));
   }
 
-  addFeed(dto: Feed): Promise<Feed> {
-    const feed = createFeed('', 'Pending', dto.userId, dto.date, dto.type, dto.bookId);
+  addFeed(dto: FeedState): Promise<FeedState> {
+    const feed = createFeedState('', 'Pending', dto.userId, dto.date, dto.type, dto.bookId);
 
     return this.repository.create(feed).then(x => {
       this.eventBus.publish(new FeedAddedEvent(x));
@@ -24,7 +24,7 @@ export class FeedsService {
     });
   }
 
-  removeFeed(feedId: string): Promise<Feed> {
+  removeFeed(feedId: string): Promise<FeedState> {
     return this.repository.delete(feedId).then(feed => {
       this.eventBus.publish(new FeedRemovedEvent({ feedId }));
 
@@ -32,11 +32,7 @@ export class FeedsService {
     });
   }
 
-  getFeeds(): Promise<Feed[]> {
-    return this.repository.find();
-  }
-
-  approveFeed(feedId: string): Promise<Feed> {
+  approveFeed(feedId: string): Promise<FeedState> {
     return this.repository
       .findOne(feedId)
       .then(feed => {

@@ -1,13 +1,14 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { GetFeedsQuery } from './feeds.queries';
-import { FeedsService } from '../feeds.service';
+import { FeedsRepository } from '../repository/feeds.repository';
+import { Feed } from '../domain/feed.model';
 
 @QueryHandler(GetFeedsQuery)
 export class GetFeedsHandler implements IQueryHandler<GetFeedsQuery> {
-  constructor(private feedsService: FeedsService) {}
+  constructor(private repository: FeedsRepository) {}
 
-  execute(_: GetFeedsQuery) {
-    return this.feedsService.getFeeds();
+  execute(_: GetFeedsQuery): Promise<Feed[]> {
+    return this.repository.find();
   }
 }
 

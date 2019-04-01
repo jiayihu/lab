@@ -1,8 +1,8 @@
-import { Feed } from '../domain/feed.model';
+import { FeedState } from '../domain/feed.model';
 
 export class AddFeedCommand {
   type = 'ADD_FEED_COMMAND';
-  constructor(public payload: Feed) {}
+  constructor(public payload: FeedState) {}
 }
 
 export class RemoveFeedCommand {
