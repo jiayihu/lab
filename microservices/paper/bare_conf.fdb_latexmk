@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1556102438 "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.tex" "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.pdf" "bare_conf" 1556102439
-  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.aux" 1556102439 1812 81f5f2f1799235bb1431dea6c408edde ""
-  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.tex" 1556102437 39559 34a8076a1c7a77c8318f1610c080db03 ""
+["pdflatex"] 1556376924 "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.tex" "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.pdf" "bare_conf" 1556376925
+  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.aux" 1556376925 2802 af97913ba0f6f601fec65cf4cab51094 ""
+  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.tex" 1556376923 44607 c99478a342fc64e0521c7c71e72bf2d2 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1480098688 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -62,13 +62,14 @@
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1534153191 4220280 fb5d15fd6f81aa00784be6ff18de8236 ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
   "IEEEtran.cls" 1356639556 220413 8baab577f34760640e27918fe5178519 ""
-  "bare_conf.aux" 1556102439 1812 81f5f2f1799235bb1431dea6c408edde ""
-  "bare_conf.tex" 1556102437 39559 34a8076a1c7a77c8318f1610c080db03 ""
+  "bare_conf.aux" 1556376925 2802 af97913ba0f6f601fec65cf4cab51094 ""
+  "bare_conf.tex" 1556376923 44607 c99478a342fc64e0521c7c71e72bf2d2 ""
+  "jpeg/cqrs.png" 1554155224 220328 75c8dee946a57a2ed9f3de8ce577b1c4 ""
   "jpeg/orchestrator-saga.png" 1556097851 389151 8015e71ef24292ad1e735d2b69e3762d ""
   "jpeg/order-saga.png" 1554187768 96144 4a67907785177133ef774a3ef7efbfee ""
   (generated)
+  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.log"
   "bare_conf.log"
   "bare_conf.pdf"
-  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.pdf"
-  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.log"
   "bare_conf.aux"
+  "/Users/jiayihu/Desktop/Repo/lab/microservices/paper/bare_conf.pdf"

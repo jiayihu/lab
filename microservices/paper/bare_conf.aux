@@ -1,30 +1,47 @@
 \relax 
+\citation{microservices-definition}
 \citation{exploring-microservices}
 \citation{database-per-service}
-\citation{microservices-patterns}
-\citation{distributed-systems}
+\citation{microservices-patterns-api-composition}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}}
-\@writefile{toc}{\contentsline {section}{\numberline {II}Distributed transactions}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Queries}{1}}
+\citation{microservices-patterns-cqrs}
+\citation{microservices-patterns-cqrs}
+\citation{distributed-systems-2pc}
 \citation{consistency-vs-availability}
-\citation{microservices-patterns}
-\@writefile{toc}{\contentsline {section}{\numberline {III}The Saga pattern}{2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Creating an Order using a saga}}{2}}
-\newlabel{order_saga}{{1}{2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-A}}Compensating transactions}{2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-B}}Lack of isolation}{2}}
-\citation{microservices-patterns}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-A}}CQRS pattern}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces On the left is the non-CQRS version of the service, and on the right is the CQRS version. \cite  {microservices-patterns-cqrs}}}{2}}
+\newlabel{cqrs}{{1}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Distributed transactions}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}The saga pattern}{2}}
+\citation{microservices-patterns-saga}
+\citation{microservices-patterns-saga}
+\citation{microservices-patterns-anomalies}
 \citation{semantic-acid}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-C}}Reliable events}{3}}
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Communication}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}Message Queuing}{3}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Queries}{3}}
-\bibcite{exploring-microservices}{1}
-\bibcite{database-per-service}{2}
-\bibcite{microservices-patterns}{3}
-\bibcite{distributed-systems}{4}
-\bibcite{consistency-vs-availability}{5}
-\bibcite{semantic-acid}{6}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Order Service implements a saga orchestrator, which invokes the saga participants using asynchronous request/response.}}{4}}
-\newlabel{orchestrator_saga}{{2}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Creating an Order using a saga. \cite  {microservices-patterns-saga}}}{3}}
+\newlabel{order_saga}{{2}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}Compensating transactions}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}Lack of isolation}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-C}}Reliable events}{3}}
+\citation{log-tailing}
+\citation{microservices-patterns-broker}
+\citation{microservices-patterns-saga}
+\citation{microservices-patterns-saga}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Communication}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-A}}Message Queuing}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Order Service implements a saga orchestrator, which invokes the saga participants using asynchronous request/response. \cite  {microservices-patterns-saga}}}{4}}
+\newlabel{orchestrator_saga}{{3}{4}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{4}}
-\@writefile{toc}{\contentsline {section}{References}{4}}
+\bibcite{microservices-definition}{1}
+\bibcite{exploring-microservices}{2}
+\bibcite{database-per-service}{3}
+\bibcite{microservices-patterns-api-composition}{4}
+\bibcite{microservices-patterns-cqrs}{5}
+\bibcite{microservices-patterns-saga}{6}
+\bibcite{microservices-patterns-anomalies}{7}
+\bibcite{microservices-patterns-broker}{8}
+\bibcite{distributed-systems-2pc}{9}
+\bibcite{consistency-vs-availability}{10}
+\bibcite{semantic-acid}{11}
+\bibcite{log-tailing}{12}
+\@writefile{toc}{\contentsline {section}{References}{5}}
