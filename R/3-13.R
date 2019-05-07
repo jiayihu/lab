@@ -1,0 +1,11 @@
+set.seed(1)
+x = rnorm(100)
+eps = rnorm(100, mean=0, sd = 0.5)
+y = -1 + 0.5*x + eps
+plot(x, y)
+m = lm(y~x)
+summary(m)
+abline(m, col="green")
+abline(-1, 0.5, col="red")
+legend("bottomright", legend = c("model fit", "pop. regression"), col=2:3, lwd=3)
+summary(lm(y~x+I(x^2)))
