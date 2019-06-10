@@ -42,7 +42,7 @@ summary(lm(medv~lstat*age, data=Boston))
 m1 = lm(medv~lstat, data=Boston)
 m2 = lm(medv~lstat+I(lstat^2), data=Boston)
 anova(m1, m2) # Compare models and evaluate null hypothesis that both models are equally good
-summary(lm(medv~poly(lstat, 5), data=Boston)) # Polynomial lstat
+summary(lm(medv~poly(lstat, 5, raw = T), data=Boston)) # Polynomial lstat
 summary(lm(medv~log(lstat), data=Boston))
 
 
@@ -52,4 +52,4 @@ library(ISLR)
 attach(Carseats)
 lm.fit = lm(Sales~.+Income:Advertising+Price:Age, data=Carseats)
 summary(lm.fit)
-contrasts(ShelveLoc)
+contrasts(ShelveLoc) # shows coding used for the dummy variable

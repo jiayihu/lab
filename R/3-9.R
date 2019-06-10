@@ -1,7 +1,7 @@
 library(ISLR)
 attach(Auto)
 pairs(Auto)
-cor(subset(Auto, select=c(displacement, weight, year, origin)))
+cor(subset(Auto, select=c(displacement, weight, year, origin))) # correlation of subset
 m = lm(mpg~.-name, data=Auto)
 summary(m)
 par(mfrow=c(2, 2))

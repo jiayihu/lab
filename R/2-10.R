@@ -32,6 +32,7 @@ plot(Boston$ptratio, Boston$crim)
 # (d)
 par(mfrow=c(1,3))
 hist(Boston$crim[Boston$crim>1], breaks=25)
+dim(subset(Boston, crim > 20))
 # most cities have low crime rates, but there is a long tail: 18 suburbs appear
 # to have a crime rate > 20, reaching to above 80
 hist(Boston$tax, breaks=25)
@@ -49,7 +50,7 @@ median(Boston$ptratio)
 # 19.05
 
 # (g)
-t(subset(Boston, medv == min(Boston$medv)))
+t(subset(Boston, medv == min(Boston$medv))) # transpose of subset
 #              399      406
 # crim     38.3518  67.9208 above 3rd quartile
 # zn        0.0000   0.0000 at min
