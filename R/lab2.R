@@ -1,0 +1,35 @@
+ls()
+rm(list = ls())
+Data = read.csv("Gender_Discrimination.csv", sep = ",")
+attach(Data)
+View(Data)
+dim(Data)
+summary(Data)
+table(Data$Gender)
+boxplot(Data$Salary, las = 2, col = "grey", main = "Annual Salary") # las = 2 horizontal labels
+hist(Data$Salary, breaks = 10)
+pie(table(Data$Gender), labels = c("Female", "Male"))
+
+# Distribution of salary by gender
+boxplot(Salary ~ Gender, main = "Salary given gender", col = c("pink", "blue"), las = 2, ylab = "Salary", cex.axis = 0.7)
+boxplot(Experience ~ Gender, main = "Experience given Gender", col = c("pink", "blue"))
+plot(Experience, Salary, main = "Salary vs experience")
+points(Experience[Gender == "Female"], Salary[Gender == "Female"], col = "pink", pch = 19, cex = 0.5)
+points(Experience[Gender == "Male"], Salary[Gender == "Male"], col = "blue", pch = 19, cex = 0.5)
+legend("topleft", pch = c(19, 19), c("Female", "Male"), col = c("pink", "blue"), bty = "n")
+
+model = lm(Salary ~ Gender + Experience, data = Data)
+summary(model)
+abline(coef(model)[1], coef(model)[3], col = "pink")
+abline(coef(model)[1] + coef(model)[2], coef(model)[3], col = "blue")
+
+model2 = lm(Salary ~ Gender * Experience, data = Data)
+summary(model2)
+anova(model, model2)
+model3 = lm(Salary ~ Gender * Experience + I(Experience^2))
+summary(model3)
+par(mfrow = c(2, 2))
+plot(model2)
+
+predict(model2, newdata = data.frame(list(Experience = 20, Gender = "Male")))
+predict(model2, newdata = data.frame(list(Experience = 20, Gender = "Female")))

@@ -1,0 +1,37 @@
+rm(list = ls())
+library(ISLR)
+data(Auto)
+dim(Auto)
+median.mpg = median(Auto$mpg)
+new.mpg = rep(1, length(Auto$mpg))
+new.mpg[Auto$mpg < median.mpg] = 0
+new.auto = data.frame(new.mpg = new.mpg, Auto[, c("displacement", "horsepower", "origin")])
+is.factor(new.auto$origin)
+new.auto$origin = as.factor(new.auto$origin)
+# change the names of the levels of the factor
+levels(new.auto$origin) = c("America", "Europe", "Japan")
+
+attach(new.auto)
+par(mfrow = c(2, 2))
+boxplot(displacement ~ new.mpg, data = new.auto, subset = origin == "America")
+boxplot(displacement ~ new.mpg, data = new.auto, subset = origin == "Europe")
+boxplot(displacement ~ new.mpg, data = new.auto, subset = origin == "Japan")
+boxplot(horsepower ~ new.mpg, data = new.auto, subset = origin == "America")
+boxplot(horsepower ~ new.mpg, data = new.auto, subset = origin == "Europe")
+boxplot(horsepower ~ new.mpg, data = new.auto, subset = origin == "Japan")
+mosaicplot(table(origin, new.mpg), las = 1)
+table(origin, new.mpg)
+
+m.auto = glm(new.mpg ~ displacement * origin + horsepower * origin, data = new.auto, family = binomial())
+summary(m.auto)
+
+1 - pchisq(195.72, 383)
+m.auto2 = glm(new.mpg ~ displacement + origin + horsepower, data = new.auto, family = binomial())
+summary(m.auto2)
+anova(m.auto2, m.auto, test = "Chisq")
+est.values = predict(m.auto)
+est.probs = predict(m.auto, type = "response")
+preds = rep(0, nrow(new.auto))
+preds[est.probs > .5] = 1
+addmargins(table(preds, new.mpg))
+mean(preds != new.mpg)
