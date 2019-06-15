@@ -6,6 +6,7 @@ dim(Boston)
 n = nrow(Boston)
 n
 summary(Boston$medv)
+Boston$medv = log(Boston$medv)
 hist(Boston$medv, xlab = "Median value", main = "Histogram")
 boxplot(Boston$medv, xlab="Median value", main = "Boxplot")
 plot(Boston$lstat, Boston$medv, main = "Dispersion plot", xlab = "% of lower status of the population", ylab = "Median value", pch = 19, cex = 0.5)
@@ -53,7 +54,7 @@ confint(model)
 # Hypothesis H0 = beta1 = -1 with significance level 0.05
 statistic.t = (beta1 - (-1)) / se[2]
 statistic.t # 1.289
-qt(0.025, df = n - 2) # quantile for 0.025 in t-student distribution 1.96
+qt(0.975, df = n - 2) # quantile for 0.975 in t-student distribution 1.96
 # p-value of the test
 2 * min(pt(statistic.t, n-2), 1 - pt(statistic.t, n-2))
 
