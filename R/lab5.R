@@ -16,7 +16,7 @@ m.ridge
 names(m.ridge)
 coef(m.ridge) # matrix with coefs for each variable and lambda
 plot.glmnet(m.ridge, xvar = "lambda")
-plot(m.ridge)
+plot(m.ridge, label = TRUE)
 
 set.seed(2906)
 cv.ridge = cv.glmnet(X, y, alpha = 0)

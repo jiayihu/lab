@@ -9,7 +9,7 @@ m1 = glm(default ~ income + balance, data = Default, family = binomial, subset =
 m1_probs = predict(m1, Default[-train,], type = "response")
 m1_pred = rep("No", dim(Default)[1] / 2)
 m1_pred[m1_probs > .5] = "Yes"
-table(m1_pred, default[-train])
+addmargins(table(m1_pred, default[-train]))
 mean(m1_pred != default[-train])
 
 m2 = glm(default ~ income + balance + student, data = Default, family = binomial, subset = train)

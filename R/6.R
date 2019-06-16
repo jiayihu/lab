@@ -97,7 +97,7 @@ for(j in 1:k) {
   }
 }
 dim(cv.errors) # 10 x 19, 10 folds and 19 errors, one for each model size
-mean.cv.errors = apply(cv.errors, 2, mean) # test MSE for each model size
+mean.cv.errors = apply(cv.errors, 2, mean) # test MSE for each model size, apply to columns
 mean.cv.errors
 par(mfrow=c(1, 1))
 plot(mean.cv.errors, type = 'b')

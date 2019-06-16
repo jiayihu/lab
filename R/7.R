@@ -93,7 +93,7 @@ library(akima)
 plot(gam.lo.i)
 
 # logistic regression in GAM
-gam.lr = gam(I(wage > 250) ~ year + s(age, df = 5) + education, familh = binomial, data = Wage)
+gam.lr = gam(I(wage > 250) ~ year + s(age, df = 5) + education, family = binomial, data = Wage)
 par(mfrow = c(1, 3))
 plot(gam.lr, se = TRUE, col = "green")
 table(education, I(wage > 250))
