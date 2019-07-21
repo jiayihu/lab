@@ -431,14 +431,14 @@ However, using a database per service introduces severe drawbacks which must be 
 Three problems are commonly encountered when implementing queries in a microservice architecture:
 
 \begin{enumerate}
-  \item To perform a single task, a client may have to make multiple calls to various  services, which result in high latency and poor user experience. This chattiness between a client and different services can adversely impact the performance and scale of the application;
+  \item To perform a single task, a client may have to make multiple calls to various services, which result in high latency and poor user experience. This chattiness between a client and different services can adversely impact the performance and scale of the application;
   \item Retrieving data scattered across multiple services can result in expensive, inefficient in-memory joins without a proper solution;
-  \item The service can store the information in a database that doesn't efficiently support the required query, for instance traditional relational databases are not efficient for geospatial queries.
+  \item The service can store the information in a database that doesn't efficiently support the required query, for instance, traditional relational databases are not efficient for geospatial queries.
 \end{enumerate}
 
 \subsection{API composition pattern}
 
-The most straightforward approach is the API composition pattern \cite{microservices-patterns-api-composition}, which implements a query operation by invoking the services that own the data and combining the results. As example, a query operation to show the details of an order might invoke three services - \texttt{Order Service, Delivery Service and Payment Service} - and return aggregate the results.
+The most straightforward approach is the API composition pattern \cite{microservices-patterns-api-composition}, which implements a query operation by invoking the services that own the data and combining the results. As an example, a query operation to show the details of an order might invoke three services - \texttt{Order Service, Delivery Service and Payment Service} - and return aggregate the results.
 
 \begin{figure}[!htbp]
 \centering
@@ -447,23 +447,23 @@ The most straightforward approach is the API composition pattern \cite{microserv
 \label{api-composition}
 \end{figure}
 
-The role of API composer is usually taken by a service such as an API gateway, in which case the pattern is also called Gateway Aggregation \cite{gateway-aggregation}. This approach requires developing your own API gateway with a framework or library, instead of just configuring static files using an off-the-shelf API gateway such as Ambassador for Kubernetes\footnote{\url{https://www.getambassador.io/}}. 
+The role of API composer is usually taken by a service such as an API gateway, in which case the pattern is also called Gateway Aggregation \cite{gateway-aggregation}. The latter approach requires developing your own API gateway with a framework or library, instead of just configuring static files using an off-the-shelf API gateway such as Ambassador for Kubernetes\footnote{\url{https://www.getambassador.io/}}. 
 
-This pattern can reduce the number of requests made to the services and improve application performance over high-latency networks, especially when caching techniques are applied.
+The API composition pattern can reduce the number of requests made to the services and improve application performance over high-latency networks, especially when caching techniques are applied.
 
-However, the API composition pattern has several drawbacks. It can result in a very inefficient in-memory join of large datasets and it requires more computing and network resources, increasing the cost of running the application. Moreover, there is a risk that a query operation will return inconsistent data since it executes queries against multiple databases.
+However, the pattern has several drawbacks. It can result in a very inefficient in-memory join of large datasets and it requires more computing and network resources, increasing the cost of running the application. Moreover, there is a risk that a query operation returns inconsistent data since it executes queries against multiple databases.
 
-Lastly many queries can't be implemented using this pattern. Image an operation which retrieves a consumer's order history. In contrast to replying with the details of a single order, it returns multiple orders from different services. Requesting orders from the services by ID is only practical if those services have a bulk fetch API, which is however unlikely. Requesting orders individually will, on the other hand, be inefficient because of excessive network traffic.
+Lastly, many queries can't be implemented using this pattern. Image an operation which retrieves a consumer's order history. In contrast to replying with the details of a single order, it returns multiple orders with details from different services. Requesting orders from the services by ID is only practical if those services have a bulk fetch API, which is however unlikely. Individually requesting orders will, on the other hand, be inefficient because of excessive network traffic.
 
-On the implementation side, an API composer should call provider services in parallel in order to minimize the response time for a query operation. Sometimes, though, an API composer needs the result of one service in order to invoke another one. The logic to efficiently execute a mixture of sequential and parallel service invocations can therefore be complex.
+On the implementation side, an API composer should call provider services in parallel to minimise the response time for a query operation. Sometimes, though, an API composer needs the result of one service to invoke another one. The logic to efficiently execute a mixture of sequential and parallel service invocations can, therefore, be complex.
 
-In order for an API composer to be maintainable as well as performant, it could use a reactive design based on Reactive streams (explained later) or some other equivalent abstraction, such as Futures or Promises depending on the programming language \cite{futures-and-promises}. Reactive streams and futures or promises make it possible to compose asynchronous operations or define a pipeline of operations to be invoked upon completion of the computation. This is in contrast to callback-heavy or more imperative direct blocking approaches.
+For an API composer to be maintainable as well as performant, it could use a reactive design based on Reactive streams (explained later) or some other equivalent abstraction, such as Futures or Promises depending on the programming language \cite{futures-and-promises}. Reactive streams and futures/promises make it possible to compose asynchronous operations or define a pipeline of operations to be invoked upon completion of the computation. This approach is in contrast to callback-heavy or more imperative direct blocking approaches.
 
 Ultimately, whether you can use the API composition pattern to implement a particular query operation depends also on how the data is partitioned and the capabilities of the APIs exposed by the services that own the data. 
 
 \subsection{CQRS pattern}
 
-In contrast to the API composition pattern, the Command query responsibility segregation (CQRS) pattern \cite{cqrs-fowler} is more powerful as we shall explain, but it is also more complex. It maintains one or more view databases whose sole purpose is to support queries.
+In contrast to the API composition pattern, the Command Query Responsibility Segregation (CQRS) pattern \cite{cqrs-fowler} is more powerful as we shall explain, but it is also more complex. It maintains one or more view databases whose sole purpose is to support queries.
 
 \begin{figure}[!htbp]
 \centering
@@ -472,28 +472,28 @@ In contrast to the API composition pattern, the Command query responsibility seg
 \label{cqrs}
 \end{figure}
 
-Command Query Responsibility Segregation, as the name suggests, is all about segregation, or the separation of concerns. As figure \ref{cqrs} shows, in a non-CQRS service, the create, read, update and delete (CRUD) operations are typically implemented by a domain model that's mapped to a database. An Object-Relational Mapping (ORM) \cite{orm} is a common technique in these cases, although for performance reasons, a few queries might bypass the domain model and access the database directly. On the other hand, a CQRS service splits a persistent data model and the modules that use it into two parts: the command side and the query side.
+Command Query Responsibility Segregation, as the name suggests, is all about segregation, or the separation of concerns. As figure \ref{cqrs} shows, in a not-CQRS service, the create, read, update and delete (CRUD) operations are typically implemented by a domain model that's mapped to a database. An Object-Relational Mapping (ORM) \cite{orm} is a common technique in these cases, although, a few queries might bypass the domain model and access the database directly for performance reasons. On the other hand, a CQRS service splits a persistent data model and the modules that use it into two parts: the command side and the query side.
 
 \begin{itemize}
   \item The write side (or command side) implements create, update, and delete operations (CUD) managing its own database and ensuring business rules. It may also handle simple queries, such as non-join, primary key-based queries. The command side publishes events whenever its data changes;
-  \item The read side (or query side) is separate to the write side, which means different object models, probably running in different processes, perhaps on separate hardware. The query side handles only read operation. It subscribes to events produced by the write side and uses them to build and maintain a model that is suitable for answering client queries. Consequently, it uses whatever kind of database makes sense for the queries that it must support. The read side can be seen as an implementation of the Reporting Database pattern \cite{reporting-database}.
+  \item The read side (or query side) is separate to the write side, which means different object models, probably running in different processes, perhaps on separate hardware. The query side handles only read operations. It subscribes to events produced by the write side and uses them to build and maintain a model that is suitable for answering client queries. Consequently, it uses whatever kind of database makes sense for the queries that it must support. The read side can be seen as an implementation of the Reporting Database pattern \cite{reporting-database}.
 \end{itemize}
 
-CQRS enables the efficient implementation of queries that retrieve data owned by multiple services, especially compared to the API composition pattern which sometimes results in expensive, inefficient in-memory joins.
+CQRS enables the efficient implementation of queries that retrieve data owned by multiple services, especially compared to the API composition pattern, which sometimes results in expensive, inefficient in-memory joins.
 
-Furthermore, separation of the read and write sides allows each to be scaled appropriately to match the workload. For example, query sides typically encounter a much higher demand than the write one.
+Furthermore, separation of the read and write sides allows each to be scaled appropriately to match the workload. For example, query sides typically encounter a much higher demand than the write part.
 
-CQRS also allows an application or service to efficiently implement a diverse set of queries. Attempting to support all queries using a single persistent data model is also often challenging and in some cases impossible. Even when a relational database has extensions to support a particular kind of query, using a specialized database is often more efficient. The CQRS pattern avoids the limitations of a single database by defining one or more read sides, each of which efficiently implements specific queries.
+CQRS also allows an application or service to implement a diverse set of queries efficiently. Attempting to support all queries using a single persistent data model is also often challenging and in some cases, impossible. Even when a relational database has extensions to support a particular kind of query, using a specialised database is often more efficient. The CQRS pattern avoids the limitations of a single database by defining one or more read sides, each of which efficiently implements specific queries.
 
-Another benefit is that CQRS defines separate code modules and database schemas for the command and query sides of a service. By separating concerns, the command side and query side are independent from each other and likely to be simpler and easier to maintain. The write side database can be refactored without needing to change to read databases.
+Another benefit is that CQRS defines separate code modules and database schemas for the command and query sides of a service. By separating concerns, the command side and query side are independent of each other and likely to be simpler and easier to maintain. The write side database can be refactored without needing to change to read databases.
 
-Even though CQRS has several benefits, there are the significant additional operational complexity of managing and operating the extra data stores, which might even be of different types. Besides, as you might expect, there's a delay between when the command side publishes an event and when the query side processes that event and updates its read model. A client application that updates a model using a write operation and then immediately queries a view may see the previous version of the data. It is likely though that the system has settled for eventual consistency, discussed in next section about distributed transactions.
+Even though CQRS has several benefits, there is a significant additional operational complexity of managing and operating the extra data stores, which might even be of different types. Besides, as you might expect, there's a delay between when the command side publishes an event and when the query side processes that event and updates its read model. A client application that updates a model using a write operation and then immediately queries a view may see the previous version of the data. It is likely though that the service has been designed with eventual consistency, discussed in the next section about distributed transactions.
 
-On the implementation side, applying the CQRS pattern does not actually mandate that you use different data stores for write and read sides, or that you use any particular persistence technology such as a relational database, NoSQL store, or event store. Nevertheless, a NoSQL database is often a good choice for a CQRS read side, which can leverage its strengths like ease of scaling and ignore its weaknesses. A CQRS view is unaffected by the limitations of a NoSQL database, because it only uses simple transactions and executes a fixed set of queries without the need for relational joins. Actually you don't need to normalize the database, because it is read-only and the records can duplicate data as much as needed to make queries easier.
+On the implementation side, applying the CQRS pattern does not mandate that you use different data stores for write and read sides, or that you use any particular persistence technology such as a relational database, NoSQL store, or event store. Nevertheless, a NoSQL database is often a proper choice for a CQRS read side, which can leverage its strengths like the ease of scaling and ignore its weaknesses. A CQRS view is unaffected by the limitations of a NoSQL database because it only uses simple transactions and executes a fixed set of queries without the need for relational joins. Actually, you don't need to normalise the database, because it is read-only and the records can duplicate data if needed to make queries easier.
 
-Although CQRS does not require messaging, it is common to use messaging to process commands and publish update events. Messages also allow CQRS write part to handle commands asynchronously from a queue, rather than being processed synchronously, making the service itself asynchronous.
+Although CQRS does not require messaging, it is common to use messages to process commands and publish update events. Messages also allow the CQRS write part to handle commands asynchronously from a queue, rather than being processed synchronously, making the service itself asynchronous.
 
-In that case, the application must handle message failures or duplicate messages. A command or event handler should be idempotent whenever possible, that is duplicate events results in the same correct outcome. For instance, an events which cancels an order can be repeated multiple times with the same result. In other cases events can be structured differently to be idempotent.
+In that case, the application must handle message failures or duplicate messages. A command or event handler should be idempotent whenever possible, that is duplicate events result in the same correct outcome. For instance, an event which cancels an order can be repeated multiple times with the same result. In other cases, events can be structured differently to be idempotent. Assume the following structure for a \texttt{ThumbsUp} event.
 
 \begin{lstlisting}
 {
@@ -502,7 +502,7 @@ In that case, the application must handle message failures or duplicate messages
 }
 \end{lstlisting}
 
-A service could be subscribed to this \texttt{ThumbsUpEvent} event and increment a thumbs-up counter for a restaurant, but if the same event will arrive twice the the counter will be incremented twice as well. To solve this problem, the event structure can be changed as follows:
+A service could be subscribed to \texttt{ThumbsUp} event and increment a thumbs-up counter for a restaurant, but if the same message arrives twice, then the counter is incremented twice as well. The event structure can be changed as follows to solve this problem:
 
 \begin{lstlisting}
 {
@@ -512,27 +512,25 @@ A service could be subscribed to this \texttt{ThumbsUpEvent} event and increment
 }
 \end{lstlisting}
 
-Thanks to that, no matter how many times event will arrive, the resulting state will be the same as only one copy arrived.
+Thanks to that, no matter how many times the event arrives, the resulting state is the same as only one copy arrived.
 
-Unfortunately idempotent events make your system vulnerable for simultaneous events. Two \texttt{ThumbsUpEvent} could be published at the same time by two different users, however they will carry the same \texttt{totalLikes}. Out-of-order events are likewise troublesome: two events could be published sequentially but if they will arrive in the wrong order then the system will remain inconsistent.
+Unfortunately, idempotent events make your system vulnerable to simultaneous events. Two \texttt{ThumbsUpEvent} could be published at the same time by two different users; however, they carry the same \texttt{totalLikes}. One of the two events will be overridden. Out-of-order events are likewise troublesome: two \texttt{ThumbsUpEvent} events could be published sequentially with \texttt{totalLikes: 320} and \texttt{totalLikes: 321}, but if they arrive in the wrong order, then the system remains inconsistent.
 
 As demonstrated, an idempotent event is not feasible most of the time. A non-idempotent event handler must instead detect and discard duplicate events by recording the ids of events that it has already processed. One viable solution is to keep the history of IDs of all events that they have already seen. Theoretically, a CQRS read side should keep a full history of events, but in practice, the last couple of hours should be sufficient.
 
-CQRS provide a lot of benefits when it comes to the scalability of data queries. Unfortunately, it doesn't come for free and the attached costs may be severely underestimated causing significant decrease in productivity .
-
-However, since we have seen how to query data spanning multiple services, we proceed to analyse more complex transactions that involve several services.
+Ultimately, CQRS provides many benefits when it comes to the scalability of data queries. Unfortunately, it doesn't come for free, and the attached costs may be severely underestimated, causing a significant decrease in productivity.
 
 \subsection{Reliable events}
 
 It's essential for the database update and the publishing of the event to happen atomically. Consequently, to communicate reliably, the CQRS services must use transactional messaging. Otherwise, a service might update the database and then crash, for example, before sending the message. If the service doesn't perform these two operations atomically, a failure could leave the system in an inconsistent state.
 
-A straightforward way to reliably publish messages is to apply the Transactional outbox pattern. This pattern uses a database table as a temporary message queue, where the service inserts messages. Atomicity is guaranteed because this is a local ACID transaction. Then, an effortless way to publish the messages is to poll the table for unpublished messages although frequently polling the database can be expensive. Also, whether you can use this approach with a NoSQL database depends on its atomic update capabilities. For instance, MongoDB write operations are atomic on the level of a single document \cite{mongodb-atomic-write}.
+A straightforward way to reliably publish messages is to apply the Transactional outbox pattern. This pattern uses a database table as a temporary message queue, where the service inserts messages. Atomicity is guaranteed because this is a local ACID transaction. Then, an effortless way to publish the messages is to poll the table for unpublished messages although frequently polling the database can be expensive. Also, whether you can use this approach with a NoSQL database, which has no tables by definition, depends on its atomic update capabilities. For instance, MongoDB write operations are atomic only on the level of a single document \cite{mongodb-atomic-write}.
 
 A sophisticated solution is to tail the database transaction log (also called the commit log). Every committed update made by an application is represented as an entry in the database's transaction log. A transaction subscriber can read the transaction log and publish each change as a message to the message broker \cite{log-tailing}.
 
-The challenge is that implementing it requires writing low-level code that calls database-specific APIs. It's usually preferable using an open source framework such as LinkedIn's Databus\footnote{\url{https://github.com/linkedin/databus}}, a distributed source-agnostic change data capture system that publishes changes made by a MySQL, Postgres, or MongoDB database to a message broker.
+The challenge lies in writing low-level code that calls database-specific APIs. It's usually preferable using an open-source framework such as LinkedIn's Databus\footnote{\url{https://github.com/linkedin/databus}}, a distributed source-agnostic change data capture system that publishes changes made by a MySQL, Postgres or MongoDB database to a message broker.
 
-Typical Databus deployments consist of a cluster of log miners called Relay servers that pull change streams from the data sources \cite{databus}. The relays are set up in such a way that the change stream from every data source is available in multiple relays, for fault-tolerance and for consumer scaling. There are two configurations the relays are typically deployed.
+Typical Databus deployments consist of a cluster of log miners called Relay servers that pull change streams from the data sources \cite{databus}. The relays are set up in such a way that the change stream from every data source is available in multiple relays, for fault-tolerance and scaling. There are two configurations of the relays that are typically deployed.
 
 \begin{figure}[!htbp]
 \centering
@@ -541,8 +539,8 @@ Typical Databus deployments consist of a cluster of log miners called Relay serv
 \label{relay-direct}
 \end{figure}
 
-In one deployment model as shown in Figure \ref{relay-direct}, all the Relay servers hosting a stream connect to the stream's data source directly. Each server is assigned a subset of all the streams. When one of them fails, the surviving Relays continue pulling the change
-streams independent of the failed one, providing 100\% availability of the streams at very low latency. This however comes as the cost of increased load on the data source server.
+In one deployment model, as shown in Figure \ref{relay-direct}, all the Relay servers hosting a stream connect to the stream's data source directly. Each server is assigned a subset of all the streams. When one of them fails, the surviving Relays continue pulling the change
+streams independent of the failed one, providing 100\% availability of the streams at very low latency. This model, however, comes as the cost of increased load on the data source server.
 
 \begin{figure}[!htbp]
 \centering
@@ -551,17 +549,17 @@ streams independent of the failed one, providing 100\% availability of the strea
 \label{relay-leader-follower}
 \end{figure}
 
-To reduce the load on the source data source server, an alternative deployment model for Relays as shown in Figure \ref{relay-leader-follower}, is the Leader-Follower model. In this model, for every data source server, one server is designated to be the leader while the other ones are designated to be followers. The leader connects to the data source to pull the change stream while the followers pull the change stream from the leader. The clients can connect to any of the Relays, either leader or follower. If the leader Relay fails, one of the surviving followers is elected to be the new leader. This deployment drastically reduces the load on the data source server but when the leader fails, there is a small delay while a new leader is elected. During this window, the latest changes in the change stream  are not available to the consumers.
+To reduce the load on the source data source server, an alternative deployment model for Relays, as shown in Figure \ref{relay-leader-follower}, is the Leader-Follower model. In this model, for every data source, one server is designated to be the leader while the other ones are designated to be followers. The leader connects to the data source to pull the change stream while the followers pull the change stream from the leader. The clients can connect to any of the Relays, either leader or follower. If the leader Relay fails, one of the surviving followers is elected to be the new leader. This deployment drastically reduces the load on the data source server, but when the leader fails, there is a small delay while a new leader is elected. During this window, the latest changes in the change stream are not available to the consumers.
 
 \section{Distributed transactions}
 
 ACID (Atomicity, Consistency, Isolation, Durability) transactions greatly simplify the job of the developer by providing the illusion that each transaction has exclusive access to the data. In a microservice architecture, a single service can still use ACID transactions for local operations. The challenge, however, lies in implementing transactions for operations that update data owned by multiple services, each of which has its own database, without violating consistency.
 
-By consistency, we mean state consistency that is a transaction preserves all the database rules, such as  referential integrity or, for example, when transferring money from one account to another the total amount held in both accounts should not change. This is not to be confused with the copy consistency in the CAP theorem \cite{acid-cap}, which refers to having all the copies of the data up-to-date, a subset of the former consistency.
+By consistency, we mean state consistency: a transaction preserves all the database rules like referential integrity or, for example, when transferring money from one account to another the total amount held in both accounts should not change. It should not be confused with the copy consistency in the CAP theorem \cite{acid-cap}, which refers to having all the copies of the data up-to-date and it's a subset of the former consistency.
 
 The traditional approach to maintaining data consistency across multiple services or databases is to use distributed transactions. The de facto standard for distributed transaction management is the X/Open Distributed Transaction Processing (DTP) Model \cite{dtp}, which uses two-phase commit (2PC) to ensure that all participants in a transaction either commit or rollback. 
 
-Several problems arise however when a 2PC protocol is used in a system where network and hardware failures occur or a server could just crash. For instance, the coordinator, as well as the participants, have states in which they block waiting for incoming messages \cite{distributed-systems-2pc}. For that reason, the main problem with traditional distributed transactions is that they reduce availability. For a distributed transaction to commit, all the participating services must be available.
+Several problems arise, however, when a 2PC protocol is used in a system where network and hardware failures occur, or a server could just crash. For instance, the coordinator, as well as the participants, have states in which they block waiting for incoming messages \cite{distributed-systems-2pc}. For that reason, the main problem with traditional distributed transactions is that they reduce availability. For a distributed transaction to commit, all the participating services must be available.
 
 The overall availability is the product of the availability of all of the participants in the transaction. If a distributed transaction involves four services that are 99.5\% available, then the overall availability is 98\%, which is significantly less. Each additional service involved in a distributed transaction further reduces availability.
 
@@ -573,15 +571,15 @@ It is impossible for a distributed data store to simultaneously provide more tha
 \hfill Eric Brewer
 \end{quote}
 
-The original theorem refers to copy consistency, but ACID consistency also cannot be maintained across partitions. 
+The original theorem refers to copy consistency, but ACID consistency also cannot usually be maintained across partitions. 
 
-Although the formulation was misleading and has been revisited \cite{cap-misleading}, it remains true that the CAP theorem prohibits perfect availability and consistency in the presence of network partitions. But the three properties are continuous values other than binary. Availability is already expressed as a range from 0 to 100\%, but there are also many levels of consistency and even partitions usually affect portions of a system, not a globally.
+Although the formulation was misleading and has been revisited \cite{cap-misleading}, it remains true that the CAP theorem prohibits perfect availability and consistency in the presence of network partitions. But the three properties are continuous values other than binary. Availability is already expressed as a range from 0 to 100\%, but there are also many levels of consistency, and even partitions usually affect only portions of a system, not globally.
 
-The modern CAP goal tries to maximize combinations of consistency and availability that make sense for the specific application. Such an approach incorporates plans for operation during a partition to mantain availability and for recovery afterward, for keep consistency.
+The modern CAP goal tries to maximise combinations of consistency and availability that make sense for the specific application. Such an approach incorporates plans to be operative during a partition to maintain availability and for recovery afterwards, to keep consistency.
 
-As a matter of fact, many systems nowadays drop perfect consistency in favour of eventual consistency \cite{consistency-vs-availability}, availability and partition tolerance. Temporary inconsistency can be tolerated for two reasons: for improving read and write performance under highly concurrent conditions and for handling partition cases where a majority model would render part of the system unavailable even though the nodes are up and running. Clearly, partition recovery will need to restore ACID consistency since maintaining invariants during partitions might be impossible.
+As a matter of fact, many systems nowadays drop perfect consistency in favour of eventual consistency \cite{consistency-vs-availability}, availability and partition tolerance. Temporary inconsistency can be tolerated for two reasons: for improving read and write performance under highly concurrent conditions and for handling partition cases where a majority model would render part of the system unavailable even though the nodes are up and running. Partition recovery will need to restore ACID consistency since maintaining invariants during partitions might be impossible.
 
-It is clear at this point that to solve the complex problem of maintaining data consistency in a microservice architecture, an application must use a different mechanism that builds on top of the asynchronous CQRS services. CQRS services are already partition tolerant since events and commands are usually implemented via asynchronous message queues. Furthermore, commands and queries are handled without the need of external services, thus improving availability. What is missing then is a mechanism to keep the consistency and plan for recovery if a partition occurs. This is where the saga pattern comes in.
+It is clear at this point that to solve the complex problem of maintaining data consistency in a microservice architecture, an application must use a different mechanism that builds on top of the asynchronous CQRS services. CQRS services are already partition tolerant since events and commands are usually implemented via asynchronous message queues which persist unprocessed messages. Furthermore, commands and queries are handled without the need for external services, thus improving availability. What is missing then is a mechanism to keep the consistency and to plan for recovery if a partition occurs. This is where the saga pattern comes in.
 
 \section{The saga pattern}
 
@@ -591,7 +589,7 @@ A saga is a sequence of local transactions. Each local transaction updates data 
 
 A saga is initiated by a command event and it reacts to subsequent command events, generating new ones and thus allowing command handlers to be kept independent. The completion of a local transaction triggers the execution of the next local transaction.
 
-While handling a request, the service saga doesn't synchronously interact with any other service. Instead, it asynchronously sends messages to other services which are not required to be available at the same time. Eventually, any unavailable service will come back up and process queued messages. In other words, it ensures that all the steps of a saga are executed, even if one or more of the saga's participants is temporarily unavailable.
+While handling a request, the service saga doesn't synchronously interact with any other service. Instead, it asynchronously sends messages to other services which are not required to be available at the same time. Eventually, any unavailable service comes back up, and process queued messages. In other words, it ensures that all the steps of a saga are executed, even if one or more of the saga's participants is temporarily unavailable.
 
 \begin{figure}[!htbp]
 \centering
@@ -613,13 +611,13 @@ This saga consists of the following local transactions:
   \item Order Service: it changes the state of the order to \texttt{APPROVED}.
 \end{enumerate}
 
-An implementation issue which needs to be considered is ensuring that a saga participant must be able to map each event that it receives to its own data. For example, when Order Service receives a Credit Card Authorized event, it must be able to look up the corresponding Order. The solution is for a saga participant to publish events containing a \textit{correlation id}, which is data that enables other participants to perform the mapping. For example, the participants of the Create Order Saga can use the \texttt{orderId} as a correlation id that's passed from one participant to the next.
+An implementation issue which needs to be considered is ensuring that a saga participant is able to map each event that it receives to its own data. For example, when Order Service receives a \texttt{CreditCardAuthorised} event, it must be able to look up the corresponding saga. The solution is for a saga participant to publish events containing a \textit{correlation id}, which is data that enables other participants to perform the mapping. For example, the participants of the Create Order Saga can use the \texttt{orderId} as a correlation id that's passed from one participant to the next.
 
 \subsection{Compensating transactions}
 
 A great feature of traditional ACID transactions is that the business logic can easily roll back a transaction if it detects the violation of a business rule. Unfortunately, sagas can't be automatically rolled back, because each step commits its changes to the local database. 
 
-Suppose that the (n + 1) th transaction of a saga fails. Thus, to abort entire saga, the system must undo each already committed transaction by issuing a new transaction that corrects for its effects: the compensating transaction \cite{compensating}. Conceptually, each of those steps has a corresponding compensating transaction which undoes the effects of the step. To undo the effects of those first n steps, the saga must execute each compensating transaction in reverse order.
+Suppose that the (n + 1) th transaction of a saga fails. Thus, to abort the entire saga, the system must undo each already committed transaction by issuing a new transaction that corrects for its effects: the compensating transaction \cite{compensating}. Conceptually, each of those steps has a corresponding compensating transaction which undoes the effects of the step. The saga must execute each compensating transaction in reverse order to undo the effects of those first n steps.
 
 To see how compensating transactions are used, imagine a scenario where the authorisation of the consumer's credit card fails. In this scenario, the saga executes the following local transactions:
 
@@ -640,43 +638,43 @@ A saga's coordination logic is therefore responsible for sequencing the executio
 
 The I in ACID stands for isolation. The isolation property of ACID transactions ensures that the outcome of executing multiple transactions concurrently is the same as if they were executed in some serial order. The database provides the illusion that each ACID transaction has exclusive access to the data.
 
-The challenge of using sagas is that they lack the isolation property of ACID transactions. That's because the updates made by each of a saga's local transactions are immediately visible to other sagas once that transaction commits. This behaviour can cause two problems. Other sagas can change the data accessed by the saga while it's still executing or they can read its data before the completion of all the updates and consequently the former sagas are potentially exposed to inconsistent data.
+The challenge of using sagas is that they lack the isolation property of ACID transactions. That's because the updates made by each of a saga's local transactions are immediately visible to other sagas once that transaction commits. This behaviour can cause two problems. Other sagas can change the data accessed by the saga while it's still executing or they can read its data before the completion of all the updates, and consequently, the former sagas are potentially exposed to inconsistent data.
 
-This lack of isolation can cause database \textit{anomalies}. An anomaly is when a transaction reads or writes data in a way that it wouldn't if transactions were executed one at a time. When an anomaly occurs, the outcome of executing sagas concurrently is different than if they were executed serially.
+This lack of isolation can cause database anomalies. An anomaly is when a transaction reads or writes data in a way that it wouldn't if transactions were executed one at a time. When an anomaly occurs, the outcome of executing sagas concurrently is different than if they were executed serially.
 
 The lack of isolation can cause the following three anomalies \cite{microservices-patterns-anomalies}:
 
 \begin{enumerate}
-  \item \textit{Lost updates}: one saga overwrites, without reading, changes made by another saga. As a result, the changes has been lost and the system state is potentially inconsistent. For instance, a saga may start and later approve an order which has been cancelled by another saga;
-  \item \textit{Dirty reads}: a saga reads the updates made by a saga that has not yet completed. Those updates could be still inconsistent or be reverted by a compensating transaction;
+  \item \textit{Lost updates}: one saga overwrites, without reading, changes made by another saga. As a result, the changes have been lost, and the system state is potentially inconsistent. For instance, a saga may start and later approve an order which has been already cancelled by another saga;
+  \item \textit{Dirty reads}: a saga reads the updates made by a saga that has not yet completed. Those updates could be still inconsistent or will be reverted by a compensating transaction;
   \item \textit{Fuzzy/non-repeatable reads}: two different steps of one saga read the same data and get different results because another saga has made updates in between the two reads.
 \end{enumerate}
 
-It is then the responsibility of the developer to adopt a set of countermeasures for handling anomalies caused by lack of isolation that either prevent one or more anomalies or minimize their impact on the business \cite{semantic-acid}.
+It is then the responsibility of the developer to adopt a set of countermeasures for handling anomalies caused by lack of isolation that either prevent one or more anomalies or minimise their impact on the business \cite{semantic-acid}.
 
 One example of countermeasure is the usage of semantic locks: a saga's compensatable transaction sets a flag in any record that it creates or updates. The flag indicates that the record isn't committed and could potentially change. The flag can either be a lock that prevents other transactions from accessing the record or a warning that indicates that other transactions should treat that record with suspicion.
 
-A further example of countermeasure is to design the update operations to be commutative. Operations are commutative if they can be executed in any order, thus eliminating the possibility lost updates. An account's debit and credit operations are for instance commutative. Unfortunately, using only commutative operations is tough. For example, bank operations with a zero balance check are not communicate since you can deposit an amount of money and then withdraw it, but the opposite is not possible if the withdrawal would leave the balance below zero.
+A further example of countermeasure is to design the update operations to be commutative. Operations are commutative if they can be executed in any order, thus eliminating the possibility of lost updates. An account's debit and credit operations are, for instance, commutative. Unfortunately, using only commutative operations is tough. For example, account operations with a zero balance check are not commutative since you can deposit an amount of money and then withdraw it, but the opposite is not possible if the withdrawal would leave the balance below zero.
 
 \section{Communication}
 
-As we have seen with the previous patterns, the services within a microservice architecture must frequently collaborate in order to complete a saga or to handle a query request. A microservices-based application is a distributed system running on multiple processes or services, usually even across multiple servers or hosts. Each service instance is typically a process. Therefore, services must interact using an inter-process communication (IPC) protocol.
+As we have seen with the previous patterns, the services within a microservice architecture must frequently collaborate in order to complete a saga or to handle a query request. A microservices-based application is a distributed system running on several processes or services, usually even across multiple servers or hosts. Each service instance is typically a process. Therefore, services must interact using an inter-process communication (IPC) protocol.
 
-The choice of IPC mechanism is an important architectural decision since it can impact application availability and it intersects transaction management.
+The choice of IPC mechanism is an important architectural decision since it can impact application availability, and it intersects transaction management.
 
-Synchronous protocols such as REST \cite{rest} and RPC \cite{rpc} are used mostly to communicate with other applications. Using REST is simple and familiar to most of the developers and it doesn't require an intermediate broker, which simplifies the system's architecture. However, the problem with REST is that it is a synchronous protocol: an HTTP client must wait for the service to send a response. Whenever services communicate using a synchronous protocol, the availability of the application is reduced as the overall value is the product of the availability of all of the participants in the communication. The same issue applies also to RPC.
+Synchronous protocols such as REST \cite{rest} and RPC \cite{rpc} are used mostly to communicate with other applications. Using REST is simple, familiar to most of the developers and it doesn't require an intermediate broker, which simplifies the system's architecture. However, the problem with REST is that it is a synchronous protocol: an HTTP client must wait for the service to send a response. Whenever services communicate using a synchronous protocol, the availability of the application is reduced as the overall value is the product of the availability of all of the participants in the communication. The same issue also applies to RPC.
 
 As we have seen with the CQRS and saga patterns, services can communicate with one another using asynchronous messaging to improve availability and partition tolerance. 
 
-A service client makes a request to a service by sending it a message. If the service instance is expected to reply, it will do so by sending a separate message back to the client. Because the communication is asynchronous, the client doesn't block waiting for a reply. Instead, the client is written assuming that the reply won't be received immediately.
+A service client makes a request to a service by sending it a message. If the service instance is expected to reply, it does so by sending a separate message back to the client. Because the communication is asynchronous, the client doesn't block waiting for a reply. Instead, the client is written, assuming that the reply won't be received immediately.
 
-A messaging-based application typically uses a message broker, which acts as an intermediary between the services. A sender writes the message to the message broker, and the message broker delivers it to the receiver. An important benefit of using a message broker is that the sender doesn't need to know the network location of the consumer, decreasing coupling between services. Another benefit is that a message broker persists messages until the consumer is able to process them, usually using message queues. 
+A messaging-based application typically uses a message broker, which acts as an intermediary between the services. A sender writes the message to the message broker, and the message broker delivers it to the receiver. An important benefit of using a message broker is that the sender doesn't need to know the network location of the consumer, decreasing the coupling between services. Another benefit is that a message broker persists messages until the consumer is able to process them, usually using message queues and thus improving partition tolerance. 
 
 \subsection{Message Queuing}
 
 The basic idea behind a message-queuing system is that applications communicate by inserting messages in specific queues by using a message broker, an infrastructure service through which all messages flow.
 
-A critical aspect of message-queuing systems is that a sender is generally given only the guarantees that its message will eventually be inserted in the recipient's queue. No guarantees are given about when, or even if the message will actually be read, which is completely determined by the behaviour of the recipient. These semantics permit communication to be \textit{loosely coupled in time}.
+A critical aspect of message-queuing systems is that a sender is generally given only the guarantees that its message will eventually be inserted in the recipient's queue. No guarantees are given about when, or even if the message will actually be read, which is completely determined by the behaviour of the recipient. These semantics permit communication to be loosely coupled in time.
 
 When selecting a message broker, you have various factors to consider, including the following \cite{microservices-patterns-broker}:
 
@@ -691,7 +689,7 @@ When selecting a message broker, you have various factors to consider, including
 
 Each broker makes different trade-offs. For example, a very low-latency broker might not preserve ordering, make no guarantees to deliver messages and only store messages in memory. A messaging broker that guarantees delivery and reliably stores messages on disk like RabbitMQ \footnote{\url{https://www.rabbitmq.com/}} will probably have higher latency.
 
-After picking the proper broker solution for your application, we can see how the saga orchestrator communicates with the participants using async reply-style interaction based on message queues. To execute a saga step, the saga sends a command message to a participant telling what operation to perform. After a saga participant has performed the operation, it sends a reply message to the orchestrator. The orchestrator then processes the message and determines which saga step to perform next.
+After picking the proper broker solution for your application, we can see an example of message communication by exhibiting how the saga orchestrator communicates with the participants using async reply-style interaction based on message queues. To execute a saga step, the saga sends a command message to a participant telling what operation to perform. After a saga participant has performed the operation, it sends a reply message to the orchestrator. The orchestrator then processes the message and determines which saga step to perform next.
 
 \begin{figure}[!htbp]
 \centering
@@ -700,24 +698,22 @@ After picking the proper broker solution for your application, we can see how th
 \label{orchestrator_saga}
 \end{figure}
 
-\subsection{REST and asynchronous messaging communication}
-
 Messaging doesn't come without downsides. First, there is a risk that the message broker could be a performance bottleneck or a potential single point of failure, although fortunately, many modern message brokers are designed to be highly scalable and available.
-Second, the messaging system results additional operational and infrastructural complexity. 
+Second, the messaging system results in additional operational and infrastructural complexity. 
 
-Message based communication is more likely to be unfamiliar compared to REST and the developers have to face issues like duplicate messages or transactional messaging.
+Message-based communication is more likely to be unfamiliar compared to REST, and the developers have to face issues like duplicate messages or transactional messaging.
 
-Ultimately, the two commonly used protocols are HTTP request/response with regular web APIs  (when querying most of all), and lightweight asynchronous messaging when communicating updates across multiple microservices \cite{communication}.
+Ultimately, the two commonly used protocols are HTTP request/response for regular web APIs  (when querying most of all), and lightweight asynchronous messaging when communicating updates across multiple microservices \cite{communication}.
 
 \section{Functional Reactive programming}
 
-Functional Reactive programming (FRP) \cite{frp} is a paradigm for programming hybrid systems (systems containing a combination of both continuous and discrete components) in a high-level, declarative way. The key ideas in FRP are its notions of continuous, time-varying sequences of discrete events. Being able to define and manipulate continuous values in a programming language provides great expressive power.
+Functional Reactive Programming (FRP) \cite{frp} is a paradigm for programming hybrid systems (systems containing a combination of both continuous and discrete components) in a high-level, declarative way. The key ideas in FRP are its notions of continuous, time-varying sequences of discrete events. Being able to define and manipulate continuous values in a programming language provides great expressive power.
 
-In a microservices application, especially when the CQRS or the saga patterns are applied, it is common for a service to send messages to another one as soon as they are available and they are usually stored in a queue until processed. The latter service subscribes to a queue and it "reacts" as soon as some message has been placed on the queue. However FRP goes further than that, otherwise it would be just a normal Publish-Subscribe pattern \cite{pubsub}. The programming model sees everything as a stream of data, from the call to a database to the retrieval of a message from a queue. All is handled as a stream of time-varying values.
+In a microservices application, especially when the CQRS or the saga patterns are applied, it is common for a service to send messages to another one as soon as they are available and they are usually stored in a queue until processed. The latter service subscribes to the queue and it "reacts" as soon as some message has been placed on the queue. However, FRP goes further than that; otherwise, it would be just a normal Publish-Subscribe pattern \cite{pubsub}. The programming model sees everything as a stream of data, from the call to a database to the retrieval of a message from a queue. All is handled as a stream of time-varying values.
 
-Centered around the concept of observable streams, frameworks like RxJS (Reactive Extensions for JavaScript) \footnote{\url{https://rxjs-dev.firebaseapp.com/}} were conceived to provide combinators and operators to combine, create and filter any strean.
+Frameworks like RxJS (Reactive Extensions for JavaScript) \footnote{\url{https://rxjs-dev.firebaseapp.com/}} were conceived centred around the concept of streams, and to provide combinators and operators to combine, create and filter any stream.
 
-The following example shows the implementation of an API composition to retrieve the details of an order as combination of streams.
+The following example shows the implementation of an API composition to retrieve the details of an order as a combination of streams.
 
 \begin{figure}[!htbp]
 \centering
@@ -726,11 +722,11 @@ The following example shows the implementation of an API composition to retrieve
 \label{rx-orders}
 \end{figure}
 
-Each service request is an observable stream since it does not matter if a query operation has only one event, it is still a stream of data, and it is represented in the figure as a directed line. A vertical dash, if present, indicates the termination of a stream.
+Each service request is a stream since it does not matter if a query operation has only one event, it is still a stream of data, and it is represented in the figure as a directed line. A vertical dash, if present, indicates the termination of a stream.
 
-When the API Gateway calls another service, it doesn't wait for the result, it simply subscribes for the result and continues its processing. In particolar the three provider services are called in parallel and thanks to the \texttt{combineLast} combinator, only when the result of all three of them has arrived, the API Gateway processes that result and dispatches it an event of the resulting stream.
+When the API Gateway calls another service, it doesn't wait for the result, it merely subscribes for the result and continues its processing. In particular, the three provider services are called in parallel and thanks to the \texttt{combineLast} combinator, only when the result of all three of them has arrived, the API Gateway processes that result and dispatches it an event of the resulting stream.
 
-The resulting stream can be converted as a different structure like the returning response or even used as an input to another one. Even multiple streams can be used as inputs to another stream, which is actually what the example did. You can also filter a stream to get another one that has only those events you are interested in, which is especially useful in the CQRS read side or within a saga to check only events with a correct correlation id.
+The resulting stream terminates when all the three requests end and can be converted as a different structure, like the returning response, or even used as an input to another stream. Even multiple streams can be used as inputs to another one, which is actually what the example did. You can also filter a stream to get another one that has only those events you are interested in, which is especially useful in the CQRS read side or within a saga to check only events with a correct correlation id.
 
 \begin{figure}[!htbp]
 \centering
@@ -739,7 +735,7 @@ The resulting stream can be converted as a different structure like the returnin
 \label{rx-filter}
 \end{figure}
 
-The functional style results in code that look more declarative than imperative: instead of giving a sequence of instructions to execute, the FRP describes relationships between streams.
+The functional style results in code that looks more declarative than imperative: instead of giving a sequence of instructions to execute, the FRP describes relationships between streams.
 
 Functional Reactive Programming raises the level of abstraction of your code so you can focus on the interdependence of events that define the business logic. The benefit is evident in microservices applications with a multitude of events related to data changes and saga transactions.
 
@@ -828,13 +824,13 @@ Functional Reactive Programming raises the level of abstraction of your code so 
 
 \section{Conclusion}
 
-We started off the paper by exhibiting the reasons behind a database-per-service solution in a microservice architecture. Unfortunately, no technology is a silver bullet and this solution has several significant drawbacks and it adds risky complexity.
+We started the paper by exhibiting the reasons behind a database-per-service solution in a microservice architecture. Unfortunately, no technology is a silver bullet, and this solution has several significant drawbacks as well as risky complexity.
 
-One issue is that developers must deal with the additional complexity of managing distributed databases. The goal of each microservice is to be indipendent and available to the client consumer, even if the other services that are part of the end-to-end application are down or unhealthy. Asynchronous communication between services offers a good compromise for this goal and makes the inter-process communication very explicit, so developers aren't misled into a false sense of security. It is though crucial to use an interprocess communication pattern such as message queuing, since missing a message like a command event could indeed leave the system in an inconsistent state. 
+One issue is that developers must deal with the additional complexity of managing distributed databases. The goal of each microservice is to be independent and available to the client consumer, even if the other services that are part of the end-to-end application are down or unhealthy. Asynchronous communication between services offers a good compromise for this goal and makes the inter-process communication very explicit, so developers aren't misled into a false sense of security. It is though crucial to use an interprocess communication mechanism such as message queuing, since missing a message like a command event could indeed leave the system in an inconsistent state. 
 
 However, implementing use cases that span multiple services requires the use of unfamiliar techniques like CQRS and sagas. One big obstacle that developers will have to face when adopting microservices is moving from a single database with ACID transactions to a multi-database architecture with ACD sagas, because they're used to the simplicity of the ACID transaction model.
 
-All the patterns explored in this paper require a significant mental leap, so they shouldn't be tackled unless the benefit is worth the jump. Having a database-per-service might be needed on specific portions of a system and not the system as a whole, based on the different scaling/usage characteristics. In this way, some portions can use a shared database without encountering all the complexities seen before, while others will benefit  from a separated data store and the previous patterns. The former services may no be truly independent microservices, more just services in Service-Oriented-Architecture \cite{soa}, but it is crucial for development teams to understand how to balance the cost and benefits of microservices. 
+All the patterns explored in this paper require a significant mental leap, so they shouldn't be tackled unless the benefit is worth the jump. Having a database-per-service might be needed on specific portions of a system and not the system as a whole, based on the different scaling/usage characteristics. In this way, some portions can use a shared database without encountering all the complexities seen before, while others benefit from a separated data store and the previous patterns. The former services may no be truly independent microservices, more just services in Service-Oriented-Architecture \cite{soa}, but it is crucial for development teams to understand how to balance the cost and benefits of microservices. 
 
 % conference papers do not normally have an appendix
 
