@@ -14,42 +14,56 @@
 \citation{microservices-patterns-cqrs}
 \citation{orm}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-A}}API composition pattern}{2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The API composition pattern implements an operation by querying the service providers and combining the results. \cite  {microservices-patterns-api-composition}}}{2}}
-\newlabel{cqrs}{{1}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The API composition pattern implements an operation by querying the service providers and combining the results \cite  {microservices-patterns-api-composition}.}}{2}}
+\newlabel{api-composition}{{1}{2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-B}}CQRS pattern}{2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces On the left is the not-CQRS version of the service, and on the right is the CQRS version. \cite  {microservices-patterns-cqrs}}}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces On the left is the not-CQRS version of the service, and on the right is the CQRS version \cite  {microservices-patterns-cqrs}.}}{2}}
 \newlabel{cqrs}{{2}{2}}
 \citation{reporting-database}
+\citation{mongodb-atomic-write}
+\citation{log-tailing}
+\citation{databus}
 \citation{acid-cap}
 \citation{dtp}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-C}}Reliable events}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Databus deployment with independent Relay servers.}}{4}}
+\newlabel{relay-direct}{{3}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Databus deployment with Leader-Follower model.}}{4}}
+\newlabel{relay-leader-follower}{{4}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Distributed transactions}{4}}
 \citation{distributed-systems-2pc}
-\citation{acid-cap}
+\citation{cap-misleading}
 \citation{consistency-vs-availability}
 \citation{microservices-patterns-saga}
-\@writefile{toc}{\contentsline {section}{\numberline {III}Distributed transactions}{4}}
-\@writefile{toc}{\contentsline {section}{\numberline {IV}The saga pattern}{4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Creating an Order using a saga. \cite  {microservices-patterns-saga}}}{4}}
-\newlabel{order_saga}{{3}{4}}
 \citation{microservices-patterns-saga}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}The saga pattern}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Creating an Order using a saga \cite  {microservices-patterns-saga}.}}{5}}
+\newlabel{order_saga}{{5}{5}}
+\citation{compensating}
 \citation{microservices-patterns-anomalies}
 \citation{semantic-acid}
-\citation{log-tailing}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}Compensating transactions}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}Lack of isolation}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-C}}Reliable events}{5}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Communication}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}Compensating transactions}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}Lack of isolation}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Communication}{6}}
+\citation{rest}
+\citation{rpc}
 \citation{microservices-patterns-broker}
 \citation{microservices-patterns-saga}
 \citation{microservices-patterns-saga}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-A}}Message Queuing}{6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Order Service implements a saga orchestrator, which invokes the saga participants using asynchronous request/response. \cite  {microservices-patterns-saga}}}{6}}
-\newlabel{orchestrator_saga}{{4}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Technologies}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-A}}Reactive Programming}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-B}}Promises and Futures}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-C}}Event bus}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{6}}
+\citation{communication}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-A}}Message Queuing}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Order Service implements a saga orchestrator, which invokes the saga participants using asynchronous request/response \cite  {microservices-patterns-saga}.}}{7}}
+\newlabel{orchestrator_saga}{{6}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-B}}REST and asynchronous messaging communication}{7}}
+\citation{frp}
+\citation{pubsub}
 \citation{soa}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Functional Reactive programming}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Combination of streams to query the order details.}}{8}}
+\newlabel{rx-orders}{{7}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Filtering a stream of order events to return a new stream made up of only SHIPPED events.}}{8}}
+\newlabel{rx-filter}{{8}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{8}}
 \bibcite{exploring-microservices}{1}
 \bibcite{ebay-architecture}{2}
 \bibcite{database-per-service}{3}
@@ -60,14 +74,23 @@
 \bibcite{orm}{8}
 \bibcite{microservices-patterns-cqrs}{9}
 \bibcite{reporting-database}{10}
-\bibcite{microservices-patterns-saga}{11}
-\bibcite{microservices-patterns-anomalies}{12}
-\bibcite{microservices-patterns-broker}{13}
-\bibcite{distributed-systems-2pc}{14}
-\bibcite{acid-cap}{15}
-\bibcite{dtp}{16}
-\bibcite{consistency-vs-availability}{17}
-\bibcite{semantic-acid}{18}
-\bibcite{log-tailing}{19}
-\bibcite{soa}{20}
-\@writefile{toc}{\contentsline {section}{References}{7}}
+\bibcite{mongodb-atomic-write}{11}
+\bibcite{log-tailing}{12}
+\bibcite{databus}{13}
+\bibcite{acid-cap}{14}
+\bibcite{dtp}{15}
+\bibcite{distributed-systems-2pc}{16}
+\bibcite{cap-misleading}{17}
+\bibcite{consistency-vs-availability}{18}
+\bibcite{microservices-patterns-saga}{19}
+\bibcite{compensating}{20}
+\bibcite{microservices-patterns-anomalies}{21}
+\bibcite{semantic-acid}{22}
+\bibcite{rest}{23}
+\bibcite{rpc}{24}
+\bibcite{microservices-patterns-broker}{25}
+\bibcite{communication}{26}
+\bibcite{frp}{27}
+\bibcite{pubsub}{28}
+\bibcite{soa}{29}
+\@writefile{toc}{\contentsline {section}{References}{9}}
