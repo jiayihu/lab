@@ -1,0 +1,27 @@
+project Gee is
+
+   for Main use ("gee.adb");
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+
+   package Compiler is
+      for Default_Switches ("Ada") 
+      use ("-gnatwa", "-gnatyabcdefhiIklnprsSuxt", "-gnat12");
+   end Compiler;
+   
+   package Builder is
+      for Default_Switches ("Ada") use ("-g");
+   end Builder;   
+
+--   package Ide is
+--      for Compiler_Command ("Ada") use "sparc-elf-gnatmake";
+--      for Gnatlist use "sparc-elf-gnatls";
+--      for Gnat use "sparc-elf-gnat";
+--      for Debugger_Command use "sparc-elf-gdb";
+--   end Ide;
+   
+--   for Runtime ("Ada") use "ravenscar-full-tms570";
+--   for Target use "arm-eabi";
+
+end Gee;
+

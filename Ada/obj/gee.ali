@@ -1,0 +1,109 @@
+V "GNAT Lib v2019"
+M P W=b
+A -gnatA
+A -g
+A -gnatwa
+A -gnatya
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatyn
+A -gnatyp
+A -gnatyr
+A -gnatys
+A -gnatyS
+A -gnatyu
+A -gnatyx
+A -gnatyt
+A -gnat12
+A -mtune=core2
+A -mmacosx-version-min=10.14.0
+A -fPIC
+A -feliminate-unused-debug-symbols
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U gee%b			gee.adb			ed2b5a37 NE OO SU
+W activation_log_reader%s  activation_log_reader.adb  activation_log_reader.ali
+W activation_manager%s	activation_manager.adb	activation_manager.ali
+W event_queue%s		event_queue.adb		event_queue.ali
+W external_event_server%s  external_event_server.adb  external_event_server.ali
+W on_call_producer%s	on_call_producer.adb	on_call_producer.ali
+W regular_producer%s	regular_producer.adb	regular_producer.ali
+W request_buffer%s	request_buffer.adb	request_buffer.ali
+
+D activation_log_reader.ads  20170225170334 d6114eef activation_log_reader%s
+D activation_log_reader_parameters.ads  20170223093612 61051ae0 activation_log_reader_parameters%s
+D activation_manager.ads  20170223093616 88c4423e activation_manager%s
+D ada.ads		20190518041255 76789da1 ada%s
+D a-except.ads		20190518041255 291912d5 ada.exceptions%s
+D a-finali.ads		20190518041255 bf4f806b ada.finalization%s
+D a-reatim.ads		20190518041256 0240fc73 ada.real_time%s
+D a-stream.ads		20190518041255 119b8fb3 ada.streams%s
+D a-tags.ads		20190518041256 491b781d ada.tags%s
+D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
+D event_queue.ads	20170225172836 cf01e3aa event_queue%s
+D external_event_server.ads  20170225170914 ffc87974 external_event_server%s
+D external_event_server_parameters.ads  20190827155043 dad70586 external_event_server_parameters%s
+D gee.adb		20170225174306 c00a9ec2 gee%b
+D interfac.ads		20190518041254 5ab55268 interfaces%s
+D i-c.ads		20190518041254 5421119b interfaces.c%s
+D on_call_producer.ads	20170223201508 ba1a617a on_call_producer%s
+D on_call_producer_parameters.ads  20170223093614 d35a4fb4 on_call_producer_parameters%s
+D regular_producer.ads	20170223201942 64a1c3d9 regular_producer%s
+D regular_producer_parameters.ads  20170223093616 565d4073 regular_producer_parameters%s
+D request_buffer.ads	20170223093614 9d86f059 request_buffer%s
+D system.ads		20190518041255 085b6ffb system%s
+D s-atacco.ads		20190518041256 4c36d12f system.address_to_access_conversions%s
+D s-exctab.ads		20190518041255 54135002 system.exception_table%s
+D s-finroo.ads		20190518041256 4ff27390 system.finalization_root%s
+D s-multip.ads		20190518041254 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20190518124528 e40aaf2d system.os_constants%s
+D s-osinte.ads		20190518041257 01b3ad47 system.os_interface%s
+D s-parame.ads		20190518041256 48ec542b system.parameters%s
+D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
+D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
+D s-stausa.ads		20190518041255 017a0a05 system.stack_usage%s
+D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
+D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
+D s-tasinf.ads		20190518041256 801abd01 system.task_info%s
+D s-taspri.ads		20190518041256 f40ac08d system.task_primitives%s
+D s-taprop.ads		20190518041256 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20190518041257 b9d612e2 system.tasking%s
+D s-taprob.ads		20190518041256 acd6094d system.tasking.protected_objects%s
+D s-tpoben.ads		20190518041257 60ad3dae system.tasking.protected_objects.entries%s
+D s-tassta.ads		20190518041256 cca55c94 system.tasking.stages%s
+D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
+G a e
+G c Z b b [gee standard 8 11 none]
+X 1 activation_log_reader.ads
+2K9*Activation_Log_Reader 11e26 14|1w6
+X 3 activation_manager.ads
+2K9*Activation_Manager 18e23 14|2w6
+X 11 event_queue.ads
+2K9*Event_Queue 15e16 14|3w6
+X 12 external_event_server.ads
+2K9*External_Event_Server 6e26 14|4w6
+X 14 gee.adb
+8U11*Gee 8b11 11l5 11t8
+X 17 on_call_producer.ads
+2K9*On_Call_Producer 14|5w6 17|9e21
+X 19 regular_producer.ads
+2K9*Regular_Producer 14|6w6 19|6e21
+X 21 request_buffer.ads
+1K9*Request_Buffer 14|7w6 21|4e19
+X 33 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+

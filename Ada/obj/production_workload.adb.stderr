@@ -1,0 +1,109 @@
+production_workload.adb:17:04: (style) space required
+production_workload.adb:18:04: (style) space required
+production_workload.adb:19:04: (style) space required
+production_workload.adb:21:04: (style) space required
+production_workload.adb:25:09: warning: no entities of "Ada.Exceptions" are referenced
+production_workload.adb:25:22: warning: use clause for package "Exceptions" has no effect
+production_workload.adb:30:06: (style) space required
+production_workload.adb:33:04: (style) space required
+production_workload.adb:35:04: (style) space required
+production_workload.adb:36:06: (style) space required
+production_workload.adb:37:06: (style) space required
+production_workload.adb:120:06: (style) space required
+production_workload.adb:127:06: (style) space required
+production_workload.adb:128:06: (style) space required
+production_workload.adb:130:06: (style) space required
+production_workload.adb:132:06: (style) space required
+production_workload.adb:139:06: (style) space required
+production_workload.adb:141:06: (style) space required
+production_workload.adb:143:06: (style) space required
+production_workload.adb:148:06: (style) space required
+production_workload.adb:150:06: (style) space required
+production_workload.adb:152:06: (style) space required
+production_workload.adb:159:06: (style) space required
+production_workload.adb:161:06: (style) space required
+production_workload.adb:162:06: (style) space required
+production_workload.adb:164:06: (style) space required
+production_workload.adb:166:06: (style) space required
+production_workload.adb:171:06: (style) space required
+production_workload.adb:173:06: (style) space required
+production_workload.adb:175:06: (style) space required
+production_workload.adb:180:06: (style) space required
+production_workload.adb:182:06: (style) space required
+production_workload.adb:185:28: (style) space required
+production_workload.adb:197:05: warning: variable "I" is read but never assigned
+production_workload.adb:206:37: (style) space required
+production_workload.adb:209:07: (style) subprogram body has no previous spec
+production_workload.adb:212:15: (style) space required
+production_workload.adb:216:07: (style) subprogram body has no previous spec
+production_workload.adb:216:17: warning: procedure "P0" is not referenced
+production_workload.adb:225:12: (style) space required
+production_workload.adb:226:12: (style) space required
+production_workload.adb:227:12: (style) space required
+production_workload.adb:230:05: (style) subprogram body has no previous spec
+production_workload.adb:230:17: (style) space required
+production_workload.adb:233:12: (style) space required
+production_workload.adb:233:42: warning: "Z" may be referenced before it has a value
+production_workload.adb:234:12: (style) space required
+production_workload.adb:241:28: (style) space required
+production_workload.adb:245:10: (style) space required
+production_workload.adb:250:34: (style) space required
+production_workload.adb:255:15: (style) space required
+production_workload.adb:256:15: (style) space required
+production_workload.adb:259:10: (style) space required
+production_workload.adb:261:14: (style) space required
+production_workload.adb:262:30: (style) space required
+production_workload.adb:263:11: (style) space required
+production_workload.adb:266:10: (style) space required
+production_workload.adb:273:21: (style) space required
+production_workload.adb:276:15: (style) space required
+production_workload.adb:284:15: (style) space required
+production_workload.adb:287:10: (style) space required
+production_workload.adb:289:10: (style) space required
+production_workload.adb:300:10: (style) space required
+production_workload.adb:302:10: (style) space required
+production_workload.adb:305:16: (style) space required
+production_workload.adb:309:10: (style) space required
+production_workload.adb:311:13: (style) space required
+production_workload.adb:318:08: (style) space required
+production_workload.adb:326:12: warning: variable "Error" is not referenced
+production_workload.adb:328:52: (style) trailing spaces not permitted
+production_workload.adb:329:01: (style) horizontal tab not allowed
+production_workload.adb:330:01: (style) horizontal tab not allowed
+production_workload.adb:331:04: (style) "end" in wrong column, should be in column 3
+production_workload.ads:1:03: (style) space required
+production_workload.ads:2:03: (style) two spaces required
+production_workload.ads:3:03: (style) two spaces required
+production_workload.ads:4:03: (style) two spaces required
+production_workload.ads:5:03: (style) two spaces required
+production_workload.ads:6:03: (style) two spaces required
+production_workload.ads:7:03: (style) two spaces required
+production_workload.ads:8:03: (style) two spaces required
+production_workload.ads:9:03: (style) two spaces required
+production_workload.ads:10:03: (style) two spaces required
+production_workload.ads:11:03: (style) two spaces required
+production_workload.ads:12:03: (style) two spaces required
+production_workload.ads:13:03: (style) two spaces required
+production_workload.ads:14:03: (style) two spaces required
+production_workload.ads:15:03: (style) two spaces required
+production_workload.ads:16:03: (style) space required
+production_workload.ads:22:05: (style) two spaces required
+production_workload.ads:23:05: (style) two spaces required
+production_workload.ads:24:05: (style) two spaces required
+production_workload.ads:25:05: (style) two spaces required
+production_workload.ads:26:05: (style) two spaces required
+production_workload.ads:27:05: (style) two spaces required
+production_workload.ads:28:05: (style) two spaces required
+production_workload.ads:29:05: (style) two spaces required
+production_workload.ads:30:05: (style) two spaces required
+production_workload.ads:31:05: (style) two spaces required
+production_workload.ads:32:05: (style) two spaces required
+production_workload.ads:33:05: (style) two spaces required
+production_workload.ads:34:05: (style) two spaces required
+production_workload.ads:35:05: (style) two spaces required
+production_workload.ads:36:05: (style) two spaces required
+production_workload.ads:37:05: (style) two spaces required
+production_workload.ads:38:05: (style) two spaces required
+production_workload.ads:39:05: (style) two spaces required
+production_workload.ads:41:28: (style) space required
+production_workload.ads:42:06: (style) space required

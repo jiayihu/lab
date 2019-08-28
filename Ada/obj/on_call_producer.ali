@@ -1,0 +1,154 @@
+V "GNAT Lib v2019"
+A -gnatA
+A -g
+A -gnatwa
+A -gnatya
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatyn
+A -gnatyp
+A -gnatyr
+A -gnatys
+A -gnatyS
+A -gnatyu
+A -gnatyx
+A -gnatyt
+A -gnat12
+A -mtune=core2
+A -mmacosx-version-min=10.14.0
+A -fPIC
+A -feliminate-unused-debug-symbols
+P ZX
+
+RN
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_IO
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_TASKING
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+RV MAX_TASKS=1
+
+U on_call_producer%b	on_call_producer.adb	5bc711f4 OO PK
+W activation_manager%s	activation_manager.adb	activation_manager.ali  AD
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+Z on_call_producer_parameters%s  on_call_producer_parameters.adb  on_call_producer_parameters.ali  AD
+W request_buffer%s	request_buffer.adb	request_buffer.ali  AD
+Z system.concat_2%s	s-conca2.adb		s-conca2.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.tasking.stages%s  s-tassta.adb		s-tassta.ali
+
+U on_call_producer%s	on_call_producer.ads	69402ece EE OO PK
+Z ada.real_time%s	a-reatim.adb		a-reatim.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W on_call_producer_parameters%s  on_call_producer_parameters.adb  on_call_producer_parameters.ali
+Z system%s		system.ads		system.ali
+Z system.parameters%s	s-parame.adb		s-parame.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.task_info%s	s-tasinf.adb		s-tasinf.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.stages%s  s-tassta.adb		s-tassta.ali
+
+D activation_manager.ads  20170223093616 88c4423e activation_manager%s
+D ada.ads		20190518041255 76789da1 ada%s
+D a-except.ads		20190518041255 291912d5 ada.exceptions%s
+D a-ioexce.ads		20190518041254 e4a01f64 ada.io_exceptions%s
+D a-reatim.ads		20190518041256 0240fc73 ada.real_time%s
+D a-stream.ads		20190518041255 119b8fb3 ada.streams%s
+D a-tags.ads		20190518041256 491b781d ada.tags%s
+D a-textio.ads		20190518041256 aef4d56d ada.text_io%s
+D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20190518041254 5ab55268 interfaces%s
+D i-c.ads		20190518041254 5421119b interfaces.c%s
+D i-cstrea.ads		20190518041254 e53d8b8e interfaces.c_streams%s
+D on_call_producer.ads	20170223201508 ba1a617a on_call_producer%s
+D on_call_producer.adb	20170225170108 73720551 on_call_producer%b
+D on_call_producer_parameters.ads  20170223093614 d35a4fb4 on_call_producer_parameters%s
+D request_buffer.ads	20170223093614 9d86f059 request_buffer%s
+D system.ads		20190518041255 085b6ffb system%s
+D s-atacco.ads		20190518041256 4c36d12f system.address_to_access_conversions%s
+D s-conca2.ads		20190518041255 02a0d7d0 system.concat_2%s
+D s-crtl.ads		20190518041254 0ebbdb71 system.crtl%s
+D s-exctab.ads		20190518041255 54135002 system.exception_table%s
+D s-ficobl.ads		20190518041256 078245e4 system.file_control_block%s
+D s-multip.ads		20190518041254 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20190518124528 e40aaf2d system.os_constants%s
+D s-osinte.ads		20190518041257 01b3ad47 system.os_interface%s
+D s-parame.ads		20190518041256 48ec542b system.parameters%s
+D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
+D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
+D s-stausa.ads		20190518041255 017a0a05 system.stack_usage%s
+D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
+D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
+D s-tasinf.ads		20190518041256 801abd01 system.task_info%s
+D s-taspri.ads		20190518041256 f40ac08d system.task_primitives%s
+D s-taprop.ads		20190518041256 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20190518041257 b9d612e2 system.tasking%s
+D s-tassta.ads		20190518041256 cca55c94 system.tasking.stages%s
+D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20190518041255 1b7d22d2 system.wch_con%s
+G a e
+G c b b b [b on_call_producer 5 1 none]
+G c Z s b [start on_call_producer 4 13 none]
+G c Z s b [on_call_producerTK on_call_producer 5 9 none]
+G c Z s s [on_call_producerTKVIP on_call_producer 5 4 none]
+G r c none [b on_call_producer 5 1 none] [activation_sporadic activation_manager 15 14 none]
+G r c none [b on_call_producer 5 1 none] [extract request_buffer 3 13 none]
+G r c none [b on_call_producer 5 1 none] [on_call_producer_operation on_call_producer_parameters 4 14 none]
+G r c none [start on_call_producer 4 13 none] [deposit request_buffer 2 13 none]
+G r c none [on_call_producerTK on_call_producer 5 9 none] [activation_sporadic activation_manager 15 14 none]
+G r c none [on_call_producerTK on_call_producer 5 9 none] [extract request_buffer 3 13 none]
+G r c none [on_call_producerTK on_call_producer 5 9 none] [on_call_producer_operation on_call_producer_parameters 4 14 none]
+X 1 activation_manager.ads
+2K9*Activation_Manager 18e23 14|2w6 15r7
+15U14*Activation_Sporadic 14|15s26
+X 2 ada.ads
+16K9*Ada 20e8 14|3r6 4r6 4r26 26r10
+X 3 a-except.ads
+54K13*Exceptions 349e19 14|4w10 4r30
+104V13*Exception_Information{string} 14|27s49
+X 8 a-textio.ads
+57K13*Text_IO 727e16 14|3w10 26r14
+508U14*Put_Line 14|26s22
+X 13 on_call_producer.ads
+2K9*On_Call_Producer 9l5 9e21 14|5b14 29l5 29t21
+4V13*Start{boolean} 4>20 14|7b13 10l8 10t13
+4i20 Activation_Parameter{positive} 14|7b20 9r38
+5t9*On_Call_Producer 14|11b14 28l8 28t24
+X 14 on_call_producer.adb
+12i7 Current_Workload{positive} 18m10 21r13
+24r12 Error{3|63R9} 27r72
+X 15 on_call_producer_parameters.ads
+2K9*On_Call_Producer_Parameters 13|1w6 8r7 14|20r10 15|5e32
+3i4*On_Call_Producer_Priority{17|125I12} 13|8r35
+4U14*On_Call_Producer_Operation 14|20s38
+X 16 request_buffer.ads
+1K9*Request_Buffer 14|1w6 9r14 18r30 16|4e19
+2V13*Deposit{boolean} 14|9s29
+3V13*Extract{positive} 14|18s45
+X 17 system.ads
+124I12*Any_Priority{integer}
+125I12*Priority{124I12}
+X 30 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+

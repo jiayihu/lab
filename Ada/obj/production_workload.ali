@@ -1,0 +1,146 @@
+V "GNAT Lib v2019"
+A -gnatA
+A -g
+A -gnatwa
+A -gnatya
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatyn
+A -gnatyp
+A -gnatyr
+A -gnatys
+A -gnatyS
+A -gnatyu
+A -gnatyx
+A -gnatyt
+A -gnat12
+A -mtune=core2
+A -mmacosx-version-min=10.14.0
+A -fPIC
+A -feliminate-unused-debug-symbols
+P ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_FLOATING_POINT
+RV NO_IO
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U production_workload%b	production_workload.adb	96e582b6 NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.numerics%s	a-numeri.ads		a-numeri.ali
+W ada.numerics.elementary_functions%s  a-nuelfu.ads  a-nuelfu.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+
+U production_workload%s	production_workload.ads	d22b1898 BN EE OO PK
+Z ada.tags%s		a-tags.adb		a-tags.ali
+Z system%s		system.ads		system.ali
+Z system.exception_table%s  s-exctab.adb	s-exctab.ali
+Z system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20190518041255 76789da1 ada%s
+D a-except.ads		20190518041255 291912d5 ada.exceptions%s
+D a-ioexce.ads		20190518041254 e4a01f64 ada.io_exceptions%s
+D a-numeri.ads		20190518041254 bb51c45a ada.numerics%s
+D a-nuelfu.ads		20190518041254 03e83d1c ada.numerics.elementary_functions%s
+D a-ngelfu.ads		20190518041256 55716239 ada.numerics.generic_elementary_functions%s
+D a-stream.ads		20190518041255 119b8fb3 ada.streams%s
+D a-tags.ads		20190518041256 491b781d ada.tags%s
+D a-textio.ads		20190518041256 aef4d56d ada.text_io%s
+D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20190518041254 5ab55268 interfaces%s
+D i-cstrea.ads		20190518041254 e53d8b8e interfaces.c_streams%s
+D production_workload.ads  20170619142006 d22b1898 production_workload%s
+D production_workload.adb  20170224115320 c0cb608a production_workload%b
+D system.ads		20190518041255 085b6ffb system%s
+D s-crtl.ads		20190518041254 0ebbdb71 system.crtl%s
+D s-exctab.ads		20190518041255 54135002 system.exception_table%s
+D s-ficobl.ads		20190518041256 078245e4 system.file_control_block%s
+D s-parame.ads		20190518041256 48ec542b system.parameters%s
+D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
+D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
+D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
+D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
+D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20190518041255 1b7d22d2 system.wch_con%s
+G a e
+G c Z s b [small_whetstone production_workload 41 13 none]
+X 1 ada.ads
+16K9*Ada 20e8 14|22r6 23r5 25r6 25r26 26r6 219r13 222r13 251r13 253r13 272r13
+. 274r13 280r13 282r13
+X 2 a-except.ads
+54K13*Exceptions 349e19 14|25w10 25r30
+X 4 a-numeri.ads
+16K13*Numerics 32e17 14|22r10 23r9
+X 5 a-nuelfu.ads
+18K22*Elementary_Functions[6|39] 14|22w19 23r18
+X 6 a-ngelfu.ads
+52V13*Sqrt{float} 14|305s12[5|18]
+75V13*Log{float} 14|305s23[5|18]
+83V13*Exp{float} 14|305s18[5|18]
+94V13*Sin{float} 14|256s27[5|18]
+103V13*Cos{float} 14|284s32[5|18]
+X 9 a-textio.ads
+57K13*Text_IO 727e16 14|26w10 219r17 222r17 251r17 253r17 272r17 274r17 280r17
+. 282r17
+508U14*Put_Line 14|219s25 222s25 251s25 253s25 272s25 274s25 280s25 282s25
+X 13 production_workload.ads
+18K9*Production_Workload 44l5 44e24 14|28b14 333l5 333t24
+20X3*Workload_Failure
+41U13*Small_Whetstone 41>29 14|185b13 331l8 331t23
+41i29 Kilo_Whets{positive} 14|185b29 241r30
+X 14 production_workload.adb
+31F11 Whet_Float{float} 202r20 203r11 204r11 207r28 230r22 231r22 232r26
+. 233r23 234r23 255r27 256r32 263r17 276r27
+187N5 T 233r37 234r37
+188N5 T1 305r37
+189N5 T2 236r30
+191N5 N8 262r32
+192N5 N9 206r39 221r22 221r47 223r19 223r29 223r39 252r27 252r44 273r26 279r24
+. 305r30
+194N5 Value 311r18
+195N5 Tolerance 311r27
+197i5 I{integer} 227r13
+198i5 IJ{integer} 218r14 220m13 221r17 223m13 225r13 227r23 247m10 247r22
+. 248r27 255r38 268m10 269r34 276r38 313m9 313r15
+199i5 IK{integer} 218r26 220m22 221r30 223m23 225r23 226r13 247r17 247r34
+. 248m10 248r22 249r22 249r29 250r14 252r17 255r43 256r16 268r32 269r22 269r29
+. 270m10 270r22 270r28 276r43 279r14 281r17 284r16
+200i5 IL{integer} 218r38 220m31 221r42 223m33 226r23 247r29 248r16 249m10
+. 249r17 249r34 250r30 252r34 255r16 255r48 256r43 268r16 268r22 269m10 269r17
+. 270r17 271r14 273r17 276r16 276r48
+202f5 Y{31F11} 263r13 263r45
+203f5 Z{31F11} 261m7 263r49 263m52 284r36 305m7 307r20 311r14
+204f5 Sum{31F11} 307m7 307r14 312m9 312r22
+206I13 Index{integer} 207r18
+207a5 E1(31F11) 211r26 212m13 225m10 225r20 226m10 226r20 227m10 227r20 255m13
+. 256m13 261r12 276m13 284m13 305r27
+209U17 Clear_Array 209b17 214l11 214t22 243s7
+211i14 Loop_Var{integer} 212r16
+216U17 P0 216b17 228l11 228t13
+230U15 P3 230b15 230>18 231>18 232<18 237l9 237t11 263s9
+230f18 X{31F11} 233r46
+231f18 Y{31F11} 234r50
+232f18 Z{31F11} 233r42 236m7
+233f7 Xtemp{31F11} 234r42 236r13
+234f7 Ytemp{31F11} 236r21
+241i9 Outer_Loop_Var{integer}
+262i11 Inner_Loop_Var{integer} 263r28
+326r12 Error{2|63R9}
+

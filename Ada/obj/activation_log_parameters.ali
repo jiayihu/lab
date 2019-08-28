@@ -1,0 +1,47 @@
+V "GNAT Lib v2019"
+A -gnatA
+A -g
+A -gnatwa
+A -gnatya
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatyn
+A -gnatyp
+A -gnatyr
+A -gnatys
+A -gnatyS
+A -gnatyu
+A -gnatyx
+A -gnatyt
+A -gnat12
+A -mtune=core2
+A -mmacosx-version-min=10.14.0
+A -fPIC
+A -feliminate-unused-debug-symbols
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U activation_log_parameters%s  activation_log_parameters.ads  59776cb6 NE OO PK
+W system%s		system.ads		system.ali
+
+D activation_log_parameters.ads  20170222213754 512c034d activation_log_parameters%s
+D system.ads		20190518041255 085b6ffb system%s
+G a e
+X 1 activation_log_parameters.ads
+2K9*Activation_Log_Parameters 4l5 4e30
+3i4*Activation_Log_Priority{2|125I12}
+X 2 system.ads
+37K9*System 1|1w6 3r39 2|174e11
+124I12*Any_Priority{integer}
+125I12*Priority{124I12} 1|3r46
+

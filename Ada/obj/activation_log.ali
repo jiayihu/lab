@@ -1,0 +1,119 @@
+V "GNAT Lib v2019"
+A -gnatA
+A -g
+A -gnatwa
+A -gnatya
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatyn
+A -gnatyp
+A -gnatyr
+A -gnatys
+A -gnatyS
+A -gnatyu
+A -gnatyx
+A -gnatyt
+A -gnat12
+A -mtune=core2
+A -mmacosx-version-min=10.14.0
+A -fPIC
+A -feliminate-unused-debug-symbols
+P ZX
+
+RN
+RV NO_PROTECTED_TYPES
+RV NO_DEFAULT_INITIALIZATION
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+RV MAX_ENTRY_QUEUE_LENGTH=1+
+
+U activation_log%b	activation_log.adb	5444e136 NE OO PK
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+
+U activation_log%s	activation_log.ads	f22a4922 EE OO PF PK
+W activation_log_parameters%s  activation_log_parameters.ads  activation_log_parameters.ali
+W ada%s			ada.ads			ada.ali
+W ada.real_time%s	a-reatim.adb		a-reatim.ali
+Z system%s		system.ads		system.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.tasking.protected_objects%s  s-taprob.adb  s-taprob.ali
+
+D activation_log.ads	20190827155046 a146b61c activation_log%s
+D activation_log.adb	20170223093614 f502572a activation_log%b
+D activation_log_parameters.ads  20170222213754 512c034d activation_log_parameters%s
+D ada.ads		20190518041255 76789da1 ada%s
+D a-except.ads		20190518041255 291912d5 ada.exceptions%s
+D a-reatim.ads		20190518041256 0240fc73 ada.real_time%s
+D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20190518041254 5ab55268 interfaces%s
+D i-c.ads		20190518041254 5421119b interfaces.c%s
+D system.ads		20190518041255 085b6ffb system%s
+D s-atacco.ads		20190518041256 4c36d12f system.address_to_access_conversions%s
+D s-exctab.ads		20190518041255 54135002 system.exception_table%s
+D s-multip.ads		20190518041254 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20190518124528 e40aaf2d system.os_constants%s
+D s-osinte.ads		20190518041257 01b3ad47 system.os_interface%s
+D s-parame.ads		20190518041256 48ec542b system.parameters%s
+D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
+D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
+D s-stausa.ads		20190518041255 017a0a05 system.stack_usage%s
+D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
+D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
+D s-tasinf.ads		20190518041256 801abd01 system.task_info%s
+D s-taspri.ads		20190518041256 f40ac08d system.task_primitives%s
+D s-taprop.ads		20190518041256 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20190518041257 b9d612e2 system.tasking%s
+D s-taprob.ads		20190518041256 acd6094d system.tasking.protected_objects%s
+D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
+G a e
+G c Z s b [write activation_log__activation_log 9 17 none]
+G c Z s b [read activation_log__activation_log 11 17 none]
+G c Z s b [activation_log__writeN activation_log 9 7 none]
+G c Z s b [activation_log__writeP activation_log 9 7 none]
+G c Z s b [activation_log__readN activation_log 11 7 none]
+G c Z s b [activation_log__readP activation_log 11 7 none]
+G c Z s s [activation_logTVIP activation_log 5 4 none]
+G c Z s s [write activation_log 20 14 none]
+G c Z s s [read activation_log 21 14 none]
+X 1 activation_log.ads
+3K9*Activation_Log 25l5 25e19 2|1b14 15l5 15t19
+4M9*Range_Counter 12r36 15r28 22r33 2|8r46
+5w14*Activation_Log 20r28 24r14 2|2b19 14l8 14t22
+9U17 Write 20s43 2|3b17 7l11 7t16
+11U17 Read 12<13 13<13 24s29 2|8b17 13l11 13t15
+12m13 Last_Activation{4M9} 2|8b23 11m10
+13o13 Last_Active_Time{6|49O9} 2|9b23 12m10
+15m7 Activation_Counter{4M9} 2|5r10 5r32 11r29
+16o7 Activation_Time{6|49O9} 2|6r10 12r30
+20U14*Write
+21U14*Read
+22m10 Last_Activation{4M9}
+23o10 Last_Active_Time{6|49O9}
+X 3 activation_log_parameters.ads
+2K9*Activation_Log_Parameters 1|1w6 7r8 3|4e30
+3i4*Activation_Log_Priority{10|125I12} 1|7r34
+X 4 ada.ads
+16K9*Ada 1|2r6 13r36 16r25 23r33 2|6r29 9r46 4|20e8
+X 6 a-reatim.ads
+39K13*Real_Time 1|2w10 13r40 16r29 23r37 2|6r33 9r50 6|185e18
+49O9*Time<duration> 1|13r50 16r39 23r47 2|9r60
+61V13*Clock{49O9} 2|6s43
+X 10 system.ads
+124I12*Any_Priority{integer}
+125I12*Priority{124I12}
+X 20 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+

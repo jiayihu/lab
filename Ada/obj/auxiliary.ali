@@ -1,0 +1,57 @@
+V "GNAT Lib v2019"
+A -gnatA
+A -g
+A -gnatwa
+A -gnatya
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatyn
+A -gnatyp
+A -gnatyr
+A -gnatys
+A -gnatyS
+A -gnatyu
+A -gnatyx
+A -gnatyt
+A -gnat12
+A -mtune=core2
+A -mmacosx-version-min=10.14.0
+A -fPIC
+A -feliminate-unused-debug-symbols
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+RV SPARK_05
+
+U auxiliary%b		auxiliary.adb		3a6c640f NE OO PK
+
+U auxiliary%s		auxiliary.ads		e63055a9 EE NE OO PK
+
+D auxiliary.ads		20170223093614 e63055a9 auxiliary%s
+D auxiliary.adb		20170223093614 dc5c31a6 auxiliary%b
+D system.ads		20190518041255 085b6ffb system%s
+G a e
+G c Z s b [due_activation auxiliary 3 13 none]
+G c Z s b [check_due auxiliary 6 13 none]
+X 1 auxiliary.ads
+1K9*Auxiliary 7l5 7e14 2|2b14 23l5 23t14
+2M9*Range_Counter 3r37 2|3r22 7r37
+3V13*Due_Activation{boolean} 3>29 2|7b13 12l8 12t22
+3m29 Param{2M9} 2|7b29 11r33
+4M9*Run_Counter 2|4r16
+5i4*Factor{natural} 2|19r40 21r26
+6V13*Check_Due{boolean} 2|15b13 22l8 22t17
+X 2 auxiliary.adb
+3m4 Request_Counter{1|2M9} 9m7 9r26 11r15
+4m4 Run_Count{1|4M9} 18m7 18r20 19r27 21r45
+16i7 Divisor{natural} 19m7 21r16
+

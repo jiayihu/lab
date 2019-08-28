@@ -1,0 +1,166 @@
+V "GNAT Lib v2019"
+A -gnatA
+A -g
+A -gnatwa
+A -gnatya
+A -gnatyb
+A -gnatyc
+A -gnatyd
+A -gnatye
+A -gnatyf
+A -gnatyh
+A -gnatyi
+A -gnatyI
+A -gnatyk
+A -gnatyl
+A -gnatyn
+A -gnatyp
+A -gnatyr
+A -gnatys
+A -gnatyS
+A -gnatyu
+A -gnatyx
+A -gnatyt
+A -gnat12
+A -mtune=core2
+A -mmacosx-version-min=10.14.0
+A -fPIC
+A -feliminate-unused-debug-symbols
+P ZX
+
+RN
+RV NO_EXCEPTION_HANDLERS
+RV NO_EXCEPTION_PROPAGATION
+RV NO_EXCEPTIONS
+RV NO_IO
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_TASKING
+RV NO_DEFAULT_INITIALIZATION
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+RV MAX_TASKS=1
+
+U activation_log_reader%b  activation_log_reader.adb  aef99703 OO PF PK
+Z activation_log_reader_parameters%s  activation_log_reader_parameters.adb  activation_log_reader_parameters.ali  AD
+W activation_manager%s	activation_manager.adb	activation_manager.ali  AD
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.synchronous_task_control%s  a-sytaco.adb	a-sytaco.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+Z system.concat_2%s	s-conca2.adb		s-conca2.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.standard_library%s  s-stalib.adb	s-stalib.ali
+Z system.tasking.stages%s  s-tassta.adb		s-tassta.ali
+
+U activation_log_reader%s  activation_log_reader.ads  b714540f EE OO PK
+W activation_log_reader_parameters%s  activation_log_reader_parameters.adb  activation_log_reader_parameters.ali
+Z ada.real_time%s	a-reatim.adb		a-reatim.ali
+Z ada.tags%s		a-tags.adb		a-tags.ali
+Z system%s		system.ads		system.ali
+Z system.parameters%s	s-parame.adb		s-parame.ali
+Z system.soft_links%s	s-soflin.adb		s-soflin.ali
+Z system.task_info%s	s-tasinf.adb		s-tasinf.ali
+Z system.tasking%s	s-taskin.adb		s-taskin.ali
+Z system.tasking.stages%s  s-tassta.adb		s-tassta.ali
+
+D activation_log_reader.ads  20170225170334 d6114eef activation_log_reader%s
+D activation_log_reader.adb  20170225170438 6e0eb578 activation_log_reader%b
+D activation_log_reader_parameters.ads  20170223093612 61051ae0 activation_log_reader_parameters%s
+D activation_manager.ads  20170223093616 88c4423e activation_manager%s
+D ada.ads		20190518041255 76789da1 ada%s
+D a-except.ads		20190518041255 291912d5 ada.exceptions%s
+D a-finali.ads		20190518041255 bf4f806b ada.finalization%s
+D a-ioexce.ads		20190518041254 e4a01f64 ada.io_exceptions%s
+D a-reatim.ads		20190518041256 0240fc73 ada.real_time%s
+D a-stream.ads		20190518041255 119b8fb3 ada.streams%s
+D a-sytaco.ads		20190518041257 19cfe912 ada.synchronous_task_control%s
+D a-tags.ads		20190518041256 491b781d ada.tags%s
+D a-taside.ads		20190518041257 00e3a3f6 ada.task_identification%s
+D a-textio.ads		20190518041256 aef4d56d ada.text_io%s
+D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20190518041254 5ab55268 interfaces%s
+D i-c.ads		20190518041254 5421119b interfaces.c%s
+D i-cstrea.ads		20190518041254 e53d8b8e interfaces.c_streams%s
+D system.ads		20190518041255 085b6ffb system%s
+D s-atacco.ads		20190518041256 4c36d12f system.address_to_access_conversions%s
+D s-conca2.ads		20190518041255 02a0d7d0 system.concat_2%s
+D s-crtl.ads		20190518041254 0ebbdb71 system.crtl%s
+D s-exctab.ads		20190518041255 54135002 system.exception_table%s
+D s-ficobl.ads		20190518041256 078245e4 system.file_control_block%s
+D s-finroo.ads		20190518041256 4ff27390 system.finalization_root%s
+D s-memory.ads		20190518041255 597d6634 system.memory%s
+D s-multip.ads		20190518041254 38ac9f73 system.multiprocessors%s
+D s-oscons.ads		20190518124528 e40aaf2d system.os_constants%s
+D s-osinte.ads		20190518041257 01b3ad47 system.os_interface%s
+D s-parame.ads		20190518041256 48ec542b system.parameters%s
+D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
+D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
+D s-stausa.ads		20190518041255 017a0a05 system.stack_usage%s
+D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
+D s-stalib.adb		20190518041254 f2fe2716 system.standard_library%b
+D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
+D s-tasinf.ads		20190518041256 801abd01 system.task_info%s
+D s-taspri.ads		20190518041256 f40ac08d system.task_primitives%s
+D s-taprop.ads		20190518041256 1dd2e1b6 system.task_primitives.operations%s
+D s-taskin.ads		20190518041257 b9d612e2 system.tasking%s
+D s-tassta.ads		20190518041256 cca55c94 system.tasking.stages%s
+D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20190518041255 1b7d22d2 system.wch_con%s
+G a e
+G c b b b [b activation_log_reader 5 1 none]
+G c Z s b [signal activation_log_reader 5 14 none]
+G c Z s b [wait activation_log_reader 6 14 none]
+G c Z s b [activation_log_readerTK activation_log_reader 7 9 none]
+G c Z s s [activation_log_readerTKVIP activation_log_reader 7 4 none]
+G r c none [b activation_log_reader 5 1 none] [activation_sporadic activation_manager 15 14 none]
+G r c none [b activation_log_reader 5 1 none] [activation_log_reader_operation activation_log_reader_parameters 4 14 none]
+G r c none [activation_log_readerTK activation_log_reader 7 9 none] [activation_sporadic activation_manager 15 14 none]
+G r c none [activation_log_readerTK activation_log_reader 7 9 none] [activation_log_reader_operation activation_log_reader_parameters 4 14 none]
+X 1 activation_log_reader.ads
+2K9*Activation_Log_Reader 11l5 11e26 2|5b14 32l5 32t26
+5U14*Signal 2|7b14 10l8 10t14
+6U14*Wait 2|11b14 15l8 15t12 22s10
+7t9*Activation_Log_Reader 2|16b14 31l8 31t29
+X 2 activation_log_reader.adb
+6r4 Local_Suspension_Object{11|47R9} 9m46 9r46 14m10 14r10
+27r12 Error{6|63R9} 30r72
+X 3 activation_log_reader_parameters.ads
+2K9*Activation_Log_Reader_Parameters 1|1w6 9r8 2|24r10 3|5e37
+3i4*Activation_Log_Reader_Priority{19|125I12} 1|9r41
+4U14*Activation_Log_Reader_Operation 2|24s43
+X 4 activation_manager.ads
+2K9*Activation_Manager 2|2w6 19r7 4|18e23
+15U14*Activation_Sporadic 2|19s26
+X 5 ada.ads
+16K9*Ada 2|1r6 3r6 4r6 4r26 6r30 9r7 13r7 29r10 5|20e8
+X 6 a-except.ads
+54K13*Exceptions 2|4w10 4r30 6|349e19
+104V13*Exception_Information{string} 2|30s49
+X 11 a-sytaco.ads
+41K13*Synchronous_Task_Control 2|1w10 6r34 9r11 13r11 11|94e33
+47R9*Suspension_Object<7|50R9> 2|6r59 11|85e14
+50U14*Set_True 2|9s36
+64U14*Suspend_Until_True 2|13s36
+X 14 a-textio.ads
+57K13*Text_IO 2|3w10 29r14 14|727e16
+508U14*Put_Line 2|29s22
+X 19 system.ads
+67M9*Address
+124I12*Any_Priority{integer}
+125I12*Priority{124I12}
+X 26 s-memory.ads
+53V13*Alloc{19|67M9} 103i<c,__gnat_malloc>22
+68U14*Free 104i<c,__gnat_free>22
+76V13*Realloc{19|67M9} 105i<c,__gnat_realloc>22
+X 34 s-stausa.ads
+203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
+268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+X 36 s-stalib.adb
+93U14 Break_Start 94i<c,__gnat_break_start>22
+

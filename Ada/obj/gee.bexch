@@ -1,0 +1,34 @@
+[GENERATED OBJECT FILE]
+b__gee.o
+[PROJECT FILES]
+/Users/jiayihu/Downloads/Guide Extended Example/gee.gpr
+20170225175012
+[BOUND OBJECT FILES]
+/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log_parameters.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_manager.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/auxiliary.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/external_event_server_parameters.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/event_queue.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/external_event_server.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/production_workload.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log_reader_parameters.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log_reader.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/on_call_producer_parameters.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/request_buffer_parameters.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/request_buffer.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/on_call_producer.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/regular_producer_parameters.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/regular_producer.o
+/Users/jiayihu/Downloads/Guide Extended Example/obj/gee.o
+[GENERATED SOURCE FILES]
+b__gee.ads
+b__gee.adb
+b__gee.ali
+[RESULTING OPTIONS]
+-L/Users/jiayihu/Downloads/Guide Extended Example/obj/
+-L/Users/jiayihu/Downloads/Guide Extended Example/obj/
+-L/users/jiayihu/opt/gnat/2019/lib/gcc/x86_64-apple-darwin17.7.0/8.3.1/adalib/
+-static
+/users/jiayihu/opt/gnat/2019/lib/gcc/x86_64-apple-darwin17.7.0/8.3.1/adalib/libgnarl.a
+/users/jiayihu/opt/gnat/2019/lib/gcc/x86_64-apple-darwin17.7.0/8.3.1/adalib/libgnat.a
