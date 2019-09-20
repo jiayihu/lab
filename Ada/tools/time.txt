@@ -1,0 +1,1345 @@
+End of cyclic activation.
+Elapsed time:  0.000347190 seconds
+End of cyclic activation.
+Elapsed time:  0.000423940 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000179929 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124613 seconds
+End of cyclic activation.
+Elapsed time:  0.000151351 seconds
+End of cyclic activation.
+Elapsed time:  0.000128327 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131619 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122536 seconds
+End of cyclic activation.
+Elapsed time:  0.000132250 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125042 seconds
+End of cyclic activation.
+Elapsed time:  0.000132196 seconds
+End of cyclic activation.
+Elapsed time:  0.000148482 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127851 seconds
+End of cyclic activation.
+Elapsed time:  0.000141458 seconds
+End of cyclic activation.
+Elapsed time:  0.000129905 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133369 seconds
+End of cyclic activation.
+Elapsed time:  0.000156268 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000139119 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123935 seconds
+End of cyclic activation.
+Elapsed time:  0.000130250 seconds
+End of cyclic activation.
+Elapsed time:  0.000138607 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000166214 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127006 seconds
+End of cyclic activation.
+Elapsed time:  0.000140411 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134958 seconds
+End of cyclic activation.
+Elapsed time:  0.000138476 seconds
+End of cyclic activation.
+Elapsed time:  0.000151714 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124893 seconds
+End of cyclic activation.
+Elapsed time:  0.000178179 seconds
+End of cyclic activation.
+Elapsed time:  0.000145095 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126060 seconds
+End of cyclic activation.
+Elapsed time:  0.000135238 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134345 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000129833 seconds
+End of cyclic activation.
+Elapsed time:  0.000130232 seconds
+End of cyclic activation.
+Elapsed time:  0.000133107 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000141750 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133750 seconds
+End of cyclic activation.
+Elapsed time:  0.000135435 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131988 seconds
+End of cyclic activation.
+Elapsed time:  0.000129488 seconds
+End of cyclic activation.
+Elapsed time:  0.000137679 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000136238 seconds
+End of cyclic activation.
+Elapsed time:  0.000121030 seconds
+End of cyclic activation.
+Elapsed time:  0.000135321 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131560 seconds
+End of cyclic activation.
+Elapsed time:  0.000140994 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000138869 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130393 seconds
+End of cyclic activation.
+Elapsed time:  0.000128952 seconds
+End of cyclic activation.
+Elapsed time:  0.000139667 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000140970 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000129363 seconds
+End of cyclic activation.
+Elapsed time:  0.000180286 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134024 seconds
+End of cyclic activation.
+Elapsed time:  0.000132030 seconds
+End of cyclic activation.
+Elapsed time:  0.000136756 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127935 seconds
+End of cyclic activation.
+Elapsed time:  0.000142375 seconds
+End of cyclic activation.
+Elapsed time:  0.000139423 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128554 seconds
+End of cyclic activation.
+Elapsed time:  0.000131179 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130476 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134857 seconds
+End of cyclic activation.
+Elapsed time:  0.000132036 seconds
+End of cyclic activation.
+Elapsed time:  0.000135280 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000142946 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127149 seconds
+End of cyclic activation.
+Elapsed time:  0.000144685 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125054 seconds
+End of cyclic activation.
+Elapsed time:  0.000130512 seconds
+End of cyclic activation.
+Elapsed time:  0.000133655 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000197494 seconds
+End of cyclic activation.
+Elapsed time:  0.000135054 seconds
+End of cyclic activation.
+Elapsed time:  0.000131518 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000136304 seconds
+End of cyclic activation.
+Elapsed time:  0.000140619 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131446 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000119381 seconds
+End of cyclic activation.
+Elapsed time:  0.000122738 seconds
+End of cyclic activation.
+Elapsed time:  0.000129690 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000144738 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124137 seconds
+End of cyclic activation.
+Elapsed time:  0.000138327 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127327 seconds
+End of cyclic activation.
+Elapsed time:  0.000124631 seconds
+End of cyclic activation.
+Elapsed time:  0.000190810 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127446 seconds
+End of cyclic activation.
+Elapsed time:  0.000132952 seconds
+End of cyclic activation.
+Elapsed time:  0.000134000 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127238 seconds
+End of cyclic activation.
+Elapsed time:  0.000132869 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000149482 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123143 seconds
+End of cyclic activation.
+Elapsed time:  0.000125774 seconds
+End of cyclic activation.
+Elapsed time:  0.000139512 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000141292 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131167 seconds
+End of cyclic activation.
+Elapsed time:  0.000156137 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130173 seconds
+End of cyclic activation.
+Elapsed time:  0.000138143 seconds
+End of cyclic activation.
+Elapsed time:  0.000144702 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131661 seconds
+End of cyclic activation.
+Elapsed time:  0.000121256 seconds
+End of cyclic activation.
+Elapsed time:  0.000128601 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124494 seconds
+End of cyclic activation.
+Elapsed time:  0.000132494 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131327 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133851 seconds
+End of cyclic activation.
+Elapsed time:  0.000132149 seconds
+End of cyclic activation.
+Elapsed time:  0.000138714 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000129339 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124839 seconds
+End of cyclic activation.
+Elapsed time:  0.000140619 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125036 seconds
+End of cyclic activation.
+Elapsed time:  0.000126839 seconds
+End of cyclic activation.
+Elapsed time:  0.000146565 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125440 seconds
+End of cyclic activation.
+Elapsed time:  0.000126613 seconds
+End of cyclic activation.
+Elapsed time:  0.000138994 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131863 seconds
+End of cyclic activation.
+Elapsed time:  0.000137440 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000136935 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127339 seconds
+End of cyclic activation.
+Elapsed time:  0.000572298 seconds
+End of cyclic activation.
+Elapsed time:  0.000138720 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000140012 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131923 seconds
+End of cyclic activation.
+Elapsed time:  0.000141155 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127970 seconds
+End of cyclic activation.
+Elapsed time:  0.000126726 seconds
+End of cyclic activation.
+Elapsed time:  0.000143286 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126345 seconds
+End of cyclic activation.
+Elapsed time:  0.000134083 seconds
+End of cyclic activation.
+Elapsed time:  0.000132524 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000129821 seconds
+End of cyclic activation.
+Elapsed time:  0.000172726 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134649 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128768 seconds
+End of cyclic activation.
+Elapsed time:  0.000126083 seconds
+End of cyclic activation.
+Elapsed time:  0.000131423 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132012 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133405 seconds
+End of cyclic activation.
+Elapsed time:  0.000137815 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000159470 seconds
+End of cyclic activation.
+Elapsed time:  0.000158089 seconds
+End of cyclic activation.
+Elapsed time:  0.000141548 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000136137 seconds
+End of cyclic activation.
+Elapsed time:  0.000133679 seconds
+End of cyclic activation.
+Elapsed time:  0.000131905 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125613 seconds
+End of cyclic activation.
+Elapsed time:  0.000524036 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128488 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124369 seconds
+End of cyclic activation.
+Elapsed time:  0.000120810 seconds
+End of cyclic activation.
+Elapsed time:  0.000127429 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131738 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124327 seconds
+End of cyclic activation.
+Elapsed time:  0.000137488 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126238 seconds
+End of cyclic activation.
+Elapsed time:  0.000240869 seconds
+End of cyclic activation.
+Elapsed time:  0.000142137 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000121946 seconds
+End of cyclic activation.
+Elapsed time:  0.000128036 seconds
+End of cyclic activation.
+Elapsed time:  0.000127798 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124440 seconds
+End of cyclic activation.
+Elapsed time:  0.000130470 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131042 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000121548 seconds
+End of cyclic activation.
+Elapsed time:  0.000126036 seconds
+End of cyclic activation.
+Elapsed time:  0.000138714 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000143042 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122012 seconds
+End of cyclic activation.
+Elapsed time:  0.000129446 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000120661 seconds
+End of cyclic activation.
+Elapsed time:  0.000120006 seconds
+End of cyclic activation.
+Elapsed time:  0.000135875 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000138089 seconds
+End of cyclic activation.
+Elapsed time:  0.000122113 seconds
+End of cyclic activation.
+Elapsed time:  0.000137405 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123804 seconds
+End of cyclic activation.
+Elapsed time:  0.000138970 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130964 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125006 seconds
+End of cyclic activation.
+Elapsed time:  0.000122524 seconds
+End of cyclic activation.
+Elapsed time:  0.000128905 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134756 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122607 seconds
+End of cyclic activation.
+Elapsed time:  0.000549292 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126446 seconds
+End of cyclic activation.
+Elapsed time:  0.000146685 seconds
+End of cyclic activation.
+Elapsed time:  0.000180399 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127351 seconds
+End of cyclic activation.
+Elapsed time:  0.000140137 seconds
+End of cyclic activation.
+Elapsed time:  0.000174893 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133518 seconds
+End of cyclic activation.
+Elapsed time:  0.000130982 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000135845 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000198756 seconds
+End of cyclic activation.
+Elapsed time:  0.000125333 seconds
+End of cyclic activation.
+Elapsed time:  0.000160845 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000151131 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122488 seconds
+End of cyclic activation.
+Elapsed time:  0.000129970 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000121661 seconds
+End of cyclic activation.
+Elapsed time:  0.000136982 seconds
+End of cyclic activation.
+Elapsed time:  0.000136976 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125387 seconds
+End of cyclic activation.
+Elapsed time:  0.000150226 seconds
+End of cyclic activation.
+Elapsed time:  0.000133804 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000186179 seconds
+End of cyclic activation.
+Elapsed time:  0.000180589 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000129054 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133363 seconds
+End of cyclic activation.
+Elapsed time:  0.000132845 seconds
+End of cyclic activation.
+Elapsed time:  0.000279893 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000136214 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000148792 seconds
+End of cyclic activation.
+Elapsed time:  0.000136119 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127333 seconds
+End of cyclic activation.
+Elapsed time:  0.000127232 seconds
+End of cyclic activation.
+Elapsed time:  0.000142940 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124363 seconds
+End of cyclic activation.
+Elapsed time:  0.000124988 seconds
+End of cyclic activation.
+Elapsed time:  0.000138173 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000135560 seconds
+End of cyclic activation.
+Elapsed time:  0.000132786 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000881685 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000117405 seconds
+End of cyclic activation.
+Elapsed time:  0.000121708 seconds
+End of cyclic activation.
+Elapsed time:  0.000130446 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000141232 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000121827 seconds
+End of cyclic activation.
+Elapsed time:  0.000136583 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000135262 seconds
+End of cyclic activation.
+Elapsed time:  0.000148190 seconds
+End of cyclic activation.
+Elapsed time:  0.000133536 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000136905 seconds
+End of cyclic activation.
+Elapsed time:  0.000147696 seconds
+End of cyclic activation.
+Elapsed time:  0.000130137 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122827 seconds
+End of cyclic activation.
+Elapsed time:  0.000133250 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128810 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000120446 seconds
+End of cyclic activation.
+Elapsed time:  0.000124899 seconds
+End of cyclic activation.
+Elapsed time:  0.000130690 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000138833 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000153530 seconds
+End of cyclic activation.
+Elapsed time:  0.000130060 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127494 seconds
+End of cyclic activation.
+Elapsed time:  0.000128750 seconds
+End of cyclic activation.
+Elapsed time:  0.000142405 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000137875 seconds
+End of cyclic activation.
+Elapsed time:  0.000144405 seconds
+End of cyclic activation.
+Elapsed time:  0.000146583 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130976 seconds
+End of cyclic activation.
+Elapsed time:  0.000132827 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131190 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128833 seconds
+End of cyclic activation.
+Elapsed time:  0.000580881 seconds
+End of cyclic activation.
+Elapsed time:  0.000132917 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128589 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131000 seconds
+End of cyclic activation.
+Elapsed time:  0.000128690 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134012 seconds
+End of cyclic activation.
+Elapsed time:  0.000121464 seconds
+End of cyclic activation.
+Elapsed time:  0.000138173 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130613 seconds
+End of cyclic activation.
+Elapsed time:  0.000129190 seconds
+End of cyclic activation.
+Elapsed time:  0.000141024 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124018 seconds
+End of cyclic activation.
+Elapsed time:  0.000132964 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130976 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125298 seconds
+End of cyclic activation.
+Elapsed time:  0.000124875 seconds
+End of cyclic activation.
+Elapsed time:  0.000141952 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000141458 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000144339 seconds
+End of cyclic activation.
+Elapsed time:  0.000143149 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128339 seconds
+End of cyclic activation.
+Elapsed time:  0.000131054 seconds
+End of cyclic activation.
+Elapsed time:  0.000140048 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127464 seconds
+End of cyclic activation.
+Elapsed time:  0.000130643 seconds
+End of cyclic activation.
+Elapsed time:  0.000136280 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124911 seconds
+End of cyclic activation.
+Elapsed time:  0.000128601 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130292 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132054 seconds
+End of cyclic activation.
+Elapsed time:  0.000146405 seconds
+End of cyclic activation.
+Elapsed time:  0.000131107 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132095 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122661 seconds
+End of cyclic activation.
+Elapsed time:  0.000132315 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123220 seconds
+End of cyclic activation.
+Elapsed time:  0.000123042 seconds
+End of cyclic activation.
+Elapsed time:  0.000143851 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130821 seconds
+End of cyclic activation.
+Elapsed time:  0.000122196 seconds
+End of cyclic activation.
+Elapsed time:  0.000139851 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122101 seconds
+End of cyclic activation.
+Elapsed time:  0.000131792 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000182030 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132048 seconds
+End of cyclic activation.
+Elapsed time:  0.000128494 seconds
+End of cyclic activation.
+Elapsed time:  0.000129899 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000153863 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123827 seconds
+End of cyclic activation.
+Elapsed time:  0.000135607 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124012 seconds
+End of cyclic activation.
+Elapsed time:  0.000125464 seconds
+End of cyclic activation.
+Elapsed time:  0.000146000 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126405 seconds
+End of cyclic activation.
+Elapsed time:  0.000125107 seconds
+End of cyclic activation.
+Elapsed time:  0.000135244 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132167 seconds
+End of cyclic activation.
+Elapsed time:  0.000133565 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000167065 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000139964 seconds
+End of cyclic activation.
+Elapsed time:  0.000134452 seconds
+End of cyclic activation.
+Elapsed time:  0.000136833 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000139601 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130833 seconds
+End of cyclic activation.
+Elapsed time:  0.000146613 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000128548 seconds
+End of cyclic activation.
+Elapsed time:  0.000130512 seconds
+End of cyclic activation.
+Elapsed time:  0.000140839 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134518 seconds
+End of cyclic activation.
+Elapsed time:  0.000136970 seconds
+End of cyclic activation.
+Elapsed time:  0.000138500 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000129363 seconds
+End of cyclic activation.
+Elapsed time:  0.000144417 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000138833 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124464 seconds
+End of cyclic activation.
+Elapsed time:  0.000132863 seconds
+End of cyclic activation.
+Elapsed time:  0.000139768 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130792 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130708 seconds
+End of cyclic activation.
+Elapsed time:  0.000135649 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132565 seconds
+End of cyclic activation.
+Elapsed time:  0.000121631 seconds
+End of cyclic activation.
+Elapsed time:  0.000183839 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133619 seconds
+End of cyclic activation.
+Elapsed time:  0.000125798 seconds
+End of cyclic activation.
+Elapsed time:  0.000132643 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126762 seconds
+End of cyclic activation.
+Elapsed time:  0.000140137 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000148714 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123661 seconds
+End of cyclic activation.
+Elapsed time:  0.000125893 seconds
+End of cyclic activation.
+Elapsed time:  0.000132946 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133220 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122750 seconds
+End of cyclic activation.
+Elapsed time:  0.000176613 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126363 seconds
+End of cyclic activation.
+Elapsed time:  0.000126185 seconds
+End of cyclic activation.
+Elapsed time:  0.000145524 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000127363 seconds
+End of cyclic activation.
+Elapsed time:  0.000126470 seconds
+End of cyclic activation.
+Elapsed time:  0.000133923 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130607 seconds
+End of cyclic activation.
+Elapsed time:  0.000188899 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000146167 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132738 seconds
+End of cyclic activation.
+Elapsed time:  0.000127381 seconds
+End of cyclic activation.
+Elapsed time:  0.000142798 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000146208 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000166298 seconds
+End of cyclic activation.
+Elapsed time:  0.000139089 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131821 seconds
+End of cyclic activation.
+Elapsed time:  0.000125619 seconds
+End of cyclic activation.
+Elapsed time:  0.000138905 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131637 seconds
+End of cyclic activation.
+Elapsed time:  0.000131679 seconds
+End of cyclic activation.
+Elapsed time:  0.000130899 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132726 seconds
+End of cyclic activation.
+Elapsed time:  0.000135875 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134958 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131375 seconds
+End of cyclic activation.
+Elapsed time:  0.000126315 seconds
+End of cyclic activation.
+Elapsed time:  0.000137935 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000150762 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133179 seconds
+End of cyclic activation.
+Elapsed time:  0.000154298 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125702 seconds
+End of cyclic activation.
+Elapsed time:  0.000126113 seconds
+End of cyclic activation.
+Elapsed time:  0.000141042 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133732 seconds
+End of cyclic activation.
+Elapsed time:  0.000128173 seconds
+End of cyclic activation.
+Elapsed time:  0.000133232 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126774 seconds
+End of cyclic activation.
+Elapsed time:  0.000143798 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132226 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122399 seconds
+End of cyclic activation.
+Elapsed time:  0.000126798 seconds
+End of cyclic activation.
+Elapsed time:  0.000137619 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000150488 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132458 seconds
+End of cyclic activation.
+Elapsed time:  0.000135077 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130155 seconds
+End of cyclic activation.
+Elapsed time:  0.000137173 seconds
+End of cyclic activation.
+Elapsed time:  0.000144077 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131446 seconds
+End of cyclic activation.
+Elapsed time:  0.000149482 seconds
+End of cyclic activation.
+Elapsed time:  0.000136929 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000137417 seconds
+End of cyclic activation.
+Elapsed time:  0.000141625 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000150042 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126089 seconds
+End of cyclic activation.
+Elapsed time:  0.000129988 seconds
+End of cyclic activation.
+Elapsed time:  0.000157185 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000140970 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125821 seconds
+End of cyclic activation.
+Elapsed time:  0.000137655 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131738 seconds
+End of cyclic activation.
+Elapsed time:  0.000120667 seconds
+End of cyclic activation.
+Elapsed time:  0.000141083 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125679 seconds
+End of cyclic activation.
+Elapsed time:  0.000122220 seconds
+End of cyclic activation.
+Elapsed time:  0.000133613 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130940 seconds
+End of cyclic activation.
+Elapsed time:  0.000133958 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000140929 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000121869 seconds
+End of cyclic activation.
+Elapsed time:  0.000131690 seconds
+End of cyclic activation.
+Elapsed time:  0.000132750 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000151155 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124744 seconds
+End of cyclic activation.
+Elapsed time:  0.000130720 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126780 seconds
+End of cyclic activation.
+Elapsed time:  0.000122863 seconds
+End of cyclic activation.
+Elapsed time:  0.000136673 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000118304 seconds
+End of cyclic activation.
+Elapsed time:  0.000122595 seconds
+End of cyclic activation.
+Elapsed time:  0.000153506 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122512 seconds
+End of cyclic activation.
+Elapsed time:  0.000144512 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130137 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000165976 seconds
+End of cyclic activation.
+Elapsed time:  0.000127196 seconds
+End of cyclic activation.
+Elapsed time:  0.000132673 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133470 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000121381 seconds
+End of cyclic activation.
+Elapsed time:  0.000129411 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123464 seconds
+End of cyclic activation.
+Elapsed time:  0.000131839 seconds
+End of cyclic activation.
+Elapsed time:  0.000137077 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000143946 seconds
+End of cyclic activation.
+Elapsed time:  0.000132595 seconds
+End of cyclic activation.
+Elapsed time:  0.000151488 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000122899 seconds
+End of cyclic activation.
+Elapsed time:  0.000127857 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000138940 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123952 seconds
+End of cyclic activation.
+Elapsed time:  0.000125363 seconds
+End of cyclic activation.
+Elapsed time:  0.000130238 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000141476 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130333 seconds
+End of cyclic activation.
+Elapsed time:  0.000590845 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000120923 seconds
+End of cyclic activation.
+Elapsed time:  0.000123762 seconds
+End of cyclic activation.
+Elapsed time:  0.000138577 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132643 seconds
+End of cyclic activation.
+Elapsed time:  0.000127887 seconds
+End of cyclic activation.
+Elapsed time:  0.000129673 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123333 seconds
+End of cyclic activation.
+Elapsed time:  0.000140964 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000137940 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130304 seconds
+End of cyclic activation.
+Elapsed time:  0.000151488 seconds
+End of cyclic activation.
+Elapsed time:  0.000145911 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000143375 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131220 seconds
+End of cyclic activation.
+Elapsed time:  0.000139958 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000123185 seconds
+End of cyclic activation.
+Elapsed time:  0.000122280 seconds
+End of cyclic activation.
+Elapsed time:  0.000135125 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000131804 seconds
+End of cyclic activation.
+Elapsed time:  0.000154839 seconds
+End of cyclic activation.
+Elapsed time:  0.000135286 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000162780 seconds
+End of cyclic activation.
+Elapsed time:  0.000143887 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000138940 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124744 seconds
+End of cyclic activation.
+Elapsed time:  0.000124643 seconds
+End of cyclic activation.
+Elapsed time:  0.000129893 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000137470 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000142494 seconds
+End of cyclic activation.
+Elapsed time:  0.000141708 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000125762 seconds
+End of cyclic activation.
+Elapsed time:  0.000120214 seconds
+End of cyclic activation.
+Elapsed time:  0.000136738 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126256 seconds
+End of cyclic activation.
+Elapsed time:  0.000150982 seconds
+End of cyclic activation.
+Elapsed time:  0.000136560 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000222417 seconds
+End of cyclic activation.
+Elapsed time:  0.000137363 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000140536 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000148875 seconds
+End of cyclic activation.
+Elapsed time:  0.000124226 seconds
+End of cyclic activation.
+Elapsed time:  0.000141798 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000141435 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000136530 seconds
+End of cyclic activation.
+Elapsed time:  0.000136536 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000137292 seconds
+End of cyclic activation.
+Elapsed time:  0.000134613 seconds
+End of cyclic activation.
+Elapsed time:  0.000145577 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134607 seconds
+End of cyclic activation.
+Elapsed time:  0.000128625 seconds
+End of cyclic activation.
+Elapsed time:  0.000130905 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000126857 seconds
+End of cyclic activation.
+Elapsed time:  0.000131018 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000137815 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000134161 seconds
+End of cyclic activation.
+Elapsed time:  0.000122655 seconds
+End of cyclic activation.
+Elapsed time:  0.000141881 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000133083 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124131 seconds
+End of cyclic activation.
+Elapsed time:  0.000125714 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000132762 seconds
+End of cyclic activation.
+Elapsed time:  0.000138702 seconds
+End of cyclic activation.
+Elapsed time:  0.000151149 seconds
+End of sporadic activation.
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000130226 seconds
+End of cyclic activation.
+Elapsed time:  0.000128042 seconds
+End of cyclic activation.
+Elapsed time:  0.000137893 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000322708 seconds
+End of cyclic activation.
+Elapsed time:  0.000134637 seconds
+End of sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000135565 seconds
+End of parameterless sporadic activation.
+End of cyclic activation.
+Elapsed time:  0.000124839 seconds
+End of cyclic activation.
+Elapsed time:  0.000122815 seconds
+End of cyclic activation.
+Elapsed time:  0.000153161 seconds
+End of parameterless sporadic activation.
