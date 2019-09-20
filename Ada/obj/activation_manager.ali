@@ -1,5 +1,11 @@
-V "GNAT Lib v2019"
+V "GNAT Lib v2018"
 A -gnatA
+A --RTS=/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/
+A -mlittle-endian
+A -mfloat-abi=hard
+A -mcpu=cortex-m4
+A -mfpu=fpv4-sp-d16
+A -mthumb
 A -g
 A -gnatwa
 A -gnatya
@@ -22,77 +28,91 @@ A -gnatyu
 A -gnatyx
 A -gnatyt
 A -gnat12
-A -mtune=core2
-A -mmacosx-version-min=10.14.0
-A -fPIC
-A -feliminate-unused-debug-symbols
-P ZX
+P DB LC TF  ZX
 
 RN
+RR SIMPLE_BARRIERS
+RR NO_ABORT_STATEMENTS
+RR NO_ASYNCHRONOUS_CONTROL
+RR NO_CALENDAR
 RV NO_DELAY
+RR NO_DYNAMIC_ATTACHMENT
+RR NO_DYNAMIC_PRIORITIES
+RR NO_ENTRY_QUEUE
+RR NO_IMPLICIT_HEAP_ALLOCATIONS
+RR NO_LOCAL_TIMING_EVENTS
+RR NO_LOCAL_PROTECTED_OBJECTS
+RR NO_PROTECTED_TYPE_ALLOCATORS
+RR NO_RELATIVE_DELAY
+RR NO_REQUEUE_STATEMENTS
+RR NO_SELECT_STATEMENTS
+RR NO_SPECIFIC_TERMINATION_HANDLERS
+RR NO_TASK_ALLOCATORS
+RR NO_TASK_ATTRIBUTES_PACKAGE
+RR NO_TASK_HIERARCHY
+RR NO_TASK_TERMINATION
+RR NO_TERMINATE_ALTERNATIVES
 RV NO_IMPLEMENTATION_PRAGMAS
 RV NO_ELABORATION_CODE
 RV SPARK_05
+RR MAX_PROTECTED_ENTRIES=1
+RR MAX_SELECT_ALTERNATIVES=0
+RR MAX_TASK_ENTRIES=0
+RR MAX_ASYNCHRONOUS_SELECT_NESTING=0
 
 U activation_manager%b	activation_manager.adb	3da42afa NE OO PK
 Z ada.real_time.delays%s  a-retide.adb		a-retide.ali
 
-U activation_manager%s	activation_manager.ads	8a84be4d EE OO PK
+U activation_manager%s	activation_manager.ads	c4d2d530 EE OO PK
 W ada%s			ada.ads			ada.ali
 W ada.real_time%s	a-reatim.adb		a-reatim.ali
 
-D activation_manager.ads  20170223093616 88c4423e activation_manager%s
-D activation_manager.adb  20170223093614 b56068c4 activation_manager%b
-D ada.ads		20190518041255 76789da1 ada%s
-D a-except.ads		20190518041255 291912d5 ada.exceptions%s
-D a-reatim.ads		20190518041256 0240fc73 ada.real_time%s
-D a-retide.ads		20190518041257 081cdaa4 ada.real_time.delays%s
-D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
-D interfac.ads		20190518041254 5ab55268 interfaces%s
-D i-c.ads		20190518041254 5421119b interfaces.c%s
-D system.ads		20190518041255 085b6ffb system%s
-D s-atacco.ads		20190518041256 4c36d12f system.address_to_access_conversions%s
-D s-exctab.ads		20190518041255 54135002 system.exception_table%s
-D s-multip.ads		20190518041254 38ac9f73 system.multiprocessors%s
-D s-oscons.ads		20190518124528 e40aaf2d system.os_constants%s
-D s-osinte.ads		20190518041257 01b3ad47 system.os_interface%s
-D s-parame.ads		20190518041256 48ec542b system.parameters%s
-D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
-D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
-D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
-D s-stausa.ads		20190518041255 017a0a05 system.stack_usage%s
-D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
-D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
-D s-tasinf.ads		20190518041256 801abd01 system.task_info%s
-D s-taspri.ads		20190518041256 f40ac08d system.task_primitives%s
-D s-taprop.ads		20190518041256 1dd2e1b6 system.task_primitives.operations%s
-D s-taskin.ads		20190518041257 b9d612e2 system.tasking%s
-D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
-D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
-G a e
-G c Z s b [activation_sporadic activation_manager 15 14 none]
-G c Z s b [activation_cyclic activation_manager 16 14 none]
+D activation_manager.ads  20190906080956 88c4423e activation_manager%s
+D activation_manager.adb  20190906080956 b56068c4 activation_manager%b
+D ada.ads		20180525200322 76789da1 ada%s
+D a-reatim.ads		20180525200322 4c16970e ada.real_time%s
+D a-retide.ads		20180525200322 081cdaa4 ada.real_time.delays%s
+D interfac.ads		20180525200321 5ab55268 interfaces%s
+D i-stm32.ads		20180525200320 4d2e1e9b interfaces.stm32%s
+D i-stm32-pwr.ads	20180525200320 10ed2a13 interfaces.stm32.pwr%s
+D system.ads		20180525200320 db831581 system%s
+D s-bb.ads		20180525200321 09e072ae system.bb%s
+D s-bbbopa.ads		20180525200320 95d97b26 system.bb.board_parameters%s
+D s-bbbosu.ads		20180525200322 0f820a2a system.bb.board_support%s
+D s-bbcppr.ads		20180525200320 bcfa73ad system.bb.cpu_primitives%s
+D s-bbinte.ads		20180525200322 c88d39da system.bb.interrupts%s
+D s-bbmcpa.ads		20180525200320 c4c55388 system.bb.mcu_parameters%s
+D s-bbpara.ads		20180525200320 431abc17 system.bb.parameters%s
+D s-bbthre.ads		20180525200322 c94b446f system.bb.threads%s
+D s-bbthqu.ads		20180525200322 db3cad46 system.bb.threads.queues%s
+D s-bbtime.ads		20180525200322 ad086247 system.bb.time%s
+D s-multip.ads		20180525200322 f33e0e35 system.multiprocessors%s
+D s-osinte.ads		20180525200322 229b14dd system.os_interface%s
+D s-stm32.ads		20180525200320 e898dba2 system.stm32%s
+D s-stoele.ads		20180525200321 2dc34a04 system.storage_elements%s
+D s-unstyp.ads		20180525200321 34867c83 system.unsigned_types%s
+D /home/parallels/Desktop/repo/lab/Ada/gnat.adc  20190906080956 00000000
 X 1 activation_manager.ads
-2K9*Activation_Manager 18l5 18e23 2|1b14 12l5 12t23
-4V13*Clock=4:67{5|49O9} 7s55
-7o4*System_Start_Time{5|49O9} 14r6
-9i4*Relative_Offset{natural} 11r34
-10o4*Task_Start_Time{5|54O9} 14r26
-13o4*Activation_Time{5|49O9} 2|4r19 9r20 10r19
-15U14*Activation_Sporadic 2|2b14 5l8 5t27
-16U14*Activation_Cyclic 17<7 2|6b14 11l8 11t25
-17o7 Next_Time{5|49O9} 2|7b10 9m7
+2K9*Activation_Manager 20l5 20e23 2|1b14 13l5 13t23
+4V13*Clock=4:67{4|51M9} 7s55
+7m4*System_Start_Time{4|51M9} 16r6
+10i4*Relative_Offset{natural} 12r34
+11i4*Task_Start_Time{4|61I9} 16r26
+15m4*Activation_Time{4|51M9} 2|4r19 10r20 11r19
+17U14*Activation_Sporadic 2|2b14 5l8 5t27
+18U14*Activation_Cyclic 19<7 2|7b14 12l8 12t25
+19m7 Next_Time{4|51M9} 2|8b10 10m7
 X 3 ada.ads
-16K9*Ada 1|1r6 3r8 4r26 4r53 7r33 10r31 11r6 13r22 17r23 2|7r26 3|20e8
-X 5 a-reatim.ads
-39K13*Real_Time 1|1w10 3r12 4r30 4r57 7r37 10r35 11r10 13r26 17r27 2|7r30
-. 5|185e18
-49O9*Time<duration> 1|4r40 7r47 13r36 17r37 2|7r40
-54O9*Time_Span<duration> 1|10r45
-61V13*Clock{49O9} 1|4r67
-65V14*"+"{49O9} 1|14s24
-119V13*Milliseconds{54O9} 1|11s20
-X 20 s-stausa.ads
-203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
-268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+16K9*Ada 1|1r6 3r8 4r26 4r53 7r33 11r31 12r6 15r22 19r23 2|8r26 3|20e8
+X 4 a-reatim.ads
+41K13*Real_Time 1|1w10 3r12 4r30 4r57 7r37 11r35 12r10 15r26 19r27 2|8r30
+. 4|182e18
+51M9*Time<19|46M9> 1|4r40 7r47 15r36 19r37 2|8r40
+61I9*Time_Span<19|81I9> 1|11r45
+68V13*Clock{51M9}<19|134p13> 1|4r67
+72V14*"+"{51M9} 1|16s24
+128V13*Milliseconds{61I9} 1|12s20
+X 19 s-bbtime.ads
+46M9*Time
+81I9*Time_Span<long_long_integer>
 

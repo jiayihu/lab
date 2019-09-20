@@ -1,5 +1,11 @@
-V "GNAT Lib v2019"
+V "GNAT Lib v2018"
 A -gnatA
+A --RTS=/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/
+A -mlittle-endian
+A -mfloat-abi=hard
+A -mcpu=cortex-m4
+A -mfpu=fpv4-sp-d16
+A -mthumb
 A -g
 A -gnatwa
 A -gnatya
@@ -22,67 +28,66 @@ A -gnatyu
 A -gnatyx
 A -gnatyt
 A -gnat12
-A -mtune=core2
-A -mmacosx-version-min=10.14.0
-A -fPIC
-A -feliminate-unused-debug-symbols
-P ZX
+P DB ZX
 
 RN
+RR SIMPLE_BARRIERS
+RR NO_ABORT_STATEMENTS
+RR NO_ASYNCHRONOUS_CONTROL
+RR NO_CALENDAR
+RR NO_DYNAMIC_ATTACHMENT
+RR NO_DYNAMIC_PRIORITIES
+RR NO_ENTRY_QUEUE
 RV NO_IO
+RR NO_IMPLICIT_HEAP_ALLOCATIONS
+RR NO_LOCAL_TIMING_EVENTS
+RR NO_LOCAL_PROTECTED_OBJECTS
+RR NO_PROTECTED_TYPE_ALLOCATORS
+RR NO_RELATIVE_DELAY
+RR NO_REQUEUE_STATEMENTS
+RR NO_SELECT_STATEMENTS
+RR NO_SPECIFIC_TERMINATION_HANDLERS
+RR NO_TASK_ALLOCATORS
+RR NO_TASK_ATTRIBUTES_PACKAGE
+RR NO_TASK_HIERARCHY
+RR NO_TASK_TERMINATION
+RR NO_TERMINATE_ALTERNATIVES
 RV NO_IMPLEMENTATION_PRAGMAS
+RR MAX_PROTECTED_ENTRIES=1
+RR MAX_SELECT_ALTERNATIVES=0
+RR MAX_TASK_ENTRIES=0
+RR MAX_ASYNCHRONOUS_SELECT_NESTING=0
 
-U on_call_producer_parameters%b  on_call_producer_parameters.adb  d362b51c NE OO PK
+U on_call_producer_parameters%b  on_call_producer_parameters.adb  825e2543 NE OO PK
 W ada%s			ada.ads			ada.ali
 W ada.text_io%s		a-textio.adb		a-textio.ali
 W production_workload%s	production_workload.adb	production_workload.ali
 
-U on_call_producer_parameters%s  on_call_producer_parameters.ads  db01204f EE NE OO PK
+U on_call_producer_parameters%s  on_call_producer_parameters.ads  08d95a35 EE NE OO PK
 W system%s		system.ads		system.ali
 
-D ada.ads		20190518041255 76789da1 ada%s
-D a-except.ads		20190518041255 291912d5 ada.exceptions%s
-D a-ioexce.ads		20190518041254 e4a01f64 ada.io_exceptions%s
-D a-stream.ads		20190518041255 119b8fb3 ada.streams%s
-D a-tags.ads		20190518041256 491b781d ada.tags%s
-D a-textio.ads		20190518041256 aef4d56d ada.text_io%s
-D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
-D interfac.ads		20190518041254 5ab55268 interfaces%s
-D i-cstrea.ads		20190518041254 e53d8b8e interfaces.c_streams%s
-D on_call_producer_parameters.ads  20170223093614 d35a4fb4 on_call_producer_parameters%s
-D on_call_producer_parameters.adb  20170223093614 7ce7375d on_call_producer_parameters%b
-D production_workload.ads  20170619142006 d22b1898 production_workload%s
-D system.ads		20190518041255 085b6ffb system%s
-D s-crtl.ads		20190518041254 0ebbdb71 system.crtl%s
-D s-exctab.ads		20190518041255 54135002 system.exception_table%s
-D s-ficobl.ads		20190518041256 078245e4 system.file_control_block%s
-D s-parame.ads		20190518041256 48ec542b system.parameters%s
-D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
-D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
-D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
-D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
-D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
-D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
-D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
-D s-wchcon.ads		20190518041255 1b7d22d2 system.wch_con%s
-G a e
-G c Z s b [on_call_producer_operation on_call_producer_parameters 4 14 none]
-G r c none [on_call_producer_operation on_call_producer_parameters 4 14 none] [small_whetstone production_workload 41 13 none]
+D ada.ads		20180525200322 76789da1 ada%s
+D a-textio.ads		20180525200321 ffc84532 ada.text_io%s
+D on_call_producer_parameters.ads  20190906080956 d35a4fb4 on_call_producer_parameters%s
+D on_call_producer_parameters.adb  20190906080956 7ce7375d on_call_producer_parameters%b
+D production_workload.ads  20190906080956 d22b1898 production_workload%s
+D system.ads		20180525200320 db831581 system%s
+D /home/parallels/Desktop/repo/lab/Ada/gnat.adc  20190906080956 00000000
 X 1 ada.ads
-16K9*Ada 20e8 11|3r6 10r7
-X 6 a-textio.ads
-57K13*Text_IO 727e16 11|3w10 10r11
-508U14*Put_Line 11|10s19
-X 10 on_call_producer_parameters.ads
-2K9*On_Call_Producer_Parameters 5l5 5e32 11|4b14 12l5 12t32
-3i4*On_Call_Producer_Priority{13|125I12}
-4U14*On_Call_Producer_Operation 4>42 11|5b14 11l8 11t34
-4i42 Load{positive} 11|5b42 8r44
-X 12 production_workload.ads
-18K9*Production_Workload 11|2w6 8r7 12|44e24
-41U13*Small_Whetstone 11|8s27
-X 13 system.ads
-37K9*System 10|1w6 3r41 13|174e11
-124I12*Any_Priority{integer}
-125I12*Priority{124I12} 10|3r48
+16K9*Ada 20e8 4|3r6 10r7
+X 2 a-textio.ads
+36K13*Text_IO 52e16 4|3w10 10r11
+46U14*Put_Line 4|10s19
+X 3 on_call_producer_parameters.ads
+2K9*On_Call_Producer_Parameters 5l5 5e32 4|4b14 12l5 12t32
+3i4*On_Call_Producer_Priority{6|117I12}
+4U14*On_Call_Producer_Operation 4>42 4|5b14 11l8 11t34
+4i42 Load{positive} 4|5b42 8r44
+X 5 production_workload.ads
+18K9*Production_Workload 4|2w6 8r7 5|44e24
+41U13*Small_Whetstone 4|8s27
+X 6 system.ads
+50K9*System 3|1w6 3r41 6|164e11
+116I12*Any_Priority{integer}
+117I12*Priority{116I12} 3|3r48
 

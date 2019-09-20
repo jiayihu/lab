@@ -1,34 +1,35 @@
 [GENERATED OBJECT FILE]
 b__gee.o
 [PROJECT FILES]
-/Users/jiayihu/Downloads/Guide Extended Example/gee.gpr
-20170225175012
+/home/parallels/Desktop/repo/lab/Ada/gee.gpr
+20190919164513
 [BOUND OBJECT FILES]
-/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log_parameters.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_manager.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/auxiliary.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/external_event_server_parameters.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/event_queue.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/external_event_server.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/production_workload.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log_reader_parameters.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/activation_log_reader.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/on_call_producer_parameters.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/request_buffer_parameters.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/request_buffer.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/on_call_producer.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/regular_producer_parameters.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/regular_producer.o
-/Users/jiayihu/Downloads/Guide Extended Example/obj/gee.o
+/home/parallels/Desktop/repo/lab/Ada/obj/activation_log_parameters.o
+/home/parallels/Desktop/repo/lab/Ada/obj/activation_log.o
+/home/parallels/Desktop/repo/lab/Ada/obj/activation_manager.o
+/home/parallels/Desktop/repo/lab/Ada/obj/auxiliary.o
+/home/parallels/Desktop/repo/lab/Ada/obj/external_event_server_parameters.o
+/home/parallels/Desktop/repo/lab/Ada/obj/event_queue.o
+/home/parallels/Desktop/repo/lab/Ada/obj/external_event_server.o
+/home/parallels/Desktop/repo/lab/Ada/obj/production_workload.o
+/home/parallels/Desktop/repo/lab/Ada/obj/activation_log_reader_parameters.o
+/home/parallels/Desktop/repo/lab/Ada/obj/activation_log_reader.o
+/home/parallels/Desktop/repo/lab/Ada/obj/on_call_producer_parameters.o
+/home/parallels/Desktop/repo/lab/Ada/obj/request_buffer_parameters.o
+/home/parallels/Desktop/repo/lab/Ada/obj/request_buffer.o
+/home/parallels/Desktop/repo/lab/Ada/obj/on_call_producer.o
+/home/parallels/Desktop/repo/lab/Ada/obj/regular_producer_parameters.o
+/home/parallels/Desktop/repo/lab/Ada/obj/regular_producer.o
+/home/parallels/Desktop/repo/lab/Ada/obj/gee.o
 [GENERATED SOURCE FILES]
 b__gee.ads
 b__gee.adb
 b__gee.ali
 [RESULTING OPTIONS]
--L/Users/jiayihu/Downloads/Guide Extended Example/obj/
--L/Users/jiayihu/Downloads/Guide Extended Example/obj/
--L/users/jiayihu/opt/gnat/2019/lib/gcc/x86_64-apple-darwin17.7.0/8.3.1/adalib/
+-L/home/parallels/Desktop/repo/lab/Ada/obj/
+-L/home/parallels/Desktop/repo/lab/Ada/obj/
+-L/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/adalib/
 -static
-/users/jiayihu/opt/gnat/2019/lib/gcc/x86_64-apple-darwin17.7.0/8.3.1/adalib/libgnarl.a
-/users/jiayihu/opt/gnat/2019/lib/gcc/x86_64-apple-darwin17.7.0/8.3.1/adalib/libgnat.a
+-static-libgcc
+/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/adalib/libgnarl.a
+/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/adalib/libgnat.a

@@ -6,11 +6,12 @@ project Gee is
 
    package Compiler is
       for Default_Switches ("Ada") 
-      use ("-gnatwa", "-gnatyabcdefhiIklnprsSuxt", "-gnat12");
+      use ();
    end Compiler;
    
    package Builder is
       for Default_Switches ("Ada") use ("-g");
+      for Global_Configuration_Pragmas use "gnat.adc";
    end Builder;   
 
 --   package Ide is
@@ -20,8 +21,8 @@ project Gee is
 --      for Debugger_Command use "sparc-elf-gdb";
 --   end Ide;
    
---   for Runtime ("Ada") use "ravenscar-full-tms570";
---   for Target use "arm-eabi";
+   for Runtime ("Ada") use "ravenscar-full-stm32f4";
+   for Target use "arm-eabi";
 
 end Gee;
 

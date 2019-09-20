@@ -1,5 +1,11 @@
-V "GNAT Lib v2019"
+V "GNAT Lib v2018"
 A -gnatA
+A --RTS=/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/
+A -mlittle-endian
+A -mfloat-abi=hard
+A -mcpu=cortex-m4
+A -mfpu=fpv4-sp-d16
+A -mthumb
 A -g
 A -gnatwa
 A -gnatya
@@ -22,90 +28,87 @@ A -gnatyu
 A -gnatyx
 A -gnatyt
 A -gnat12
-A -mtune=core2
-A -mmacosx-version-min=10.14.0
-A -fPIC
-A -feliminate-unused-debug-symbols
-P ZX
+P DB ZX
 
 RN
+RR SIMPLE_BARRIERS
+RR NO_ABORT_STATEMENTS
+RR NO_ASYNCHRONOUS_CONTROL
+RR NO_CALENDAR
 RV NO_DIRECT_BOOLEAN_OPERATORS
+RR NO_DYNAMIC_ATTACHMENT
+RR NO_DYNAMIC_PRIORITIES
+RR NO_ENTRY_QUEUE
 RV NO_EXCEPTION_HANDLERS
 RV NO_EXCEPTION_PROPAGATION
 RV NO_EXCEPTIONS
 RV NO_FLOATING_POINT
 RV NO_IO
+RR NO_IMPLICIT_HEAP_ALLOCATIONS
+RR NO_LOCAL_TIMING_EVENTS
+RR NO_LOCAL_PROTECTED_OBJECTS
+RR NO_PROTECTED_TYPE_ALLOCATORS
+RR NO_RELATIVE_DELAY
+RR NO_REQUEUE_STATEMENTS
+RR NO_SELECT_STATEMENTS
+RR NO_SPECIFIC_TERMINATION_HANDLERS
+RR NO_TASK_ALLOCATORS
+RR NO_TASK_ATTRIBUTES_PACKAGE
+RR NO_TASK_HIERARCHY
+RR NO_TASK_TERMINATION
+RR NO_TERMINATE_ALTERNATIVES
 RV NO_IMPLEMENTATION_PRAGMAS
-RV NO_ELABORATION_CODE
 RV SPARK_05
+RR MAX_PROTECTED_ENTRIES=1
+RR MAX_SELECT_ALTERNATIVES=0
+RR MAX_TASK_ENTRIES=0
+RR MAX_ASYNCHRONOUS_SELECT_NESTING=0
 
-U production_workload%b	production_workload.adb	96e582b6 NE OO PK
+U production_workload%b	production_workload.adb	95f2fa20 NE OO PK
 W ada%s			ada.ads			ada.ali
 W ada.exceptions%s	a-except.adb		a-except.ali
 W ada.numerics%s	a-numeri.ads		a-numeri.ali
 W ada.numerics.elementary_functions%s  a-nuelfu.ads  a-nuelfu.ali
 W ada.text_io%s		a-textio.adb		a-textio.ali
 
-U production_workload%s	production_workload.ads	d22b1898 BN EE OO PK
-Z ada.tags%s		a-tags.adb		a-tags.ali
+U production_workload%s	production_workload.ads	d22b1898 BN EE NE OO PK
 Z system%s		system.ads		system.ali
-Z system.exception_table%s  s-exctab.adb	s-exctab.ali
-Z system.standard_library%s  s-stalib.adb	s-stalib.ali
 
-D ada.ads		20190518041255 76789da1 ada%s
-D a-except.ads		20190518041255 291912d5 ada.exceptions%s
-D a-ioexce.ads		20190518041254 e4a01f64 ada.io_exceptions%s
-D a-numeri.ads		20190518041254 bb51c45a ada.numerics%s
-D a-nuelfu.ads		20190518041254 03e83d1c ada.numerics.elementary_functions%s
-D a-ngelfu.ads		20190518041256 55716239 ada.numerics.generic_elementary_functions%s
-D a-stream.ads		20190518041255 119b8fb3 ada.streams%s
-D a-tags.ads		20190518041256 491b781d ada.tags%s
-D a-textio.ads		20190518041256 aef4d56d ada.text_io%s
-D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
-D interfac.ads		20190518041254 5ab55268 interfaces%s
-D i-cstrea.ads		20190518041254 e53d8b8e interfaces.c_streams%s
-D production_workload.ads  20170619142006 d22b1898 production_workload%s
-D production_workload.adb  20170224115320 c0cb608a production_workload%b
-D system.ads		20190518041255 085b6ffb system%s
-D s-crtl.ads		20190518041254 0ebbdb71 system.crtl%s
-D s-exctab.ads		20190518041255 54135002 system.exception_table%s
-D s-ficobl.ads		20190518041256 078245e4 system.file_control_block%s
-D s-parame.ads		20190518041256 48ec542b system.parameters%s
-D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
-D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
-D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
-D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
-D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
-D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
-D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
-D s-wchcon.ads		20190518041255 1b7d22d2 system.wch_con%s
-G a e
-G c Z s b [small_whetstone production_workload 41 13 none]
+D ada.ads		20180525200322 76789da1 ada%s
+D a-except.ads		20180525200321 291912d5 ada.exceptions%s
+D a-numeri.ads		20180525200322 bb51c45a ada.numerics%s
+D a-nuelfu.ads		20180525200322 51c3d5d5 ada.numerics.elementary_functions%s
+D a-textio.ads		20180525200321 ffc84532 ada.text_io%s
+D a-unccon.ads		20180525200322 0e9b276f ada.unchecked_conversion%s
+D production_workload.ads  20190906080956 d22b1898 production_workload%s
+D production_workload.adb  20190906080956 c0cb608a production_workload%b
+D system.ads		20180525200320 db831581 system%s
+D s-gcmain.ads		20180525200322 f623c353 system.generic_c_math_interface%s
+D s-libpre.ads		20180525200322 f93cda94 system.libm_prefix%s
+D s-libsin.ads		20180525200322 7070a09c system.libm_single%s
+D s-parame.ads		20180525200322 d106111e system.parameters%s
+D s-stalib.ads		20180525200321 09bd3940 system.standard_library%s
+D s-traent.ads		20180525200321 005bf670 system.traceback_entries%s
+D /home/parallels/Desktop/repo/lab/Ada/gnat.adc  20190906080956 00000000
 X 1 ada.ads
-16K9*Ada 20e8 14|22r6 23r5 25r6 25r26 26r6 219r13 222r13 251r13 253r13 272r13
+16K9*Ada 20e8 8|22r6 23r5 25r6 25r26 26r6 219r13 222r13 251r13 253r13 272r13
 . 274r13 280r13 282r13
 X 2 a-except.ads
-54K13*Exceptions 349e19 14|25w10 25r30
-X 4 a-numeri.ads
-16K13*Numerics 32e17 14|22r10 23r9
-X 5 a-nuelfu.ads
-18K22*Elementary_Functions[6|39] 14|22w19 23r18
-X 6 a-ngelfu.ads
-52V13*Sqrt{float} 14|305s12[5|18]
-75V13*Log{float} 14|305s23[5|18]
-83V13*Exp{float} 14|305s18[5|18]
-94V13*Sin{float} 14|256s27[5|18]
-103V13*Cos{float} 14|284s32[5|18]
-X 9 a-textio.ads
-57K13*Text_IO 727e16 14|26w10 219r17 222r17 251r17 253r17 272r17 274r17 280r17
+54K13*Exceptions 349e19 8|25w10 25r30
+X 3 a-numeri.ads
+16K13*Numerics 32e17 8|22r10 23r9
+X 4 a-nuelfu.ads
+41K22*Elementary_Functions[10|86] 8|22w19 23r18
+X 5 a-textio.ads
+36K13*Text_IO 52e16 8|26w10 219r17 222r17 251r17 253r17 272r17 274r17 280r17
 . 282r17
-508U14*Put_Line 14|219s25 222s25 251s25 253s25 272s25 274s25 280s25 282s25
-X 13 production_workload.ads
-18K9*Production_Workload 44l5 44e24 14|28b14 333l5 333t24
+46U14*Put_Line 8|219s25 222s25 251s25 253s25 272s25 274s25 280s25 282s25
+X 7 production_workload.ads
+18K9*Production_Workload 44l5 44e24 8|28b14 333l5 333t24
 20X3*Workload_Failure
-41U13*Small_Whetstone 41>29 14|185b13 331l8 331t23
-41i29 Kilo_Whets{positive} 14|185b29 241r30
-X 14 production_workload.adb
+41U13*Small_Whetstone 41>29 8|185b13 331l8 331t23
+41i29 Kilo_Whets{positive} 8|185b29 241r30
+X 8 production_workload.adb
 31F11 Whet_Float{float} 202r20 203r11 204r11 207r28 230r22 231r22 232r26
 . 233r23 234r23 255r27 256r32 263r17 276r27
 187N5 T 233r37 234r37
@@ -143,4 +146,10 @@ X 14 production_workload.adb
 241i9 Outer_Loop_Var{integer}
 262i11 Inner_Loop_Var{integer} 263r28
 326r12 Error{2|63R9}
+X 10 s-gcmain.ads
+93V13*Sqrt{float} 8|305s12[4|41]
+97V13*Log{float} 8|305s23[4|41]
+105V13*Exp{float} 8|305s18[4|41]
+113V13*Sin{float} 8|256s27[4|41]
+121V13*Cos{float} 8|284s32[4|41]
 

@@ -1,7 +1,0 @@
-gee.adb:1:06: warning: unit "Activation_Log_Reader" is not referenced
-gee.adb:2:06: warning: unit "Activation_Manager" is not referenced
-gee.adb:3:06: warning: unit "Event_Queue" is not referenced
-gee.adb:4:06: warning: unit "External_Event_Server" is not referenced
-gee.adb:5:06: warning: unit "On_Call_Producer" is not referenced
-gee.adb:6:06: warning: unit "Regular_Producer" is not referenced
-gee.adb:7:06: warning: unit "Request_Buffer" is not referenced

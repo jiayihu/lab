@@ -1,5 +1,11 @@
-V "GNAT Lib v2019"
+V "GNAT Lib v2018"
 A -gnatA
+A --RTS=/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/
+A -mlittle-endian
+A -mfloat-abi=hard
+A -mcpu=cortex-m4
+A -mfpu=fpv4-sp-d16
+A -mthumb
 A -g
 A -gnatwa
 A -gnatya
@@ -22,26 +28,44 @@ A -gnatyu
 A -gnatyx
 A -gnatyt
 A -gnat12
-A -mtune=core2
-A -mmacosx-version-min=10.14.0
-A -fPIC
-A -feliminate-unused-debug-symbols
-P ZX
+P DB ZX
 
 RN
+RR SIMPLE_BARRIERS
+RR NO_ABORT_STATEMENTS
+RR NO_ASYNCHRONOUS_CONTROL
+RR NO_CALENDAR
+RR NO_DYNAMIC_ATTACHMENT
+RR NO_DYNAMIC_PRIORITIES
+RR NO_ENTRY_QUEUE
+RR NO_IMPLICIT_HEAP_ALLOCATIONS
+RR NO_LOCAL_TIMING_EVENTS
+RR NO_LOCAL_PROTECTED_OBJECTS
+RR NO_PROTECTED_TYPE_ALLOCATORS
+RR NO_RELATIVE_DELAY
+RR NO_REQUEUE_STATEMENTS
+RR NO_SELECT_STATEMENTS
+RR NO_SPECIFIC_TERMINATION_HANDLERS
+RR NO_TASK_ALLOCATORS
+RR NO_TASK_ATTRIBUTES_PACKAGE
+RR NO_TASK_HIERARCHY
+RR NO_TASK_TERMINATION
+RR NO_TERMINATE_ALTERNATIVES
 RV NO_IMPLEMENTATION_PRAGMAS
 RV SPARK_05
+RR MAX_PROTECTED_ENTRIES=1
+RR MAX_SELECT_ALTERNATIVES=0
+RR MAX_TASK_ENTRIES=0
+RR MAX_ASYNCHRONOUS_SELECT_NESTING=0
 
 U auxiliary%b		auxiliary.adb		3a6c640f NE OO PK
 
 U auxiliary%s		auxiliary.ads		e63055a9 EE NE OO PK
 
-D auxiliary.ads		20170223093614 e63055a9 auxiliary%s
-D auxiliary.adb		20170223093614 dc5c31a6 auxiliary%b
-D system.ads		20190518041255 085b6ffb system%s
-G a e
-G c Z s b [due_activation auxiliary 3 13 none]
-G c Z s b [check_due auxiliary 6 13 none]
+D auxiliary.ads		20190906080956 e63055a9 auxiliary%s
+D auxiliary.adb		20190906080956 dc5c31a6 auxiliary%b
+D system.ads		20180525200320 db831581 system%s
+D /home/parallels/Desktop/repo/lab/Ada/gnat.adc  20190906080956 00000000
 X 1 auxiliary.ads
 1K9*Auxiliary 7l5 7e14 2|2b14 23l5 23t14
 2M9*Range_Counter 3r37 2|3r22 7r37

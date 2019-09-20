@@ -1,5 +1,11 @@
-V "GNAT Lib v2019"
+V "GNAT Lib v2018"
 A -gnatA
+A --RTS=/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/
+A -mlittle-endian
+A -mfloat-abi=hard
+A -mcpu=cortex-m4
+A -mfpu=fpv4-sp-d16
+A -mthumb
 A -g
 A -gnatwa
 A -gnatya
@@ -22,26 +28,46 @@ A -gnatyu
 A -gnatyx
 A -gnatyt
 A -gnat12
-A -mtune=core2
-A -mmacosx-version-min=10.14.0
-A -fPIC
-A -feliminate-unused-debug-symbols
-P ZX
+P DB ZX
 
 RN
+RR SIMPLE_BARRIERS
+RR NO_ABORT_STATEMENTS
+RR NO_ASYNCHRONOUS_CONTROL
+RR NO_CALENDAR
+RR NO_DYNAMIC_ATTACHMENT
+RR NO_DYNAMIC_PRIORITIES
+RR NO_ENTRY_QUEUE
+RR NO_IMPLICIT_HEAP_ALLOCATIONS
+RR NO_LOCAL_TIMING_EVENTS
+RR NO_LOCAL_PROTECTED_OBJECTS
+RR NO_PROTECTED_TYPE_ALLOCATORS
+RR NO_RELATIVE_DELAY
+RR NO_REQUEUE_STATEMENTS
+RR NO_SELECT_STATEMENTS
+RR NO_SPECIFIC_TERMINATION_HANDLERS
+RR NO_TASK_ALLOCATORS
+RR NO_TASK_ATTRIBUTES_PACKAGE
+RR NO_TASK_HIERARCHY
+RR NO_TASK_TERMINATION
+RR NO_TERMINATE_ALTERNATIVES
 RV NO_IMPLEMENTATION_PRAGMAS
+RR MAX_PROTECTED_ENTRIES=1
+RR MAX_SELECT_ALTERNATIVES=0
+RR MAX_TASK_ENTRIES=0
+RR MAX_ASYNCHRONOUS_SELECT_NESTING=0
 
-U activation_log_parameters%s  activation_log_parameters.ads  59776cb6 NE OO PK
+U activation_log_parameters%s  activation_log_parameters.ads  8aaf16cc NE OO PK
 W system%s		system.ads		system.ali
 
-D activation_log_parameters.ads  20170222213754 512c034d activation_log_parameters%s
-D system.ads		20190518041255 085b6ffb system%s
-G a e
+D activation_log_parameters.ads  20190906080956 512c034d activation_log_parameters%s
+D system.ads		20180525200320 db831581 system%s
+D /home/parallels/Desktop/repo/lab/Ada/gnat.adc  20190906080956 00000000
 X 1 activation_log_parameters.ads
 2K9*Activation_Log_Parameters 4l5 4e30
-3i4*Activation_Log_Priority{2|125I12}
+3i4*Activation_Log_Priority{2|117I12}
 X 2 system.ads
-37K9*System 1|1w6 3r39 2|174e11
-124I12*Any_Priority{integer}
-125I12*Priority{124I12} 1|3r46
+50K9*System 1|1w6 3r39 2|164e11
+116I12*Any_Priority{integer}
+117I12*Priority{116I12} 1|3r46
 

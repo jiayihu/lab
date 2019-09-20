@@ -1,5 +1,11 @@
-V "GNAT Lib v2019"
+V "GNAT Lib v2018"
 A -gnatA
+A --RTS=/home/parallels/opt/GNAT/2018-arm-elf/arm-eabi/lib/gnat/ravenscar-full-stm32f4/
+A -mlittle-endian
+A -mfloat-abi=hard
+A -mcpu=cortex-m4
+A -mfpu=fpv4-sp-d16
+A -mthumb
 A -g
 A -gnatwa
 A -gnatya
@@ -22,17 +28,37 @@ A -gnatyu
 A -gnatyx
 A -gnatyt
 A -gnat12
-A -mtune=core2
-A -mmacosx-version-min=10.14.0
-A -fPIC
-A -feliminate-unused-debug-symbols
-P ZX
+P DB LC TF  ZX
 
 RN
+RR SIMPLE_BARRIERS
+RR NO_ABORT_STATEMENTS
+RR NO_ASYNCHRONOUS_CONTROL
+RR NO_CALENDAR
+RR NO_DYNAMIC_ATTACHMENT
+RR NO_DYNAMIC_PRIORITIES
+RR NO_ENTRY_QUEUE
 RV NO_IO
+RR NO_IMPLICIT_HEAP_ALLOCATIONS
+RR NO_LOCAL_TIMING_EVENTS
+RR NO_LOCAL_PROTECTED_OBJECTS
+RR NO_PROTECTED_TYPE_ALLOCATORS
+RR NO_RELATIVE_DELAY
+RR NO_REQUEUE_STATEMENTS
+RR NO_SELECT_STATEMENTS
+RR NO_SPECIFIC_TERMINATION_HANDLERS
+RR NO_TASK_ALLOCATORS
+RR NO_TASK_ATTRIBUTES_PACKAGE
+RR NO_TASK_HIERARCHY
+RR NO_TASK_TERMINATION
+RR NO_TERMINATE_ALTERNATIVES
 RV NO_IMPLEMENTATION_PRAGMAS
+RR MAX_PROTECTED_ENTRIES=1
+RR MAX_SELECT_ALTERNATIVES=0
+RR MAX_TASK_ENTRIES=0
+RR MAX_ASYNCHRONOUS_SELECT_NESTING=0
 
-U regular_producer_parameters%b  regular_producer_parameters.adb  1ede97f6 NE OO PK
+U regular_producer_parameters%b  regular_producer_parameters.adb  4fe207a9 NE OO PK
 W activation_log_reader%s  activation_log_reader.adb  activation_log_reader.ali
 W ada%s			ada.ads			ada.ali
 W ada.text_io%s		a-textio.adb		a-textio.ali
@@ -40,91 +66,86 @@ W auxiliary%s		auxiliary.adb		auxiliary.ali
 W on_call_producer%s	on_call_producer.adb	on_call_producer.ali
 W production_workload%s	production_workload.adb	production_workload.ali
 
-U regular_producer_parameters%s  regular_producer_parameters.ads  5e062f88 EE NE OO PK
+U regular_producer_parameters%s  regular_producer_parameters.ads  8dde55f2 EE NE OO PK
 W system%s		system.ads		system.ali
 
-D activation_log_reader.ads  20170225170334 d6114eef activation_log_reader%s
-D activation_log_reader_parameters.ads  20170223093612 61051ae0 activation_log_reader_parameters%s
-D ada.ads		20190518041255 76789da1 ada%s
-D a-except.ads		20190518041255 291912d5 ada.exceptions%s
-D a-ioexce.ads		20190518041254 e4a01f64 ada.io_exceptions%s
-D a-reatim.ads		20190518041256 0240fc73 ada.real_time%s
-D a-stream.ads		20190518041255 119b8fb3 ada.streams%s
-D a-tags.ads		20190518041256 491b781d ada.tags%s
-D a-textio.ads		20190518041256 aef4d56d ada.text_io%s
-D a-unccon.ads		20190518041255 0e9b276f ada.unchecked_conversion%s
-D auxiliary.ads		20170223093614 e63055a9 auxiliary%s
-D interfac.ads		20190518041254 5ab55268 interfaces%s
-D i-c.ads		20190518041254 5421119b interfaces.c%s
-D i-cstrea.ads		20190518041254 e53d8b8e interfaces.c_streams%s
-D on_call_producer.ads	20170223201508 ba1a617a on_call_producer%s
-D on_call_producer_parameters.ads  20170223093614 d35a4fb4 on_call_producer_parameters%s
-D production_workload.ads  20170619142006 d22b1898 production_workload%s
-D regular_producer_parameters.ads  20170223093616 565d4073 regular_producer_parameters%s
-D regular_producer_parameters.adb  20170223204010 be67604c regular_producer_parameters%b
-D system.ads		20190518041255 085b6ffb system%s
-D s-atacco.ads		20190518041256 4c36d12f system.address_to_access_conversions%s
-D s-crtl.ads		20190518041254 0ebbdb71 system.crtl%s
-D s-exctab.ads		20190518041255 54135002 system.exception_table%s
-D s-ficobl.ads		20190518041256 078245e4 system.file_control_block%s
-D s-multip.ads		20190518041254 38ac9f73 system.multiprocessors%s
-D s-oscons.ads		20190518124528 e40aaf2d system.os_constants%s
-D s-osinte.ads		20190518041257 01b3ad47 system.os_interface%s
-D s-parame.ads		20190518041256 48ec542b system.parameters%s
-D s-secsta.ads		20190518041256 20bbe636 system.secondary_stack%s
-D s-soflin.ads		20190518041255 a7318a92 system.soft_links%s
-D s-stache.ads		20190518041256 a37c21ec system.stack_checking%s
-D s-stausa.ads		20190518041255 017a0a05 system.stack_usage%s
-D s-stalib.ads		20190518041256 09bd3940 system.standard_library%s
-D s-stoele.ads		20190518041256 2dc34a04 system.storage_elements%s
-D s-tasinf.ads		20190518041256 801abd01 system.task_info%s
-D s-taspri.ads		20190518041256 f40ac08d system.task_primitives%s
-D s-taprop.ads		20190518041256 1dd2e1b6 system.task_primitives.operations%s
-D s-taskin.ads		20190518041257 b9d612e2 system.tasking%s
-D s-tassta.ads		20190518041256 cca55c94 system.tasking.stages%s
-D s-traent.ads		20190518041254 005bf670 system.traceback_entries%s
-D s-unstyp.ads		20190518041255 34867c83 system.unsigned_types%s
-D s-wchcon.ads		20190518041255 1b7d22d2 system.wch_con%s
-G a e
-G c Z s b [regular_producer_operation regular_producer_parameters 5 14 none]
-G r c none [regular_producer_operation regular_producer_parameters 5 14 none] [small_whetstone production_workload 41 13 none]
-G r c none [regular_producer_operation regular_producer_parameters 5 14 none] [due_activation auxiliary 3 13 none]
-G r c none [regular_producer_operation regular_producer_parameters 5 14 none] [start on_call_producer 4 13 none]
-G r c none [regular_producer_operation regular_producer_parameters 5 14 none] [check_due auxiliary 6 13 none]
-G r c none [regular_producer_operation regular_producer_parameters 5 14 none] [signal activation_log_reader 5 14 none]
+D activation_log_reader.ads  20190919153542 d6114eef activation_log_reader%s
+D activation_log_reader_parameters.ads  20190906080956 61051ae0 activation_log_reader_parameters%s
+D ada.ads		20180525200322 76789da1 ada%s
+D a-except.ads		20180525200321 291912d5 ada.exceptions%s
+D a-textio.ads		20180525200321 ffc84532 ada.text_io%s
+D a-unccon.ads		20180525200322 0e9b276f ada.unchecked_conversion%s
+D auxiliary.ads		20190906080956 e63055a9 auxiliary%s
+D interfac.ads		20180525200321 5ab55268 interfaces%s
+D i-stm32.ads		20180525200320 4d2e1e9b interfaces.stm32%s
+D i-stm32-pwr.ads	20180525200320 10ed2a13 interfaces.stm32.pwr%s
+D on_call_producer.ads	20190906080956 ba1a617a on_call_producer%s
+D on_call_producer_parameters.ads  20190906080956 d35a4fb4 on_call_producer_parameters%s
+D production_workload.ads  20190906080956 d22b1898 production_workload%s
+D regular_producer_parameters.ads  20190906080956 565d4073 regular_producer_parameters%s
+D regular_producer_parameters.adb  20190906080956 be67604c regular_producer_parameters%b
+D system.ads		20180525200320 db831581 system%s
+D s-bb.ads		20180525200321 09e072ae system.bb%s
+D s-bbbopa.ads		20180525200320 95d97b26 system.bb.board_parameters%s
+D s-bbbosu.ads		20180525200322 0f820a2a system.bb.board_support%s
+D s-bbcppr.ads		20180525200320 bcfa73ad system.bb.cpu_primitives%s
+D s-bbinte.ads		20180525200322 c88d39da system.bb.interrupts%s
+D s-bbmcpa.ads		20180525200320 c4c55388 system.bb.mcu_parameters%s
+D s-bbpara.ads		20180525200320 431abc17 system.bb.parameters%s
+D s-bbthre.ads		20180525200322 c94b446f system.bb.threads%s
+D s-bbthqu.ads		20180525200322 db3cad46 system.bb.threads.queues%s
+D s-bbtime.ads		20180525200322 ad086247 system.bb.time%s
+D s-multip.ads		20180525200322 f33e0e35 system.multiprocessors%s
+D s-osinte.ads		20180525200322 229b14dd system.os_interface%s
+D s-parame.ads		20180525200322 d106111e system.parameters%s
+D s-secsta.ads		20180525200321 56a2861c system.secondary_stack%s
+D s-stalib.ads		20180525200321 09bd3940 system.standard_library%s
+D s-stm32.ads		20180525200320 e898dba2 system.stm32%s
+D s-stoele.ads		20180525200321 2dc34a04 system.storage_elements%s
+D s-tasinf.ads		20180525200322 801abd01 system.task_info%s
+D s-taspri.ads		20180525200322 351848fa system.task_primitives%s
+D s-taskin.ads		20180525200322 58b15916 system.tasking%s
+D s-tasres.ads		20180525200322 0c8ef6fb system.tasking.restricted%s
+D s-tarest.ads		20180525200322 c88b6d9a system.tasking.restricted.stages%s
+D s-traent.ads		20180525200321 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20180525200321 34867c83 system.unsigned_types%s
+D /home/parallels/Desktop/repo/lab/Ada/gnat.adc  20190906080956 00000000
 X 1 activation_log_reader.ads
-2K9*Activation_Log_Reader 11e26 19|3w6 31r10
-5U14*Signal 19|31s32
+2K9*Activation_Log_Reader 11e26 15|3w6 31r10
+5U14*Signal 15|31s32
 X 3 ada.ads
-16K9*Ada 20e8 19|5r6 26r13 34r7
-X 9 a-textio.ads
-57K13*Text_IO 727e16 19|5w10 26r17 34r11
-508U14*Put_Line 19|26s25 34s19
-X 11 auxiliary.ads
-1K9*Auxiliary 7e14 19|4w6 14r36 21r10 30r10
-2M9*Range_Counter 19|14r46
-3V13*Due_Activation{boolean} 19|21s20
-6V13*Check_Due{boolean} 19|30s20
-X 15 on_call_producer.ads
-2K9*On_Call_Producer 9e21 19|1w6 24r17
-4V13*Start{boolean} 19|24s34
-X 17 production_workload.ads
-18K9*Production_Workload 44e24 19|2w6 18r7
-41U13*Small_Whetstone 19|18s27
-X 18 regular_producer_parameters.ads
-2K9*Regular_Producer_Parameters 6l5 6e32 19|6b14 36l5 36t32
-3i4*Regular_Producer_Priority{20|125I12}
+16K9*Ada 20e8 15|5r6 26r13 34r7
+X 5 a-textio.ads
+36K13*Text_IO 52e16 15|5w10 26r17 34r11
+46U14*Put_Line 15|26s25 34s19
+X 7 auxiliary.ads
+1K9*Auxiliary 7e14 15|4w6 14r36 21r10 30r10
+2M9*Range_Counter 15|14r46
+3V13*Due_Activation{boolean} 15|21s20
+6V13*Check_Due{boolean} 15|30s20
+X 11 on_call_producer.ads
+2K9*On_Call_Producer 9e21 15|1w6 24r17
+4V13*Start{boolean} 15|24s34
+X 13 production_workload.ads
+18K9*Production_Workload 44e24 15|2w6 18r7
+41U13*Small_Whetstone 15|18s27
+X 14 regular_producer_parameters.ads
+2K9*Regular_Producer_Parameters 6l5 6e32 15|6b14 36l5 36t32
+3i4*Regular_Producer_Priority{16|117I12}
 4i4*Regular_Producer_Period{natural}
-5U14*Regular_Producer_Operation 19|15b14 35l8 35t34
-X 19 regular_producer_parameters.adb
+5U14*Regular_Producer_Operation 15|15b14 35l8 35t34
+X 15 regular_producer_parameters.adb
 9i4 Regular_Producer_Workload{positive} 18r44
 11i4 On_Call_Producer_Workload{positive} 24r41
-14m4 Activation_Condition{11|2M9} 21r36
-X 20 system.ads
-37K9*System 18|1w6 3r41 20|174e11
-124I12*Any_Priority{integer}
-125I12*Priority{124I12} 18|3r48
-X 32 s-stausa.ads
-203U14*Initialize 204i<c,__gnat_stack_usage_initialize>22
-268U14*Output_Results 272i<c,__gnat_stack_usage_output_results>22
+14m4 Activation_Condition{7|2M9} 21r36
+X 16 system.ads
+50K9*System 14|1w6 3r41 16|164e11
+116I12*Any_Priority{integer}
+117I12*Priority{116I12} 14|3r48
+X 30 s-secsta.ads
+46P9*SS_Stack_Ptr(43R9)
+X 36 s-taskin.ads
+407V13*Get_Sec_Stack{30|46P9} 408i<c,__gnat_get_secondary_stack>22
+X 38 s-tarest.ads
+232U14*Activate_All_Tasks_Sequential 233i<c,__gnat_activate_all_tasks>22
 

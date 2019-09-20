@@ -5,7 +5,12 @@ with External_Event_Server;
 with On_Call_Producer;
 with Regular_Producer;
 with Request_Buffer;
+with System;
+
 procedure Gee is
+   pragma Priority (System.Priority'First);
 begin
-   null;
+   loop
+      null;
+   end loop;
 end Gee;
