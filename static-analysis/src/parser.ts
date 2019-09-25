@@ -207,24 +207,24 @@ const pBasisBexpr: Parser<Bexpr> = (pTrue as Parser<Bexpr>)
   .alt(pEq)
   .alt(pLe);
 
-const pNeg: Parser<Neg> = pLit(strToChars('¬'))
-  .chain(() => pBexpr)
-  .map(b => new Neg(b));
-
-const pAnd: Parser<And> = pBasisBexpr.chain(a1 =>
-  pLit(strToChars('∧'))
-    .chain(() => pBasisBexpr)
-    .map(a2 => new And(a1, a2)),
-);
-
 const pParBexpr: Parser<Bexpr> = pLit(strToChars('('))
   .chain(() => pBexpr)
   .chain(a => pLit(strToChars(')')).map(() => a));
 
-export const pBexpr: Parser<Bexpr> = (pNeg as Parser<Bexpr>)
-  .alt(pAnd)
-  .alt(pBasisBexpr)
-  .alt(pParBexpr);
+const pFactorBexpr: Parser<Bexpr> = pParBexpr.alt(pBasisBexpr);
+
+const pTermBExpr: Parser<Bexpr> = pLit(strToChars('¬'))
+  .chain(() => pParBexpr)
+  .map(b => new Neg(b) as Bexpr)
+  .alt(pFactorBexpr);
+
+const pAnd: Parser<Bexpr> = pTermBExpr.chain(a1 =>
+  pLit(strToChars('∧'))
+    .chain(() => pBexpr)
+    .map(a2 => new And(a1, a2)),
+);
+
+export const pBexpr: Parser<Bexpr> = pAnd.alt(pTermBExpr);
 
 /**
  * Statement parsers

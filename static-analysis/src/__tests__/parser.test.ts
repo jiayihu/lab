@@ -1,4 +1,4 @@
-import { Add, Var, Num, Eq, Ass, Neg, Sub, Mult } from '../syntax';
+import { Add, Var, Num, Eq, Ass, Neg, Sub, Mult, And } from '../syntax';
 import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg } from '../parser';
 import { some } from 'fp-ts/lib/Option';
 
@@ -49,12 +49,30 @@ describe('parser', () => {
     );
   });
 
-  it('should associate to right', () => {
+  it('should give precedence to Mult operator', () => {
+    const input = strToChars('2 + 3 * 4');
+    const tokens = tokenizer(input);
+
+    expect(pAexpr.parse(tokens)).toEqual(
+      some([new Add(new Num(2), new Mult(new Num(3), new Num(4))), []]),
+    );
+  });
+
+  it('should give precedence to parenthesis', () => {
     const input = strToChars('2 * (3 + 4)');
     const tokens = tokenizer(input);
 
     expect(pAexpr.parse(tokens)).toEqual(
       some([new Mult(new Num(2), new Add(new Num(3), new Num(4))), []]),
+    );
+  });
+
+  it('should associate Aexpr to right', () => {
+    const input = strToChars('2 + 3 + 4');
+    const tokens = tokenizer(input);
+
+    expect(pAexpr.parse(tokens)).toEqual(
+      some([new Add(new Num(2), new Add(new Num(3), new Num(4))), []]),
     );
   });
 
@@ -70,6 +88,33 @@ describe('parser', () => {
     const tokens = tokenizer(input);
 
     expect(pBexpr.parse(tokens)).toEqual(some([new Neg(new Eq(new Var('x'), new Num(1))), []]));
+  });
+
+  it('should give precedence to Neg operator', () => {
+    const input = strToChars('¬(x = 1) ∧ (x = 2)');
+    const tokens = tokenizer(input);
+
+    expect(pBexpr.parse(tokens)).toEqual(
+      some([
+        new And(new Neg(new Eq(new Var('x'), new Num(1))), new Eq(new Var('x'), new Num(2))),
+        [],
+      ]),
+    );
+  });
+
+  it('should associate Bexpr to right', () => {
+    const input = strToChars('x = 3 ∧ x = 4 ∧ x = 5');
+    const tokens = tokenizer(input);
+
+    expect(pBexpr.parse(tokens)).toEqual(
+      some([
+        new And(
+          new Eq(new Var('x'), new Num(3)),
+          new And(new Eq(new Var('x'), new Num(4)), new Eq(new Var('x'), new Num(5))),
+        ),
+        [],
+      ]),
+    );
   });
 
   it('should parse simple statement', () => {
