@@ -1,4 +1,4 @@
-import { Add, Var, Num, Eq, Ass, Neg, Sub, Mult } from '../language';
+import { Add, Var, Num, Eq, Ass, Neg, Sub, Mult } from '../syntax';
 import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg } from '../parser';
 import { some } from 'fp-ts/lib/Option';
 

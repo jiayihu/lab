@@ -1,13 +1,13 @@
-import { Stm, State, T } from './language';
+import { Stm, State, T } from './syntax';
 import { substState, evalAexpr, evalBexpr } from './eval';
 import { identity, compose } from 'fp-ts/lib/function';
 
 /**
- * The set of Functionals is a chain complete partially ordered set.
+ * The set of partial functions State -> State is a chain complete partially ordered set.
  * A functional takes a state (function), and performs an operation with it that
  * results in another state.
  */
-type Functional = (state: State) => State;
+type FunctionalStm = (state: State) => State;
 
 // type Combinator = (f: Combinator) => Functional;
 
@@ -26,9 +26,11 @@ type Functional = (state: State) => State;
  *
  * @param F Continous function, which preserves least upper bound of chain.
  */
-const fix = (F: (g: () => Functional) => Functional): Functional => F(() => fix(F));
+const fix = (F: (g: () => FunctionalStm) => FunctionalStm): FunctionalStm => F(() => fix(F));
 
-const cond = (p: (s: State) => T) => (g1: Functional) => (g2: Functional) => (state: State) => {
+const cond = (p: (s: State) => T) => (g1: FunctionalStm) => (g2: FunctionalStm) => (
+  state: State,
+) => {
   return p(state) ? g1(state) : g2(state);
 };
 
@@ -54,8 +56,8 @@ export const semantic = (stm: Stm) => (state: State): State => {
     case 'While': {
       const { bexpr, stm: whileStm } = stm;
 
-      const F = (g: () => Functional): Functional => {
-        const lazyF: Functional = (s: State) =>
+      const F = (g: () => FunctionalStm): FunctionalStm => {
+        const lazyF: FunctionalStm = (s: State) =>
           compose(
             g(),
             semantic(whileStm),

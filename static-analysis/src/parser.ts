@@ -23,7 +23,7 @@ import {
   Comp,
   If,
   While,
-} from './language';
+} from './syntax';
 import { Option, some, none } from 'fp-ts/lib/Option';
 import { pair } from './utils';
 

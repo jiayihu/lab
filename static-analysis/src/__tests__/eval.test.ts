@@ -1,4 +1,4 @@
-import { Aexpr, Var, Add, Num, Z, State, Bexpr, Neg, Eq, Mult } from '../language';
+import { Aexpr, Var, Add, Num, Z, State, Bexpr, Neg, Eq, Mult } from '../syntax';
 import { evalAexpr, evalBexpr, freeVariablesAexpr, substAexpr } from '../eval';
 
 describe('evalAexpr', () => {

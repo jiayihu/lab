@@ -1,4 +1,4 @@
-import { Stm, State, If, Comp, While, Skip } from './language';
+import { Stm, State, If, Comp, While, Skip } from './syntax';
 import { substState, evalAexpr, evalBexpr } from './eval';
 import { last } from 'fp-ts/lib/Array';
 
