@@ -1,6 +1,5 @@
 import { Stm, State, If, Comp, While, Skip } from './syntax';
 import { substState, evalAexpr, evalBexpr } from './eval';
-import { last } from 'fp-ts/lib/Array';
 
 export class InterConfig {
   type: 'InterConfig' = 'InterConfig';
@@ -15,7 +14,7 @@ export class FinalConfig {
 export type Config = InterConfig | FinalConfig;
 
 const isFinal = (config: Config): config is FinalConfig => {
-  return config instanceof FinalConfig;
+  return config.type === 'FinalConfig';
 };
 
 export const transition = (config: Config): Config => {
@@ -63,8 +62,7 @@ export const deriveSeq = (config: Config): Config[] => {
 
 export const semantic = (stm: Stm) => (state: State): State => {
   const derivation = deriveSeq(new InterConfig(stm, state));
+  const last = derivation[derivation.length - 1];
 
-  return last(derivation)
-    .map(config => config.state)
-    .getOrElse(state);
+  return last.state;
 };

@@ -2,7 +2,7 @@ export type Z = number;
 export type T = boolean;
 export type Name = string;
 
-export type Aexpr = Num | Var | Add | Mult | Sub;
+export type Aexpr = Num | Var | Add | Sub | Mult | Div;
 
 export class Num {
   type: 'Num' = 'Num';
@@ -20,6 +20,10 @@ export class Mult {
   type: 'Mult' = 'Mult';
   constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
 }
+export class Div {
+  type: 'Div' = 'Div';
+  constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
+}
 export class Sub {
   type: 'Sub' = 'Sub';
   constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
@@ -29,11 +33,13 @@ export type Bexpr = True | False | Eq | Le | Neg | And;
 
 export class True {
   type: 'True' = 'True';
-  constructor(readonly value: true) {}
+  value = true;
+  constructor() {}
 }
 export class False {
   type: 'False' = 'False';
-  constructor(readonly value: false) {}
+  value = false;
+  constructor() {}
 }
 export class Eq {
   type: 'Eq' = 'Eq';
@@ -77,6 +83,9 @@ export class While {
 
 export type State = (name: Name) => Z;
 
-export const twoCharOps = [':=', '<='];
+export const initialState: (vars: Record<Name, Z>) => State = (vars: Record<Name, Z>) => name =>
+  vars[name] || 0;
+
+export const twoCharOps = [':=', '!=', '<=', '>='];
 
 export const keywords = ['if', 'then', 'else', 'while', 'do'];

@@ -1,4 +1,4 @@
-import { Z, T, Name, Aexpr, Bexpr, State, Add, Mult, Sub, Eq, Neg, And } from './syntax';
+import { Z, T, Name, Aexpr, Bexpr, State, Add, Mult, Sub, Eq, Le, Neg, And, Div } from './syntax';
 
 type EvalAexpr = (aexpr: Aexpr) => (s: State) => Z;
 type EvalBexpr = (bexpr: Bexpr) => (s: State) => T;
@@ -11,10 +11,12 @@ export const evalAexpr: EvalAexpr = (expr: Aexpr) => (s: State): Z => {
       return s(expr.value);
     case 'Add':
       return evalAexpr(expr.aexpr1)(s) + evalAexpr(expr.aexpr2)(s);
-    case 'Mult':
-      return evalAexpr(expr.aexpr1)(s) * evalAexpr(expr.aexpr2)(s);
     case 'Sub':
       return evalAexpr(expr.aexpr1)(s) - evalAexpr(expr.aexpr2)(s);
+    case 'Mult':
+      return evalAexpr(expr.aexpr1)(s) * evalAexpr(expr.aexpr2)(s);
+    case 'Div':
+      return evalAexpr(expr.aexpr1)(s) / evalAexpr(expr.aexpr2)(s);
   }
 };
 
@@ -29,9 +31,9 @@ export const evalBexpr: EvalBexpr = (expr: Bexpr) => (s: State): T => {
     case 'Le':
       return evalAexpr(expr.aexpr1)(s) <= evalAexpr(expr.aexpr2)(s);
     case 'Neg':
-      return evalBexpr(expr.value)(s) === false;
+      return !evalBexpr(expr.value)(s);
     case 'And': {
-      return evalBexpr(expr.bexpr1)(s) === evalBexpr(expr.bexpr2)(s);
+      return evalBexpr(expr.bexpr1)(s) && evalBexpr(expr.bexpr2)(s);
     }
   }
 };
@@ -43,8 +45,9 @@ export const freeVariablesAexpr = (expr: Aexpr): Name[] => {
     case 'Var':
       return [expr.value];
     case 'Add':
+    case 'Sub':
     case 'Mult':
-    case 'Sub': {
+    case 'Div': {
       const fvA1 = freeVariablesAexpr(expr.aexpr1);
       const fvA2 = freeVariablesAexpr(expr.aexpr2);
 
@@ -84,10 +87,12 @@ export const substAexpr = (a: Aexpr) => (y: Name) => (a0: Aexpr): Aexpr => {
       return a.value === y ? a0 : a;
     case 'Add':
       return new Add(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
-    case 'Mult':
-      return new Mult(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
     case 'Sub':
       return new Sub(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
+    case 'Mult':
+      return new Mult(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
+    case 'Div':
+      return new Div(substAexpr(a.aexpr1)(y)(a0), substAexpr(a.aexpr2)(y)(a0));
   }
 };
 
@@ -97,8 +102,9 @@ export const substBexpr = (b: Bexpr) => (y: Name) => (a0: Aexpr): Bexpr => {
     case 'False':
       return b;
     case 'Eq':
-    case 'Le':
       return new Eq(substAexpr(b.aexpr1)(y)(a0), substAexpr(b.aexpr2)(y)(a0));
+    case 'Le':
+      return new Le(substAexpr(b.aexpr1)(y)(a0), substAexpr(b.aexpr2)(y)(a0));
     case 'Neg':
       return new Neg(substBexpr(b.value)(y)(a0));
     case 'And':

@@ -1,4 +1,4 @@
-import { Comp, Ass, Num, While, Neg, Eq, Var, Mult, Sub, State } from '../syntax';
+import { Comp, Ass, Num, While, Neg, Eq, Var, Mult, Sub } from '../syntax';
 
 export const factorial = new Comp(
   new Ass('y', new Num(1)),
@@ -10,5 +10,3 @@ export const factorial = new Comp(
     ),
   ),
 );
-
-export const initialState: State = name => (name === 'x' ? 3 : 0);

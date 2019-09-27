@@ -23,6 +23,7 @@ import {
   Comp,
   If,
   While,
+  Div,
 } from './syntax';
 import { Option, some, none } from 'fp-ts/lib/Option';
 import { pair } from './utils';
@@ -131,7 +132,7 @@ const pSat = (pred: (token: Token) => boolean): Parser<Token> => {
   return item.chain(token => (pred(token) ? Parser.of(token) : Parser.empty()));
 };
 
-const pLit = (c: Token): Parser<Token> => pSat(token => token.join('') === c.join(''));
+const pLit = (cs: string): Parser<Token> => pSat(token => token.join('') === cs);
 
 /**
  * Arithmetic expression parsers, it handles right-associativity and Mult precedence.
@@ -153,26 +154,30 @@ const pNum: Parser<Num> = pSat(token => token.every(isDigit)).map(
 
 const pBasisAexpr: Parser<Aexpr> = (pVar as Parser<Aexpr>).alt(pNum);
 
-const pFactor: Parser<Aexpr> = pLit(strToChars('('))
+const pFactor: Parser<Aexpr> = pLit('(')
   .chain(() => pAexpr)
-  .chain(a => pLit(strToChars(')')).map(() => a))
+  .chain(a => pLit(')').map(() => a))
   .alt(pBasisAexpr);
 
 const pTerm: Parser<Aexpr> = pFactor.chain(a1 =>
-  pLit(strToChars('*'))
-    .chain(() => pTerm)
-    .map(a2 => new Mult(a1, a2) as Aexpr)
+  pLit('*')
+    .alt(pLit('/'))
+    .chain(operator => {
+      return pTerm.map(a2 =>
+        operator.join('') === '*' ? new Mult(a1, a2) : (new Div(a1, a2) as Aexpr),
+      );
+    })
     .alt(Parser.of(a1)),
 );
 
 const pAdd: Parser<Aexpr> = pTerm.chain(a1 =>
-  pLit(strToChars('+'))
+  pLit('+')
     .chain(() => pAexpr)
     .map(a2 => new Add(a1, a2)),
 );
 
 const pSub: Parser<Aexpr> = pTerm.chain(a1 =>
-  pLit(strToChars('-'))
+  pLit('-')
     .chain(() => pAexpr)
     .map(a2 => new Sub(a1, a2)),
 );
@@ -183,94 +188,168 @@ export const pAexpr: Parser<Aexpr> = pAdd.alt(pSub).alt(pTerm);
  * Boolean expression parsers
  */
 
-const pTrue: Parser<True> = pSat(token => charsToStr(token) === 'true').map(() => new True(true));
+const pTrue: Parser<Bexpr> = pSat(token => charsToStr(token) === 'true').map(() => new True());
 
-const pFalse: Parser<False> = pSat(token => charsToStr(token) === 'false').map(
-  () => new False(false),
-);
+const pFalse: Parser<Bexpr> = pSat(token => charsToStr(token) === 'false').map(() => new False());
 
-const pEq: Parser<Eq> = pAexpr.chain(a1 =>
-  pLit(strToChars('='))
+const pEq: Parser<Bexpr> = pAexpr.chain(a1 =>
+  pLit('=')
     .chain(() => pAexpr)
     .map(a2 => new Eq(a1, a2)),
 );
 
-const pLe: Parser<Le> = pAexpr.chain(a1 =>
-  pLit(strToChars('<'))
-    .chain(() => pLit(strToChars('=')))
+// Syntactic sugar
+const pNotEq: Parser<Bexpr> = pAexpr.chain(a1 =>
+  pLit('!=')
+    .chain(() => pAexpr)
+    .map(a2 => new Neg(new Eq(a1, a2))),
+);
+
+const pLe: Parser<Bexpr> = pAexpr.chain(a1 =>
+  pLit('<=')
     .chain(() => pAexpr)
     .map(a2 => new Le(a1, a2)),
 );
 
-const pBasisBexpr: Parser<Bexpr> = (pTrue as Parser<Bexpr>)
+// Syntactic sugar
+const pLt: Parser<Bexpr> = pAexpr.chain(
+  a1 =>
+    pLit('<')
+      .chain(() => pAexpr)
+      .map(a2 => new And(new Le(a1, a2), new Neg(new Eq(a1, a2)))), // <= & !=
+);
+
+// Syntactic sugar
+const pGt: Parser<Bexpr> = pAexpr.chain(
+  a1 =>
+    pLit('>')
+      .chain(() => pAexpr)
+      .map(a2 => new Neg(new Le(a1, a2))), // ! (<=)
+);
+
+// Syntactic sugar
+const pGe: Parser<Bexpr> = pAexpr.chain(
+  a1 =>
+    pLit('>=')
+      .chain(() => pAexpr)
+      .map(a2 => new Neg(new And(new Le(a1, a2), new Neg(new Eq(a1, a2))))), // !<
+);
+
+const pBasisBexpr: Parser<Bexpr> = pTrue
   .alt(pFalse)
   .alt(pEq)
-  .alt(pLe);
+  .alt(pNotEq)
+  .alt(pLe)
+  .alt(pLt)
+  .alt(pGt)
+  .alt(pGe);
 
-const pParBexpr: Parser<Bexpr> = pLit(strToChars('('))
+const pParBexpr: Parser<Bexpr> = pLit('(')
   .chain(() => pBexpr)
-  .chain(a => pLit(strToChars(')')).map(() => a));
+  .chain(a => pLit(')').map(() => a));
 
 const pFactorBexpr: Parser<Bexpr> = pParBexpr.alt(pBasisBexpr);
 
-const pTermBExpr: Parser<Bexpr> = pLit(strToChars('¬'))
-  .chain(() => pParBexpr)
+const pTermBExpr: Parser<Bexpr> = pLit('!')
+  .chain(() => pFactorBexpr)
   .map(b => new Neg(b) as Bexpr)
   .alt(pFactorBexpr);
 
 const pAnd: Parser<Bexpr> = pTermBExpr.chain(a1 =>
-  pLit(strToChars('∧'))
+  pLit('&')
     .chain(() => pBexpr)
     .map(a2 => new And(a1, a2)),
 );
 
-export const pBexpr: Parser<Bexpr> = pAnd.alt(pTermBExpr);
+// Syntactic sugar
+const pOr: Parser<Bexpr> = pTermBExpr.chain(
+  a1 =>
+    pLit('|')
+      .chain(() => pBexpr)
+      .map(a2 => new Neg(new And(new Neg(a1), new Neg(a2)))), // De Morgan : A | B = !(!A & !B)
+);
+
+export const pBexpr: Parser<Bexpr> = pAnd.alt(pOr).alt(pTermBExpr);
 
 /**
  * Statement parsers
  */
 
-const pAss: Parser<Ass> = pSat(token => isAlpha(token[0])).chain(name =>
-  pLit(strToChars(':='))
+const pAss: Parser<Stm> = pSat(token => isAlpha(token[0])).chain(name =>
+  pLit(':=')
     .chain(() => pAexpr)
     .map(a2 => new Ass(name.join(''), a2)),
 );
 
-const pSkip: Parser<Skip> = pLit(strToChars('skip')).map(() => new Skip());
+const pSkip: Parser<Stm> = pLit('skip').map(() => new Skip());
 
-const pIf: Parser<If> = pLit(strToChars('if'))
+const pIf: Parser<Stm> = pLit('if')
   .chain(() => pBexpr)
   .chain(bexpr =>
-    pLit(strToChars('then'))
+    pLit('then')
       .chain(() => pStm)
       .chain(stm1 =>
-        pLit(strToChars('else'))
+        pLit('else')
           .chain(() => pStm)
           .map(stm2 => new If(bexpr, stm1, stm2)),
       ),
   );
 
-const pWhile: Parser<While> = pLit(strToChars('while'))
+const pWhile: Parser<Stm> = pLit('while')
   .chain(() => pBexpr)
   .chain(bexpr =>
-    pLit(strToChars('do'))
-      .chain(() => pProg)
+    pLit('do')
+      .chain(() => pStm)
       .map(stm => new While(bexpr, stm)),
   );
 
-const pStm: Parser<Stm> = (pAss as Parser<Stm>)
+// Syntactic sugar
+const pFor: Parser<Stm> = pLit('for').chain(() =>
+  pAss.chain(ass =>
+    pLit('to')
+      .chain(() => pAexpr)
+      .chain(aexpr =>
+        pLit('do')
+          .chain(() => pStm)
+          .map(stm => {
+            const index = (ass as Ass).name;
+
+            return new Comp(
+              ass,
+              new While(
+                new Le(new Var(index), aexpr),
+                new Comp(stm, new Ass(index, new Add(new Var(index), new Num(1)))),
+              ),
+            );
+          }),
+      ),
+  ),
+);
+
+const pRepeatUntil: Parser<Stm> = pLit('repeat')
+  .chain(() => pStm)
+  .chain(stm =>
+    pLit('until')
+      .chain(() => pBexpr)
+      .map(bexpr => new Comp(stm, new While(new Neg(bexpr), stm))),
+  );
+
+const pParStm: Parser<Stm> = pLit('(')
+  .chain(() => pProg)
+  .chain(stm => pLit(')').map(() => stm));
+
+const pStm: Parser<Stm> = pAss
   .alt(pSkip)
   .alt(pIf)
-  .alt(pWhile);
+  .alt(pWhile)
+  .alt(pFor)
+  .alt(pRepeatUntil)
+  .alt(pParStm);
 
-const pParStm: Parser<Stm> = pLit(strToChars('('))
-  .chain(() => pProg)
-  .chain(stm => pLit(strToChars(')')).map(() => stm));
-
-export const pProg: Parser<Stm> = pOneOrMoreWithSep(pStm.alt(pParStm))(pLit(strToChars(';'))).map(
-  stms =>
-    stms.reduce<Stm>((comp, stm) => {
-      // Cannot avoid putting Skip as initial value so if the program is only one stm avoid Comp
-      return comp.type === 'Skip' ? stm : new Comp(comp, stm);
-    }, new Skip()),
-);
+export const pProg: Parser<Stm> = pStm
+  .chain(stm1 =>
+    pLit(';')
+      .chain(() => pProg)
+      .map(stm2 => new Comp(stm1, stm2) as Stm),
+  )
+  .alt(pStm);

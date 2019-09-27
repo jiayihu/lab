@@ -13,5 +13,5 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 
 ##
 
-- TODO: S1; while b (do S; S) 
-- x non presente nello stato
+- TODO: S1; while b (do S; S)
+- Valore nullo nello state zero
