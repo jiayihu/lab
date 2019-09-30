@@ -1,0 +1,20 @@
+function factorial(n, ret = res => res) {
+  return n > 1 
+    ? () => factorial(n - 1, res => ret(n * res)) 
+    : ret(1);
+}
+
+factorial(3, id)
+() => factorial(2, res => id(3 * res))
+() => factorial(1, res' => (res => id(3 * res))(2 * res'))
+res' => (res => id(3 * res))(2 * res')(1)
+res => id(3 * res)(2 * 1)
+id (3 * 2)
+id (6)
+6
+
+KKT({ x: 3 }, res => res)
+KKT({ x: 2 }, res' => res')
+KKT({ x: 1 }, res' => res')
+(res' => res')({ x: 1 })
+{ x: 1 }

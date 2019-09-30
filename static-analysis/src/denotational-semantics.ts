@@ -10,21 +10,36 @@ import { identity, compose } from 'fp-ts/lib/function';
 type FunctionalStm = (state: State) => State;
 
 /**
- * Y combinator: the least fix point of F, which is the least upper bound of the
- * set of iterations of F.
- *
- * The Haskell implementation, with lazy evalutation, is just `fix F = F (fix F)`.
- * JS implementation:
- *
- * ```js
- * F( // Calls the recursive function generator
- *  () => fix(F) // Next iteration generator, made lazy and called only if necessary
- * )
- * ```
- *
- * @param F Continous function, which preserves least upper bound of chain.
+ * A thunked function returns an expression wrapped in an argument-less function.
+ * This wrapping delays the evaluation of the expression until the point at which
+ * the function is called.
  */
-const fix = (F: (g: () => FunctionalStm) => FunctionalStm): FunctionalStm => F(() => fix(F));
+export type Thunked<T> = (s: T, ret: (s: T) => T) => T | (() => ReturnType<Thunked<T>>);
+
+function isNextFn<T>(fn: T | (() => T)): fn is () => T {
+  return typeof fn === 'function' && fn.name === 'next';
+}
+
+/**
+ * A trampoline is a loop that iteratively invokes thunk-returning functions.
+ * The idea is to not make the final continuation call inside the function, but
+ * to exit and to return the continuation to a trampoline. That trampoline is
+ * simply a loop that invokes the returned continuations. Hence, there are no
+ * nested function calls and the stack won’t grow.
+ * @src https://eli.thegreenplace.net/2017/on-recursion-continuations-and-trampolines/
+ * @src https://en.wikipedia.org/wiki/Trampoline_(computing)
+ */
+export function trampoline<T>(thunk: Thunked<T>): (s: T) => T {
+  return function(s: T): T {
+    let result = thunk(s, identity);
+
+    while (result && isNextFn(result)) {
+      result = result();
+    }
+
+    return result;
+  };
+}
 
 const cond = (p: (s: State) => T) => (g1: FunctionalStm) => (g2: FunctionalStm) => (
   state: State,
@@ -54,16 +69,16 @@ export const semantic = (stm: Stm) => (state: State): State => {
     case 'While': {
       const { bexpr, stm: whileStm } = stm;
 
-      const F = (g: () => FunctionalStm): FunctionalStm => {
-        const lazy: FunctionalStm = (s: State) =>
-          compose(
-            g(), // Next iteration
-            semantic(whileStm), // Current iteration
-          )(s);
-        return cond(evalBexpr(bexpr))(lazy)(identity);
+      const KKT: Thunked<State> = (s, ret) => {
+        return evalBexpr(bexpr)(s)
+          ? function next() {
+              const s1 = semantic(whileStm)(s);
+              return KKT(s1, identity);
+            }
+          : ret(s);
       };
 
-      return fix(F)(state);
+      return trampoline(KKT)(state);
     }
   }
 };
