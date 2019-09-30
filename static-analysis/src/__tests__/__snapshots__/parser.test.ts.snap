@@ -1,5 +1,86 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parser should parse composed while 1`] = `
+Some {
+  "_tag": "Some",
+  "value": Array [
+    Comp {
+      "stm1": Ass {
+        "aexpr": Num {
+          "type": "Num",
+          "value": 1,
+        },
+        "name": "y",
+        "type": "Ass",
+      },
+      "stm2": Comp {
+        "stm1": While {
+          "bexpr": Neg {
+            "type": "Neg",
+            "value": Eq {
+              "aexpr1": Var {
+                "type": "Var",
+                "value": "x",
+              },
+              "aexpr2": Num {
+                "type": "Num",
+                "value": 1,
+              },
+              "type": "Eq",
+            },
+          },
+          "stm": Comp {
+            "stm1": Ass {
+              "aexpr": Mult {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "y",
+                },
+                "aexpr2": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "type": "Mult",
+              },
+              "name": "y",
+              "type": "Ass",
+            },
+            "stm2": Ass {
+              "aexpr": Sub {
+                "aexpr1": Var {
+                  "type": "Var",
+                  "value": "x",
+                },
+                "aexpr2": Num {
+                  "type": "Num",
+                  "value": 1,
+                },
+                "type": "Sub",
+              },
+              "name": "x",
+              "type": "Ass",
+            },
+            "type": "Comp",
+          },
+          "type": "While",
+        },
+        "stm2": Ass {
+          "aexpr": Num {
+            "type": "Num",
+            "value": 1,
+          },
+          "name": "z",
+          "type": "Ass",
+        },
+        "type": "Comp",
+      },
+      "type": "Comp",
+    },
+    Array [],
+  ],
+}
+`;
+
 exports[`parser should parse factorial statement 1`] = `
 Some {
   "_tag": "Some",

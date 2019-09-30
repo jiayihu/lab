@@ -274,6 +274,13 @@ describe('parser', () => {
     expect(pProg.parse(tokens)).toMatchSnapshot();
   });
 
+  it('should parse composed while', () => {
+    const input = strToChars('y := 1; while !(x = 1) do (y := y * x; x := x - 1); z := 1');
+    const tokens = tokenizer(input);
+
+    expect(pProg.parse(tokens)).toMatchSnapshot();
+  });
+
   it('should handle for syntactic sugar', () => {
     const input = strToChars('for x := 1 to 10 do y := y + x');
     const tokens = tokenizer(input);

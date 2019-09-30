@@ -9,8 +9,6 @@ import { identity, compose } from 'fp-ts/lib/function';
  */
 type FunctionalStm = (state: State) => State;
 
-// type Combinator = (f: Combinator) => Functional;
-
 /**
  * Y combinator: the least fix point of F, which is the least upper bound of the
  * set of iterations of F.
@@ -57,12 +55,12 @@ export const semantic = (stm: Stm) => (state: State): State => {
       const { bexpr, stm: whileStm } = stm;
 
       const F = (g: () => FunctionalStm): FunctionalStm => {
-        const lazyF: FunctionalStm = (s: State) =>
+        const lazy: FunctionalStm = (s: State) =>
           compose(
-            g(),
-            semantic(whileStm),
+            g(), // Next iteration
+            semantic(whileStm), // Current iteration
           )(s);
-        return cond(evalBexpr(bexpr))(lazyF)(identity);
+        return cond(evalBexpr(bexpr))(lazy)(identity);
       };
 
       return fix(F)(state);

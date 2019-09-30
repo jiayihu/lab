@@ -1,3 +1,5 @@
+import { random } from './utils';
+
 export type Z = number;
 export type T = boolean;
 export type Name = string;
@@ -83,8 +85,11 @@ export class While {
 
 export type State = (name: Name) => Z;
 
-export const initialState: (vars: Record<Name, Z>) => State = (vars: Record<Name, Z>) => name =>
-  vars[name] || 0;
+export const initialState: (vars: Record<Name, Z>) => State = (vars: Record<Name, Z>) => name => {
+  const value = vars[name];
+
+  return value !== undefined ? value : (vars[name] = random());
+};
 
 export const twoCharOps = [':=', '!=', '<=', '>='];
 
