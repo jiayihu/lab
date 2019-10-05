@@ -136,12 +136,6 @@ const pLit = (cs: string): Parser<Token> => pSat(token => token.join('') === cs)
 
 /**
  * Arithmetic expression parsers, it handles right-associativity and Mult precedence.
- * Based on the following grammar:
- *
- * aexpr ::= term (+ aexpr | ε) | term (- aexpr | ε)
- * term ::= factor (* aexpr | ε)
- * factor ::= (aexpr) | basis
- * basic ::= Var | Num
  */
 
 const pVar: Parser<Var> = pSat(
@@ -159,7 +153,7 @@ const pFactor: Parser<Aexpr> = pLit('(')
   .chain(a => pLit(')').map(() => a))
   .alt(pBasisAexpr);
 
-const pTerm: Parser<Aexpr> = pFactor.chain(a1 =>
+const pMult: Parser<Aexpr> = pFactor.chain(a1 =>
   pLit('*')
     .alt(pLit('/'))
     .chain(operator => {
@@ -169,6 +163,12 @@ const pTerm: Parser<Aexpr> = pFactor.chain(a1 =>
     })
     .alt(Parser.of(a1)),
 );
+
+const pNegNum: Parser<Aexpr> = pLit('-')
+  .chain(() => pFactor)
+  .map(a => new Sub(new Num(0), a));
+
+const pTerm: Parser<Aexpr> = pMult.alt(pNegNum);
 
 const pAdd: Parser<Aexpr> = pTerm.chain(a1 =>
   pLit('+')

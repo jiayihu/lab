@@ -1,5 +1,5 @@
 import { trampoline, semantic, Thunked } from '../denotational-semantics';
-import { factorial, whileNotZeroSkip, whileTrueSkip } from './fixtures';
+import { factorial, whileNotZeroSkip } from './fixtures';
 import { initialState } from '../syntax';
 
 describe('trampoline', () => {

@@ -21,7 +21,7 @@ import {
 import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg } from '../parser';
 import { some, option } from 'fp-ts/lib/Option';
 import { array } from 'fp-ts/lib/Array';
-import { evalBexpr } from '../eval';
+import { evalBexpr, evalAexpr } from '../eval';
 import { semantic } from '../operational-semantics';
 
 describe('tokenizer', () => {
@@ -113,6 +113,18 @@ describe('parser', () => {
         [new Div(new Var('x'), new Mult(new Num(3), new Num(2))), []],
       ]),
     );
+  });
+
+  it('should handle syntactic sugar', () => {
+    const input = ['-1 + 2', '-(1 + 2)', '3 - 1'];
+    const tokens = input.map(bexpr => tokenizer(strToChars(bexpr)));
+    const syntaxes = tokens
+      .map(ts => pAexpr.parse(ts))
+      .map(syntax => syntax.map(([aexpr]) => evalAexpr(aexpr)(() => 0)));
+    const result = array.sequence(option)(syntaxes);
+    const expected = some([1, -3, 2]);
+
+    expect(result).toEqual(expected);
   });
 
   it('should parse basis boolean expression', () => {

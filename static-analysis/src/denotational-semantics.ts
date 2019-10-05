@@ -33,9 +33,7 @@ export function trampoline<T>(thunk: Thunked<T>): (s: T) => T {
   return function(s: T): T {
     let result = thunk(s, identity);
 
-    while (result && isNextFn(result)) {
-      result = result();
-    }
+    while (result && isNextFn(result)) result = result();
 
     return result;
   };
