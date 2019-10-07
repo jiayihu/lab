@@ -15,14 +15,14 @@ import {
   Skip,
   If,
   While,
-  initialState,
   Comp,
 } from '../syntax';
 import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg } from '../parser';
 import { some, option } from 'fp-ts/lib/Option';
 import { array } from 'fp-ts/lib/Array';
-import { evalBexpr, evalAexpr } from '../eval';
-import { semantic } from '../operational-semantics';
+import { evalBexpr, evalAexpr } from '../concrete/eval';
+import { semantic } from '../concrete/operational-semantics';
+import { initState } from '../concrete/state';
 
 describe('tokenizer', () => {
   it('should split in tokens', () => {
@@ -297,7 +297,7 @@ describe('parser', () => {
     const input = strToChars('for x := 1 to 10 do y := y + x');
     const tokens = tokenizer(input);
     const syntax = pProg.parse(tokens);
-    const state = initialState({ y: 1 });
+    const state = initState({ y: 1 });
     const result = syntax.map(([stm]) => semantic(stm)(state)).map(s => s('y'));
 
     expect(result).toEqual(some(56));
@@ -307,7 +307,7 @@ describe('parser', () => {
     const input = strToChars('repeat x := x + 1 until x = 10');
     const tokens = tokenizer(input);
     const syntax = pProg.parse(tokens);
-    const state = initialState({ x: 0 });
+    const state = initState({ x: 0 });
     const result = syntax.map(([stm]) => semantic(stm)(state)).map(s => s('x'));
 
     expect(result).toEqual(some(10));
@@ -317,7 +317,7 @@ describe('parser', () => {
     const input = strToChars('repeat x := x + 1 until 1 = 1');
     const tokens = tokenizer(input);
     const syntax = pProg.parse(tokens);
-    const state = initialState({ x: 0 });
+    const state = initState({ x: 0 });
     const result = syntax.map(([stm]) => semantic(stm)(state)).map(s => s('x'));
 
     expect(result).toEqual(some(1));

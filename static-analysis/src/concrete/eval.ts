@@ -1,4 +1,5 @@
-import { Z, T, Name, Aexpr, Bexpr, State, Add, Mult, Sub, Eq, Le, Neg, And, Div } from './syntax';
+import { Z, T, Name, Aexpr, Bexpr, Add, Mult, Sub, Eq, Le, Neg, And, Div } from '../syntax';
+import { State } from './state';
 
 type EvalAexpr = (aexpr: Aexpr) => (s: State) => Z;
 type EvalBexpr = (bexpr: Bexpr) => (s: State) => T;

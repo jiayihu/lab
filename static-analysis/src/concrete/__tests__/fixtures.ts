@@ -1,4 +1,4 @@
-import { Comp, Ass, Num, While, Neg, Eq, Var, Mult, Sub, Skip, True } from '../syntax';
+import { Comp, Ass, Num, While, Neg, Eq, Var, Mult, Sub, Skip, True } from '../../syntax';
 
 export const factorial = new Comp(
   new Ass('y', new Num(1)),

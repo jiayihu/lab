@@ -1,5 +1,3 @@
-import { random } from './utils';
-
 export type Z = number;
 export type T = boolean;
 export type Name = string;
@@ -82,15 +80,3 @@ export class While {
   type: 'While' = 'While';
   constructor(readonly bexpr: Bexpr, readonly stm: Stm) {}
 }
-
-export type State = (name: Name) => Z;
-
-export const initialState: (vars: Record<Name, Z>) => State = (vars: Record<Name, Z>) => name => {
-  const value = vars[name];
-
-  return value !== undefined ? value : (vars[name] = random());
-};
-
-export const twoCharOps = [':=', '!=', '<=', '>='];
-
-export const keywords = ['if', 'then', 'else', 'while', 'do'];

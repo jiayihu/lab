@@ -1,5 +1,6 @@
-import { Aexpr, Var, Add, Num, Z, State, Bexpr, Neg, Eq, Mult } from '../syntax';
+import { Aexpr, Var, Add, Num, Z, Bexpr, Neg, Eq, Mult } from '../../syntax';
 import { evalAexpr, evalBexpr, freeVariablesAexpr, substAexpr } from '../eval';
+import { State } from '../state';
 
 describe('evalAexpr', () => {
   it('should return the correct evaluation', () => {

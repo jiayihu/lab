@@ -2,8 +2,6 @@ import { span, split, isEmpty } from 'fp-ts/lib/Array';
 import { Char } from 'newtype-ts/lib/Char';
 import { iso } from 'newtype-ts';
 import {
-  twoCharOps,
-  keywords,
   Var,
   Num,
   Aexpr,
@@ -31,6 +29,10 @@ import { pair } from './utils';
 const isoChar = iso<Char>();
 export const strToChars = (xs: string): Char[] => Array.from(xs).map(isoChar.wrap);
 export const charsToStr = (chars: Char[]): string => chars.map(isoChar.unwrap).join('');
+
+const twoCharOps = [':=', '!=', '<=', '>='];
+
+const keywords = ['if', 'then', 'else', 'while', 'do'];
 
 type Token = Char[];
 
