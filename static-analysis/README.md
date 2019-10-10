@@ -4,7 +4,7 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 
 1. Monadic parser
 2. Denotational semantics interpreter
-3. Static analyzer of numbers via Abstract Interpretation
+3. Static analyzer of numeric domain via Abstract Interpretation
 
 ## Denotational semantics
 
@@ -16,8 +16,9 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 - Rewrite arithmetic syntactic sugar
 - Nested loops
 - While ambiguity
-- Division by zero
 
 - Extended sign domain
 - Smash
 - Naive widening
+- Logic or
+- Range operator

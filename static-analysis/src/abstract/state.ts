@@ -38,7 +38,7 @@ const createState = <T>(state: FState<T>, names: Name[]): FState<T> => {
 export const substState = <T>(state: State<T>) => (y: Name) => (value: T): State<T> => {
   if (isBottomState(state)) return state;
 
-  const names = getPrivateNames(state);
+  const names = Array.from(new Set([...getPrivateNames(state), y]));
 
   return createState((name: Name) => (name === y ? value : state(name)), names);
 };
@@ -53,10 +53,18 @@ export const initState = <T>(domain: Domain<T>) => (vars: Array<[Name, T]>): FSt
   }, names);
 };
 
-export const printState = <T>(state: State<T>): void => {
-  getPrivateNames(state).forEach(([name]) => {
-    console.log(`${name} := ${isBottomState(state) ? 'Bottom' : (state(name) as any)['type']}`);
+export const printState = <T>(state: State<T>): string[] => {
+  if (isBottomState(state)) return ['Bottom'];
+
+  return getPrivateNames(state).map(name => {
+    return `${name} := ${(state(name) as any)['type']}`;
   });
+};
+
+export const eq = <T>(x: State<T>) => (y: State<T>): boolean => {
+  if (isBottomState(x) || isBottomState(y)) return x === y;
+
+  return getVarNames(x, y).every(name => x(name) === y(name));
 };
 
 export const le = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): boolean => {
@@ -85,12 +93,14 @@ export const meet = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): St
 };
 
 export const widen = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): State<T> => {
-  if (isBottomState(x) || isBottomState(y)) return bottomState;
+  if (isBottomState(x)) return y;
+  if (isBottomState(y)) return x;
 
   return createState((name: Name) => domain.widen(x(name))(y(name)), getVarNames(x, y));
 };
 
 export const stateOps = {
+  eq,
   le,
   join,
   meet,

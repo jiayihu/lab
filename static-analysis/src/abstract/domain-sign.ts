@@ -1,4 +1,4 @@
-import { Domain, fallbackTest } from './domain';
+import { Domain, fallbackTest, fallbackWiden } from './domain';
 import { Aexpr } from '../syntax';
 import { State, isBottomState } from './state';
 
@@ -153,11 +153,6 @@ const evalAexpr = (expr: Aexpr) => (s: State<Sign>): Sign => {
   }
 };
 
-// Naive widening
-const widen = (x: Sign) => (y: Sign): Sign => {
-  return le(y)(x) ? x : top;
-};
-
 export const signDomain: Domain<Sign> = {
   le,
   bottom,
@@ -169,5 +164,7 @@ export const signDomain: Domain<Sign> = {
   get test() {
     return fallbackTest(signDomain);
   },
-  widen,
+  get widen() {
+    return fallbackWiden(signDomain);
+  },
 };

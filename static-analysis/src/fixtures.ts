@@ -1,0 +1,44 @@
+import { Comp, Ass, Num, While, Neg, Eq, Var, Mult, Sub, Skip, True, Le, Add } from './syntax';
+
+export const factorial = new Comp(
+  new Ass('y', new Num(1)),
+  new While(
+    new Neg(new Eq(new Var('x'), new Num(1))),
+    new Comp(
+      new Ass('y', new Mult(new Var('y'), new Var('x'))),
+      new Ass('x', new Sub(new Var('x'), new Num(1))),
+    ),
+  ),
+);
+
+export const division = new Comp(
+  new Ass('Q', new Num(0)),
+  new Comp(
+    new Ass('R', new Var('A')),
+    new While(
+      new Le(new Var('B'), new Var('R')),
+      new Comp(
+        new Ass('R', new Sub(new Var('R'), new Var('B'))),
+        new Ass('Q', new Add(new Var('Q'), new Num(1))),
+      ),
+    ),
+  ),
+);
+
+export const whileNotZeroSkip = new While(new Neg(new Eq(new Var('x'), new Num(0))), new Skip());
+
+export const whileTrueSkip = new While(new True(), new Skip());
+
+export const hundredLoop = new Comp(
+  new Ass('A', new Num(0)),
+  new Comp(
+    new Ass('B', new Num(0)),
+    new While(
+      new Le(new Var('A'), new Num(100)),
+      new Comp(
+        new Ass('A', new Add(new Var('A'), new Num(1))),
+        new Ass('B', new Add(new Var('B'), new Num(1))),
+      ),
+    ),
+  ),
+);

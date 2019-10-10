@@ -153,19 +153,19 @@ describe('abstract state', () => {
     return;
   });
 
-  it('should widen two states as bottomState if x is bottomState', () => {
+  it('should widen two states as y if x is bottomState', () => {
     const x = bottomState;
     const y = initState(signDomain)([['x', geZero]]);
     const met = stateOps.widen(signDomain)(x)(y);
 
-    expect(isBottomState(met)).toBe(true);
+    expect(met).toEqual(y);
   });
 
-  it('should widen two states as bottomState if y is bottomState', () => {
+  it('should widen two states as x if y is bottomState', () => {
     const x = initState(signDomain)([['x', geZero]]);
     const y = bottomState;
     const met = stateOps.widen(signDomain)(x)(y);
 
-    expect(isBottomState(met)).toBe(true);
+    expect(met).toEqual(x);
   });
 });

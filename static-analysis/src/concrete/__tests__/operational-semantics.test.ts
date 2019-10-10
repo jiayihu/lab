@@ -1,5 +1,5 @@
 import { deriveSeq, InterConfig, semantic } from '../operational-semantics';
-import { factorial } from './fixtures';
+import { factorial } from '../../fixtures';
 import { initState } from '../state';
 
 describe('operational semantic', () => {

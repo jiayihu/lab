@@ -28,14 +28,40 @@ export const fallbackAssign = <T>(domain: Domain<T>) => (ass: Ass) => (s: State<
 export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: State<T>): State<T> => {
   if (isBottomState(s)) return s;
 
-  if (bexpr.type === 'True') return s;
-  if (bexpr.type === 'False') return bottomState;
-  if (bexpr.type === 'And') {
-    const test1 = fallbackTest(domain)(bexpr.bexpr1)(s);
-    const test2 = fallbackTest(domain)(bexpr.bexpr1)(s);
+  switch (bexpr.type) {
+    case 'True':
+      return s;
+    case 'False':
+      return bottomState;
+    case 'And': {
+      const test1 = fallbackTest(domain)(bexpr.bexpr1)(s);
+      const test2 = fallbackTest(domain)(bexpr.bexpr1)(s);
 
-    return stateOps.meet(domain)(test1)(test2);
+      return stateOps.meet(domain)(test1)(test2);
+    }
+    case 'Neg': {
+      const negBexpr = bexpr.value;
+
+      switch (negBexpr.type) {
+        case 'True':
+          return bottomState;
+        case 'False':
+          return s;
+        case 'Neg':
+          return fallbackTest(domain)(negBexpr.value)(s);
+        case 'And':
+        case 'Eq':
+        case 'Le':
+          return s;
+      }
+    }
+    case 'Eq':
+    case 'Le':
+      return s;
   }
+};
 
-  return s;
+// Naive widening
+export const fallbackWiden = <T>(domain: Domain<T>) => (x: T) => (y: T): T => {
+  return domain.le(y)(x) ? x : domain.top;
 };

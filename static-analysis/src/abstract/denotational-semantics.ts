@@ -2,6 +2,7 @@ import { Stm, Neg } from '../syntax';
 import { compose, identity } from 'fp-ts/lib/function';
 import { Domain, assign } from './domain';
 import { State, stateOps, bottomState } from './state';
+// import { printState } from './state';
 
 export const lim = <T>(F: (state: State<T>) => State<T>): State<T> => {
   let curr: (state: State<T>) => State<T> = identity;
@@ -10,12 +11,13 @@ export const lim = <T>(F: (state: State<T>) => State<T>): State<T> => {
     curr,
   );
 
-  while (next(bottomState) !== curr(bottomState)) {
+  while (!stateOps.eq(curr(bottomState))(next(bottomState))) {
     curr = next;
     next = compose(
       F,
-      next,
+      curr,
     );
+    // console.log('-----------------------------------------------------------');
   }
 
   return next(bottomState);
@@ -30,6 +32,7 @@ export const semantic = <T>(domain: Domain<T>) => (stm: Stm) => (state: State<T>
       return state;
     case 'Comp': {
       const { stm1, stm2 } = stm;
+
       return compose(
         semantic(domain)(stm2),
         semantic(domain)(stm1),
@@ -46,10 +49,18 @@ export const semantic = <T>(domain: Domain<T>) => (stm: Stm) => (state: State<T>
       const { bexpr, stm: whileStm } = stm;
 
       const F = (x: State<T>): State<T> => {
+        // console.log('x', printState(x));
         const sx = semantic(domain)(whileStm)(domain.test(bexpr)(x));
+        // console.log('sx', printState(sx));
         const y = stateOps.join(domain)(state)(sx);
+        // console.log('state', printState(state));
+        // console.log('y', printState(y));
 
-        return stateOps.widen(domain)(x)(y);
+        const widened = stateOps.widen(domain)(x)(y);
+        // console.log('widened', printState(widened));
+
+        // console.log('------------------');
+        return widened;
       };
 
       return domain.test(new Neg(bexpr))(lim(F));
