@@ -84,15 +84,15 @@ export const meet = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): St
   return createState((name: Name) => domain.meet(x(name))(y(name)), getVarNames(x, y));
 };
 
-export const widening = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): State<T> => {
+export const widen = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): State<T> => {
   if (isBottomState(x) || isBottomState(y)) return bottomState;
 
-  return createState((name: Name) => domain.widening(x(name))(y(name)), getVarNames(x, y));
+  return createState((name: Name) => domain.widen(x(name))(y(name)), getVarNames(x, y));
 };
 
 export const stateOps = {
   le,
   join,
   meet,
-  widening,
+  widen,
 };

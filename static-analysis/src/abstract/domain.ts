@@ -10,7 +10,7 @@ export type Domain<T> = {
 
   evalAexpr: (ass: Aexpr) => (s: State<T>) => T;
   test: (bexpr: Bexpr) => (s: State<T>) => State<T>;
-  widening: (x: T) => (y: T) => T;
+  widen: (x: T) => (y: T) => T;
 };
 
 export const isBottom = <T>(domain: Domain<T>) => (x: unknown): x is Domain<T>['bottom'] => {

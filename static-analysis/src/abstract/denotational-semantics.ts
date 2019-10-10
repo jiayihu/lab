@@ -49,7 +49,7 @@ export const semantic = <T>(domain: Domain<T>) => (stm: Stm) => (state: State<T>
         const sx = semantic(domain)(whileStm)(domain.test(bexpr)(x));
         const y = stateOps.join(domain)(state)(sx);
 
-        return stateOps.widening(domain)(x)(y);
+        return stateOps.widen(domain)(x)(y);
       };
 
       return domain.test(new Neg(bexpr))(lim(F));

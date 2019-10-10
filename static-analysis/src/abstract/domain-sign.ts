@@ -154,7 +154,7 @@ const evalAexpr = (expr: Aexpr) => (s: State<Sign>): Sign => {
 };
 
 // Naive widening
-const widening = (x: Sign) => (y: Sign): Sign => {
+const widen = (x: Sign) => (y: Sign): Sign => {
   return le(y)(x) ? x : top;
 };
 
@@ -169,5 +169,5 @@ export const signDomain: Domain<Sign> = {
   get test() {
     return fallbackTest(signDomain);
   },
-  widening,
+  widen,
 };
