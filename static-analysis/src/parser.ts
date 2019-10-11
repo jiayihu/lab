@@ -22,6 +22,7 @@ import {
   If,
   While,
   Div,
+  Or,
 } from './syntax';
 import { Option, some, none } from 'fp-ts/lib/Option';
 import { pair } from './utils';
@@ -218,7 +219,7 @@ const pLt: Parser<Bexpr> = pAexpr.chain(
   a1 =>
     pLit('<')
       .chain(() => pAexpr)
-      .map(a2 => new And(new Le(a1, a2), new Neg(new Eq(a1, a2)))), // <= & !=
+      .map(a2 => new Neg(new Le(a2, a1))), // !(a2 <= a1)
 );
 
 // Syntactic sugar
@@ -234,7 +235,7 @@ const pGe: Parser<Bexpr> = pAexpr.chain(
   a1 =>
     pLit('>=')
       .chain(() => pAexpr)
-      .map(a2 => new Neg(new And(new Le(a1, a2), new Neg(new Eq(a1, a2))))), // !<
+      .map(a2 => new Le(a2, a1)), // a2 <= a1
 );
 
 const pBasisBexpr: Parser<Bexpr> = pTrue
@@ -264,11 +265,10 @@ const pAnd: Parser<Bexpr> = pTermBExpr.chain(a1 =>
 );
 
 // Syntactic sugar
-const pOr: Parser<Bexpr> = pTermBExpr.chain(
-  a1 =>
-    pLit('|')
-      .chain(() => pBexpr)
-      .map(a2 => new Neg(new And(new Neg(a1), new Neg(a2)))), // De Morgan : A | B = !(!A & !B)
+const pOr: Parser<Bexpr> = pTermBExpr.chain(a1 =>
+  pLit('|')
+    .chain(() => pBexpr)
+    .map(a2 => new Or(a1, a2)),
 );
 
 export const pBexpr: Parser<Bexpr> = pAnd.alt(pOr).alt(pTermBExpr);

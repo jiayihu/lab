@@ -29,7 +29,7 @@ export class Sub {
   constructor(readonly aexpr1: Aexpr, readonly aexpr2: Aexpr) {}
 }
 
-export type Bexpr = True | False | Eq | Le | Neg | And;
+export type Bexpr = True | False | Eq | Le | Neg | And | Or;
 
 export class True {
   type: 'True' = 'True';
@@ -55,6 +55,10 @@ export class Neg {
 }
 export class And {
   type: 'And' = 'And';
+  constructor(readonly bexpr1: Bexpr, readonly bexpr2: Bexpr) {}
+}
+export class Or {
+  type: 'Or' = 'Or';
   constructor(readonly bexpr1: Bexpr, readonly bexpr2: Bexpr) {}
 }
 

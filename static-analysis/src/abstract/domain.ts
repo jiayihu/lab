@@ -1,4 +1,4 @@
-import { Bexpr, Ass, Aexpr } from '../syntax';
+import { Bexpr, Ass, Aexpr, Or, Neg, And } from '../syntax';
 import { State, substState, stateOps, isBottomState, bottomState } from './state';
 
 export type Domain<T> = {
@@ -39,6 +39,12 @@ export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: Stat
 
       return stateOps.meet(domain)(test1)(test2);
     }
+    case 'Or': {
+      const test1 = fallbackTest(domain)(bexpr.bexpr1)(s);
+      const test2 = fallbackTest(domain)(bexpr.bexpr1)(s);
+
+      return stateOps.join(domain)(test1)(test2);
+    }
     case 'Neg': {
       const negBexpr = bexpr.value;
 
@@ -50,13 +56,15 @@ export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: Stat
         case 'Neg':
           return fallbackTest(domain)(negBexpr.value)(s);
         case 'And':
-          // Logical OR
-          if (negBexpr.bexpr1.type === 'And' && negBexpr.bexpr2.type === 'And') {
-            const test1 = fallbackTest(domain)(negBexpr.bexpr1)(s);
-            const test2 = fallbackTest(domain)(negBexpr.bexpr1)(s);
-
-            return stateOps.join(domain)(test1)(test2);
-          }
+          // De Morgan !(a & b) = !a | !b
+          return fallbackTest(domain)(new Or(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(
+            s,
+          );
+        case 'Or':
+          // De Morgan !(a | b) = !a & !b
+          return fallbackTest(domain)(new And(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(
+            s,
+          );
         case 'Eq':
         case 'Le':
           return s;

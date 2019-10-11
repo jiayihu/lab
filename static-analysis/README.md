@@ -13,12 +13,10 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 
 ## TODO
 
-- Rewrite arithmetic syntactic sugar
 - Nested loops
 - While ambiguity
 
 - Extended sign domain
 - Smash
 - Naive widening
-- Logic or
 - Range operator

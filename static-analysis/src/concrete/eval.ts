@@ -1,4 +1,4 @@
-import { Z, T, Name, Aexpr, Bexpr, Add, Mult, Sub, Eq, Le, Neg, And, Div } from '../syntax';
+import { Z, T, Name, Aexpr, Bexpr, Add, Mult, Sub, Eq, Le, Neg, And, Div, Or } from '../syntax';
 import { State } from './state';
 
 type EvalAexpr = (aexpr: Aexpr) => (s: State) => Z;
@@ -36,6 +36,9 @@ export const evalBexpr: EvalBexpr = (expr: Bexpr) => (s: State): T => {
     case 'And': {
       return evalBexpr(expr.bexpr1)(s) && evalBexpr(expr.bexpr2)(s);
     }
+    case 'Or': {
+      return evalBexpr(expr.bexpr1)(s) || evalBexpr(expr.bexpr2)(s);
+    }
   }
 };
 
@@ -71,7 +74,8 @@ export const freeVariablesBexpr = (expr: Bexpr): Name[] => {
     }
     case 'Neg':
       return freeVariablesBexpr(expr.value);
-    case 'And': {
+    case 'And':
+    case 'Or': {
       const fvB1 = freeVariablesBexpr(expr.bexpr1);
       const fvB2 = freeVariablesBexpr(expr.bexpr2);
 
@@ -110,6 +114,8 @@ export const substBexpr = (b: Bexpr) => (y: Name) => (a0: Aexpr): Bexpr => {
       return new Neg(substBexpr(b.value)(y)(a0));
     case 'And':
       return new And(substBexpr(b.bexpr1)(y)(a0), substBexpr(b.bexpr2)(y)(a0));
+    case 'Or':
+      return new Or(substBexpr(b.bexpr1)(y)(a0), substBexpr(b.bexpr2)(y)(a0));
   }
 };
 
