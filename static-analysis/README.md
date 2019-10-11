@@ -16,7 +16,4 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 - Nested loops
 - While ambiguity
 
-- Extended sign domain
-- Smash
-- Naive widening
 - Range operator

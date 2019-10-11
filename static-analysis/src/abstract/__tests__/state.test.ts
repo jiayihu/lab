@@ -146,7 +146,7 @@ describe('abstract state', () => {
 
     if (isBottomState(met)) return fail('Unexpected bottom state');
 
-    expect(met('x')).toBe(top);
+    expect(met('x')).toBe(geZero);
     expect(met('y')).toBe(top);
     expect(met('z')).toBe(leZero);
     expect(met('w')).toBe(top);

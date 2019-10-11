@@ -105,7 +105,7 @@ describe('domain sign', () => {
     expect(result('A')).toEqual(geZero);
     expect(result('B')).toEqual(geZero);
     expect(result('R')).toEqual(top);
-    return expect(result('Q')).toEqual(top);
+    return expect(result('Q')).toEqual(geZero);
   });
 
   it('should return the AS of hundredLoop', () => {
@@ -115,7 +115,7 @@ describe('domain sign', () => {
 
     if (isBottomState(result)) return fail('Unexpected bottom state');
 
-    expect(result('A')).toEqual(top);
-    return expect(result('B')).toEqual(top);
+    expect(result('A')).toEqual(geZero);
+    return expect(result('B')).toEqual(geZero);
   });
 });

@@ -1,4 +1,4 @@
-import { Domain, fallbackTest, fallbackWiden } from './domain';
+import { Domain, fallbackTest } from './domain';
 import { Aexpr } from '../syntax';
 import { State, isBottomState } from './state';
 
@@ -164,7 +164,5 @@ export const signDomain: Domain<Sign> = {
   get test() {
     return fallbackTest(signDomain);
   },
-  get widen() {
-    return fallbackWiden(signDomain);
-  },
+  widen: join,
 };
