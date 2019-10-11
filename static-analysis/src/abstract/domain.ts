@@ -50,6 +50,13 @@ export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: Stat
         case 'Neg':
           return fallbackTest(domain)(negBexpr.value)(s);
         case 'And':
+          // Logical OR
+          if (negBexpr.bexpr1.type === 'And' && negBexpr.bexpr2.type === 'And') {
+            const test1 = fallbackTest(domain)(negBexpr.bexpr1)(s);
+            const test2 = fallbackTest(domain)(negBexpr.bexpr1)(s);
+
+            return stateOps.join(domain)(test1)(test2);
+          }
         case 'Eq':
         case 'Le':
           return s;
