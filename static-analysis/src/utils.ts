@@ -1,3 +1,5 @@
+export type Brand<K, T> = K & { _brand: T };
+
 import { identity } from 'fp-ts/lib/function';
 
 export type Lit = string | number | boolean | undefined | null | void | {};
