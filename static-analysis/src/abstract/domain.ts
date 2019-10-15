@@ -13,10 +13,6 @@ export type Domain<T> = {
   widen: (x: T) => (y: T) => T;
 };
 
-export const isBottom = <T>(domain: Domain<T>) => (x: unknown): x is Domain<T>['bottom'] => {
-  return x === domain.bottom;
-};
-
 export const assign = <T>(domain: Domain<T>) => (ass: Ass) => (s: State<T>): State<T> => {
   return substState(s)(ass.name)(domain.evalAexpr(ass.aexpr)(s));
 };

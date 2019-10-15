@@ -20,5 +20,4 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 - if (geZero <= leZero) => zero
 - if (greaterZero <= leZero) => bottom
 - Bottom if while loop doesn't terminate
-- Remove currying
 - Division by zero (from bottom value to bottom state)
