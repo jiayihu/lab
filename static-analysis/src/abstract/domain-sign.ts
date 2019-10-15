@@ -373,7 +373,7 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
 
           // ! a<=b    a > b    b <= a - (a = b)
           const [v1, v2] = testLeTable[index(a2)][index(a1)];
-          const met = meet(v1)(v1);
+          const met = meet(v1)(v2);
 
           if (v1 === bottom || v2 === bottom) return bottomState;
 
@@ -381,11 +381,14 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
 
           if (negBexpr.aexpr1.type === 'Var') {
             const v1m = isBottom(met) || v1 === met ? v1 : diffTable[index(v1)][index(met)];
-            s1 = substState(s1)(negBexpr.aexpr1.value)(v1m);
+            const v1final = le(v1m)(a1) ? v1m : a1;
+            s1 = substState(s1)(negBexpr.aexpr1.value)(v1final);
           }
+
           if (negBexpr.aexpr2.type === 'Var') {
             const v2m = isBottom(met) || v2 === met ? v2 : diffTable[index(v2)][index(met)];
-            s1 = substState(s1)(negBexpr.aexpr2.value)(v2m);
+            const v2final = le(v2m)(a2) ? v2m : a2;
+            s1 = substState(s1)(negBexpr.aexpr2.value)(v2final);
           }
 
           return s1;

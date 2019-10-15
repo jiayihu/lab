@@ -14,11 +14,12 @@ export type Domain<T> = {
 };
 
 export const assign = <T>(domain: Domain<T>) => (ass: Ass) => (s: State<T>): State<T> => {
-  return substState(s)(ass.name)(domain.evalAexpr(ass.aexpr)(s));
-};
+  const value = domain.evalAexpr(ass.aexpr)(s);
 
-export const fallbackAssign = <T>(domain: Domain<T>) => (ass: Ass) => (s: State<T>): State<T> => {
-  return substState(s)(ass.name)(domain.top);
+  // Coalescing bottom values to bottom state
+  if (value === domain.bottom) return bottomState;
+
+  return substState(s)(ass.name)(value);
 };
 
 export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: State<T>): State<T> => {

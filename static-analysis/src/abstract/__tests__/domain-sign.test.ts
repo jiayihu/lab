@@ -1,4 +1,4 @@
-import { Comp, Ass, Num, Add, Var, While, True } from '../../syntax';
+import { Comp, Ass, Num, Add, Var, While, True, Div } from '../../syntax';
 import { initState, isBottomState, eq } from '../state';
 import { signDomain, zero, geZero, leZero, top, gZero, lZero } from '../domain-sign';
 import { semantic } from '../denotational-semantics';
@@ -66,6 +66,14 @@ describe('domain sign', () => {
     return expect(isBottomState(result)).toBe(true);
   });
 
+  it('should return bottomState with division by zero', () => {
+    const program = new Ass('x', new Div(new Num(5), new Num(0)));
+    const state = initState(signDomain)([]);
+    const result = semantic(signDomain)(program)(state);
+
+    return expect(isBottomState(result)).toBe(true);
+  });
+
   it('should return the AS of whileTrueSkip', () => {
     const program = whileTrueSkip;
     const state = initState(signDomain)([]);
@@ -84,35 +92,33 @@ describe('domain sign', () => {
     return expect(result('x')).toEqual(zero);
   });
 
-  // it('should return the AS of whileNotZeroSkip', () => {
-  //   const program = whileNotZeroSkip;
-  //   const state = initState(signDomain)([['x', zero]]);
-  //   const result = semantic(signDomain)(program)(state);
+  it('should return the AS of whileNotZeroSkip', () => {
+    const program = whileNotZeroSkip;
+    const state = initState(signDomain)([['x', zero]]);
+    const result = semantic(signDomain)(program)(state);
 
-  //   if (isBottomState(result)) return fail('Unexpected bottom state');
+    if (isBottomState(result)) return fail('Unexpected bottom state');
 
-  //   return expect(printState(result)).toEqual([]);
-  // });
+    return expect(result('x')).toEqual(zero);
+  });
 
-  // it('should return the AS of whileNotZeroSkip', () => {
-  //   const program = whileNotZeroSkip;
-  //   const state = initState(signDomain)([['x', gZero]]);
-  //   const result = semantic(signDomain)(program)(state);
+  it('should return the AS of whileNotZeroSkip', () => {
+    const program = whileNotZeroSkip;
+    const state = initState(signDomain)([['x', gZero]]);
+    const result = semantic(signDomain)(program)(state);
 
-  //   if (isBottomState(result)) return fail('Unexpected bottom state');
+    return expect(isBottomState(result)).toBe(true);
+  });
 
-  //   return expect(printState(result)).toEqual([]);
-  // });
+  it('should return the AS of whileNotZeroSkip', () => {
+    const program = whileNotZeroSkip;
+    const state = initState(signDomain)([['x', geZero]]);
+    const result = semantic(signDomain)(program)(state);
 
-  // it('should return the AS of whileNotZeroSkip', () => {
-  //   const program = whileNotZeroSkip;
-  //   const state = initState(signDomain)([['x', geZero]]);
-  //   const result = semantic(signDomain)(program)(state);
+    if (isBottomState(result)) return fail('Unexpected bottom state');
 
-  //   if (isBottomState(result)) return fail('Unexpected bottom state');
-
-  //   return expect(printState(result)).toEqual([]);
-  // });
+    return expect(result('x')).toEqual(zero);
+  });
 
   it('should return the AS of factorial', () => {
     const program = factorial;
@@ -121,7 +127,7 @@ describe('domain sign', () => {
 
     if (isBottomState(result)) return fail('Unexpected bottom state');
 
-    expect(result('x')).toEqual(top);
+    expect(result('x')).toEqual(gZero);
     return expect(result('y')).toEqual(top);
   });
 
@@ -134,7 +140,7 @@ describe('domain sign', () => {
 
     expect(result('A')).toEqual(gZero);
     expect(result('B')).toEqual(gZero);
-    expect(result('R')).toEqual(top);
+    expect(result('R')).toEqual(gZero);
     return expect(result('Q')).toEqual(geZero);
   });
 
@@ -145,7 +151,7 @@ describe('domain sign', () => {
 
     if (isBottomState(result)) return fail('Unexpected bottom state');
 
-    expect(result('A')).toEqual(geZero);
+    expect(result('A')).toEqual(gZero);
     return expect(result('B')).toEqual(geZero);
   });
 });
