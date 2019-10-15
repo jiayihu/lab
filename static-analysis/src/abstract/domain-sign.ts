@@ -167,6 +167,9 @@ const multTable: Sign[][] = [
   /* T */ [bottom, top, zero, top, top, top, top, top],
 ];
 
+/**
+ * If the divisor can be zero bottom is returned, which could lead to false alarms
+ */
 const divTable: Sign[][] = [
   //          ⊥    < 0    0    > 0    <= 0    != 0    >= 0    T
   /* ⊥ */ [bottom, bottom, bottom, bottom, bottom, bottom, bottom, bottom],
@@ -349,6 +352,9 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
           const a1 = evalAexpr(negBexpr.aexpr1)(s);
           const a2 = evalAexpr(negBexpr.aexpr2)(s);
 
+          // Zero is the only case where we can be sure they both have the same information
+          if (a1 === a2 && a1 === zero) return bottomState;
+
           const met = meet(a1)(a2);
 
           // No information in common
@@ -371,7 +377,7 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
           const a1 = evalAexpr(negBexpr.aexpr1)(s);
           const a2 = evalAexpr(negBexpr.aexpr2)(s);
 
-          // ! a<=b    a > b    b <= a - (a = b)
+          // ! a <= b  <=>  a > b  <=>  (b <= a) - (a = b)
           const [v1, v2] = testLeTable[index(a2)][index(a1)];
           const met = meet(v1)(v2);
 

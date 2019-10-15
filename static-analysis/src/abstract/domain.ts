@@ -66,8 +66,24 @@ export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: Stat
         case 'Le':
           return s;
       }
+
+      return s;
     }
-    case 'Eq':
+    case 'Eq': {
+      const a1 = domain.evalAexpr(bexpr.aexpr1)(s);
+      const a2 = domain.evalAexpr(bexpr.aexpr2)(s);
+
+      const met = domain.meet(a1)(a2);
+
+      if (met === domain.bottom) return bottomState;
+
+      let s1: State<T> = s;
+
+      if (bexpr.aexpr1.type === 'Var') s1 = substState(s1)(bexpr.aexpr1.value)(met);
+      if (bexpr.aexpr2.type === 'Var') s1 = substState(s1)(bexpr.aexpr2.value)(met);
+
+      return s1;
+    }
     case 'Le':
       return s;
   }
