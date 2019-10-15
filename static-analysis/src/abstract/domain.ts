@@ -2,6 +2,7 @@ import { Bexpr, Ass, Aexpr, Or, Neg, And } from '../syntax';
 import { State, substState, stateOps, isBottomState, bottomState } from './state';
 
 export type Domain<T> = {
+  eq: (a: T) => (b: T) => boolean;
   le: (a: T) => (b: T) => boolean;
   bottom: T;
   top: T;
@@ -11,6 +12,8 @@ export type Domain<T> = {
   evalAexpr: (ass: Aexpr) => (s: State<T>) => T;
   test: (bexpr: Bexpr) => (s: State<T>) => State<T>;
   widen: (x: T) => (y: T) => T;
+
+  print: (a: T) => string;
 };
 
 export const assign = <T>(domain: Domain<T>) => (ass: Ass) => (s: State<T>): State<T> => {

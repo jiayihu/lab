@@ -31,6 +31,14 @@ const isBottom = (x: Interval): x is Bottom => {
   return !Array.isArray(x);
 };
 
+const print = (x: Interval): string => {
+  if (isBottom(x)) return 'Bottom';
+
+  const [a, b] = x;
+
+  return `[${isNegInf(a) ? 'NegInf' : a}, ${isPosInf(b) ? 'PosInf' : b}]`;
+};
+
 const eq = (x: Interval) => (y: Interval): boolean => {
   if (isBottom(x)) return isBottom(y);
   if (isBottom(y)) return isBottom(x);
@@ -341,6 +349,7 @@ const widen = (x: Interval) => (y: Interval): Interval => {
 };
 
 export const intervalDomain: Domain<Interval> = {
+  eq,
   le,
   bottom,
   top,
@@ -350,4 +359,6 @@ export const intervalDomain: Domain<Interval> = {
   evalAexpr,
   test,
   widen,
+
+  print,
 };

@@ -1,38 +1,19 @@
-import { Comp, Ass, Num, Add, Var, While, True, Div } from '../../syntax';
-import { initState, isBottomState, eq } from '../state';
-import { signDomain, zero, geZero, leZero, top, gZero, lZero } from '../domain-sign';
+import { Comp, Ass, Num, Add, Var } from '../../syntax';
+import { initState, isBottomState } from '../state';
+import { signDomain, zero, geZero, top, gZero, lZero } from '../domain-sign';
 import { semantic } from '../denotational-semantics';
-import { hundredLoop, whileTrueSkip, whileNotZeroSkip, factorial, division } from '../../fixtures';
+import {
+  hundredLoop,
+  whileTrueSkip,
+  whileNotZeroSkip,
+  factorial,
+  division,
+  whileTrueIncrement,
+  divisionByZero,
+  indirectDivByZero,
+} from '../../fixtures';
 
 describe('domain sign', () => {
-  it('should check if two AS are equal', () => {
-    const s1 = initState(signDomain)([]);
-    const s2 = initState(signDomain)([]);
-
-    expect(eq(s1)(s2)).toBe(true);
-  });
-
-  it('should check if two AS are equal', () => {
-    const s1 = initState(signDomain)([['x', zero]]);
-    const s2 = initState(signDomain)([['x', zero]]);
-
-    expect(eq(s1)(s2)).toBe(true);
-  });
-
-  it('should check if two AS are equal', () => {
-    const s1 = initState(signDomain)([['x', leZero]]);
-    const s2 = initState(signDomain)([['x', zero]]);
-
-    expect(eq(s1)(s2)).toBe(false);
-  });
-
-  it('should check if two AS are equal', () => {
-    const s1 = initState(signDomain)([['x', leZero]]);
-    const s2 = initState(signDomain)([['x', zero], ['y', zero]]);
-
-    expect(eq(s1)(s2)).toBe(false);
-  });
-
   it('should return the AS of simple math programs', () => {
     const program = new Comp(
       new Ass('x', new Num(3)),
@@ -59,7 +40,7 @@ describe('domain sign', () => {
   });
 
   it('should return bottomState with while true', () => {
-    const program = new While(new True(), new Ass('x', new Add(new Var('x'), new Num(1))));
+    const program = whileTrueIncrement;
     const state = initState(signDomain)([['x', zero]]);
     const result = semantic(signDomain)(program)(state);
 
@@ -67,11 +48,19 @@ describe('domain sign', () => {
   });
 
   it('should return bottomState with division by zero', () => {
-    const program = new Ass('x', new Div(new Num(5), new Num(0)));
+    const program = divisionByZero;
     const state = initState(signDomain)([]);
     const result = semantic(signDomain)(program)(state);
 
     return expect(isBottomState(result)).toBe(true);
+  });
+
+  it('should not be able to return bottomState with division by zero', () => {
+    const program = indirectDivByZero;
+    const state = initState(signDomain)([]);
+    const result = semantic(signDomain)(program)(state);
+
+    return expect(isBottomState(result)).toBe(false);
   });
 
   it('should return the AS of whileTrueSkip', () => {

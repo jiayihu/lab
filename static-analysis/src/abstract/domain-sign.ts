@@ -70,6 +70,14 @@ function index(a: Sign): number {
   }
 }
 
+const print = (a: Sign): string => {
+  return a.type;
+};
+
+const eq = (a: Sign) => (b: Sign): boolean => {
+  return a === b;
+};
+
 const leTable: boolean[][] = [
   //          ⊥      < 0    0      > 0    <= 0    != 0    >= 0    T
   /* ⊥ */ [true, true, true, true, true, true, true, true],
@@ -437,6 +445,7 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
 };
 
 export const signDomain: Domain<Sign> = {
+  eq,
   le,
   bottom,
   top,
@@ -446,4 +455,6 @@ export const signDomain: Domain<Sign> = {
   evalAexpr,
   test,
   widen: join,
+
+  print,
 };

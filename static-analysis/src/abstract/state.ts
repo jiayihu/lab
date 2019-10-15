@@ -53,18 +53,18 @@ export const initState = <T>(domain: Domain<T>) => (vars: Array<[Name, T]>): FSt
   }, names);
 };
 
-export const printState = <T>(state: State<T>): string[] => {
+export const printState = <T>(domain: Domain<T>) => (state: State<T>): string[] => {
   if (isBottomState(state)) return ['Bottom'];
 
   return getPrivateNames(state).map(name => {
-    return `${name} := ${(state(name) as any)['type']}`;
+    return `${name} := ${domain.print(state(name))}`;
   });
 };
 
-export const eq = <T>(x: State<T>) => (y: State<T>): boolean => {
+export const eq = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): boolean => {
   if (isBottomState(x) || isBottomState(y)) return x === y;
 
-  return getVarNames(x, y).every(name => x(name) === y(name));
+  return getVarNames(x, y).every(name => domain.eq(x(name))(y(name)));
 };
 
 export const le = <T>(domain: Domain<T>) => (x: State<T>) => (y: State<T>): boolean => {
