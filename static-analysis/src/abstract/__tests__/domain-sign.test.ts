@@ -11,6 +11,7 @@ import {
   whileTrueIncrement,
   divisionByZero,
   indirectDivByZero,
+  fourtyLoop,
 } from '../../fixtures';
 
 describe('domain sign', () => {
@@ -142,5 +143,15 @@ describe('domain sign', () => {
 
     expect(result('A')).toEqual(gZero);
     return expect(result('B')).toEqual(geZero);
+  });
+
+  it('should return the AS of fourtyLoop', () => {
+    const program = fourtyLoop;
+    const state = initState(signDomain)([]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(gZero);
   });
 });

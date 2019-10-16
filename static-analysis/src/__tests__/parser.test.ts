@@ -18,7 +18,7 @@ import {
   Comp,
 } from '../syntax';
 import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg } from '../parser';
-import { some, option } from 'fp-ts/lib/Option';
+import { some, option, none } from 'fp-ts/lib/Option';
 import { array } from 'fp-ts/lib/Array';
 import { evalBexpr, evalAexpr } from '../concrete/eval';
 import { semantic } from '../concrete/operational-semantics';
@@ -60,6 +60,13 @@ describe('parser', () => {
     const tokens = tokenizer(input);
 
     expect(pAexpr.parse(tokens)).toEqual(some([new Sub(new Var('x'), new Num(1)), []]));
+  });
+
+  it('should not parse +- 3', () => {
+    const input = strToChars('+-3');
+    const tokens = tokenizer(input);
+
+    expect(pProg.parse(tokens)).toEqual(none);
   });
 
   it('should give precedence to Mult operator', () => {
@@ -240,6 +247,15 @@ describe('parser', () => {
     expect(pProg.parse(tokens)).toEqual(some([new Ass('y', new Num(1)), []]));
   });
 
+  it('should solve while ambiguity', () => {
+    const input = strToChars('while true do skip; skip');
+    const tokens = tokenizer(input);
+
+    expect(pProg.parse(tokens)).toEqual(
+      some([new Comp(new While(new True(), new Skip()), new Skip()), []]),
+    );
+  });
+
   it('should parse the battery of Stm tests', () => {
     const input = [
       'skip',
@@ -259,6 +275,21 @@ describe('parser', () => {
         [new If(new Le(new Num(3), new Num(33)), new Skip(), new Ass('x', new Num(1))), []],
         [new While(new True(), new Skip()), []],
         [new Skip(), []],
+      ]),
+    );
+  });
+
+  it('should respect parenthesis in swap', () => {
+    const input = strToChars('(z := x; x := y); y := z');
+    const tokens = tokenizer(input);
+
+    expect(pProg.parse(tokens)).toEqual(
+      some([
+        new Comp(
+          new Comp(new Ass('z', new Var('x')), new Ass('x', new Var('y'))),
+          new Ass('y', new Var('z')),
+        ),
+        [],
       ]),
     );
   });

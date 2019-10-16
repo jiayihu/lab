@@ -48,6 +48,11 @@ export const hundredLoop = new Comp(
   ),
 );
 
+export const fourtyLoop = new Comp(
+  new Ass('x', new Num(0)),
+  new While(new Le(new Var('x'), new Num(40)), new Ass('x', new Add(new Var('x'), new Num(1)))),
+);
+
 export const divisionByZero = new Ass('x', new Div(new Num(5), new Num(0)));
 
 export const indirectDivByZero = new Comp(

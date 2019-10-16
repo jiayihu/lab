@@ -3,17 +3,12 @@
 A static analyzer written in functional Typescript using [fp-ts](https://github.com/gcanti/fp-ts). It's composed by:
 
 1. Monadic parser
-2. Denotational semantics interpreter
-3. Static analyzer of numeric domain via Abstract Interpretation
-
-## Denotational semantics
-
-- [What is a Y combinator](https://stackoverflow.com/questions/93526/what-is-a-y-combinator)
-- [Fixed point combinators in JS](https://blog.benestudio.co/fixed-point-combinators-in-javascript-c214c15ff2f6)
+2. [Denotational semantics interpreter](https://en.wikipedia.org/wiki/Denotational_semantics)
+3. Static analyzer of numeric domain via Abstract Interpretation, based on [Tutorial on Static Inference of Numeric Invariants by Antoine Miné](https://hal.sorbonne-universite.fr/hal-01657536/document)
 
 ## TODO
 
 - Nested loops
-- While ambiguity
 
 - Range operator
+- Fix removal of information

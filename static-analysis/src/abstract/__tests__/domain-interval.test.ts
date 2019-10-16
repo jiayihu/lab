@@ -11,6 +11,7 @@ import {
   factorial,
   division,
   hundredLoop,
+  fourtyLoop,
 } from '../../fixtures';
 
 describe('domain interval', () => {
@@ -142,5 +143,15 @@ describe('domain interval', () => {
 
     expect(result('A')).toEqual([101, posInf]);
     return expect(result('B')).toEqual([0, posInf]);
+  });
+
+  it('should return the AS of fourtyLoop', () => {
+    const program = fourtyLoop;
+    const state = initState(intervalDomain)([]);
+    const result = semantic(intervalDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual([41, posInf]);
   });
 });
