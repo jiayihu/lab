@@ -17,11 +17,11 @@ import {
   While,
   Comp,
 } from '../syntax';
-import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg } from '../parser';
+import { strToChars, tokenizer, charsToStr, pAexpr, pBexpr, pProg, parse } from '../parser';
 import { some, option, none } from 'fp-ts/lib/Option';
 import { array } from 'fp-ts/lib/Array';
 import { evalBexpr, evalAexpr } from '../concrete/eval';
-import { semantic } from '../concrete/operational-semantics';
+import { semantic } from '../concrete/denotational-semantics';
 import { initState } from '../concrete/state';
 import {
   factorial,
@@ -254,17 +254,15 @@ describe('parser', () => {
   });
 
   it('should parse simple statement', () => {
-    const input = strToChars('y := 1');
-    const tokens = tokenizer(input);
+    const input = 'y := 1';
 
-    expect(pProg.parse(tokens)).toEqual(some([new Ass('y', new Num(1)), []]));
+    expect(parse(input)).toEqual(some([new Ass('y', new Num(1)), []]));
   });
 
   it('should solve while ambiguity', () => {
-    const input = strToChars('while true do skip; skip');
-    const tokens = tokenizer(input);
+    const input = 'while true do skip; skip';
 
-    expect(pProg.parse(tokens)).toEqual(
+    expect(parse(input)).toEqual(
       some([new Comp(new While(new True(), new Skip()), new Skip()), []]),
     );
   });
@@ -277,8 +275,7 @@ describe('parser', () => {
       'while true do skip',
       '(skip)',
     ];
-    const tokens = input.map(aexpr => tokenizer(strToChars(aexpr)));
-    const syntaxes = tokens.map(ts => pProg.parse(ts));
+    const syntaxes = input.map(p => parse(p));
     const result = array.sequence(option)(syntaxes);
 
     expect(result).toEqual(
@@ -293,10 +290,9 @@ describe('parser', () => {
   });
 
   it('should respect parenthesis in swap', () => {
-    const input = strToChars('(z := x; x := y); y := z');
-    const tokens = tokenizer(input);
+    const input = '(z := x; x := y); y := z';
 
-    expect(pProg.parse(tokens)).toEqual(
+    expect(parse(input)).toEqual(
       some([
         new Comp(
           new Comp(new Ass('z', new Var('x')), new Ass('x', new Var('y'))),
@@ -308,10 +304,9 @@ describe('parser', () => {
   });
 
   it('should parse composed if', () => {
-    const input = strToChars('if 1 = 1 then skip else (x := 1; y := 2)');
-    const tokens = tokenizer(input);
+    const input = 'if 1 = 1 then skip else (x := 1; y := 2)';
 
-    expect(pProg.parse(tokens)).toEqual(
+    expect(parse(input)).toEqual(
       some([
         new If(
           new Eq(new Num(1), new Num(1)),
@@ -324,23 +319,20 @@ describe('parser', () => {
   });
 
   it('should parse factorial statement', () => {
-    const input = strToChars('y := 1; while !(x = 1) do (y := y * x; x := x - 1)');
-    const tokens = tokenizer(input);
+    const input = 'y := 1; while !(x = 1) do (y := y * x; x := x - 1)';
 
-    expect(pProg.parse(tokens)).toMatchSnapshot();
+    expect(parse(input)).toMatchSnapshot();
   });
 
   it('should parse composed while', () => {
-    const input = strToChars('y := 1; while !(x = 1) do (y := y * x; x := x - 1); z := 1');
-    const tokens = tokenizer(input);
+    const input = 'y := 1; while !(x = 1) do (y := y * x; x := x - 1); z := 1';
 
-    expect(pProg.parse(tokens)).toMatchSnapshot();
+    expect(parse(input)).toMatchSnapshot();
   });
 
   it('should handle for syntactic sugar', () => {
-    const input = strToChars('for x := 1 to 10 do y := y + x');
-    const tokens = tokenizer(input);
-    const syntax = pProg.parse(tokens);
+    const input = 'for x := 1 to 10 do y := y + x';
+    const syntax = parse(input);
     const state = initState({ y: 1 });
     const result = syntax.map(([stm]) => semantic(stm)(state)).map(s => s('y'));
 
@@ -348,9 +340,8 @@ describe('parser', () => {
   });
 
   it('should handle repeat until syntactic sugar', () => {
-    const input = strToChars('repeat x := x + 1 until x = 10');
-    const tokens = tokenizer(input);
-    const syntax = pProg.parse(tokens);
+    const input = 'repeat x := x + 1 until x = 10';
+    const syntax = parse(input);
     const state = initState({ x: 0 });
     const result = syntax.map(([stm]) => semantic(stm)(state)).map(s => s('x'));
 
@@ -358,9 +349,8 @@ describe('parser', () => {
   });
 
   it('should execute repeat until S at least once', () => {
-    const input = strToChars('repeat x := x + 1 until 1 = 1');
-    const tokens = tokenizer(input);
-    const syntax = pProg.parse(tokens);
+    const input = 'repeat x := x + 1 until 1 = 1';
+    const syntax = parse(input);
     const state = initState({ x: 0 });
     const result = syntax.map(([stm]) => semantic(stm)(state)).map(s => s('x'));
 
@@ -381,8 +371,7 @@ describe('parser', () => {
       'x := 0; while (x <= 40) do (x := x + 1)',
       'while (x >= 0) do (x := x - 1; y := y + 1)',
     ];
-    const tokens = input.map(aexpr => tokenizer(strToChars(aexpr)));
-    const syntaxes = tokens.map(ts => pProg.parse(ts));
+    const syntaxes = input.map(p => parse(p));
     const result = array.sequence(option)(syntaxes);
 
     expect(result).toEqual(
@@ -403,10 +392,9 @@ describe('parser', () => {
   });
 
   it('should parse nested loops', () => {
-    const input = strToChars('while true do while true do skip');
-    const tokens = tokenizer(input);
+    const input = 'while true do while true do skip';
 
-    expect(pProg.parse(tokens)).toEqual(
+    expect(parse(input)).toEqual(
       some([new While(new True(), new While(new True(), new Skip())), []]),
     );
   });

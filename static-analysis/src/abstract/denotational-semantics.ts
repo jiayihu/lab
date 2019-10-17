@@ -58,8 +58,6 @@ export const semantic = <T>(domain: Domain<T>) => (stm: Stm) => (state: State<T>
 
         const widened = stateOps.widen(domain)(x)(joined);
         // console.log('widened', print(widened));
-
-        // console.log('------------------');
         return widened;
       };
 

@@ -1,4 +1,4 @@
-import { Comp, Ass, Num, Add, Var, Neg, Le } from '../../syntax';
+import { Comp, Ass, Num, Add, Var, Neg, Le, Skip } from '../../syntax';
 import { initState, isBottomState, printState, bottomState } from '../state';
 import { signDomain, zero, geZero, top, gZero, lZero, notZero, leZero } from '../domain-sign';
 import { semantic } from '../denotational-semantics';
@@ -15,6 +15,7 @@ import {
   whileNotZeroIncrement,
   whileXGeZeroDecrXAndIncrY,
 } from '../../fixtures';
+import { parse } from '../../parser';
 
 const print = printState(signDomain);
 print(bottomState);
@@ -227,5 +228,39 @@ describe('domain sign', () => {
 
     expect(result('x')).toEqual(lZero);
     return expect(result('y')).toEqual(geZero);
+  });
+
+  it('should return the AS of for', () => {
+    const input = 'for x := 1 to 10 do y := y + x';
+    const [program] = parse(input).getOrElse([new Skip(), []]);
+    const state = initState(signDomain)([['y', zero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('x')).toEqual(gZero);
+    return expect(result('y')).toEqual(geZero);
+  });
+
+  it('should return the AS of repeat until', () => {
+    const input = 'repeat x := x + 1 until x = 10';
+    const [program] = parse(input).getOrElse([new Skip(), []]);
+    const state = initState(signDomain)([['x', zero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(gZero);
+  });
+
+  it('should return the AS of repeat until', () => {
+    const input = 'repeat x := x + 1 until 1 = 1';
+    const [program] = parse(input).getOrElse([new Skip(), []]);
+    const state = initState(signDomain)([['x', zero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(gZero);
   });
 });

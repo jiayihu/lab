@@ -26,6 +26,7 @@ import {
 } from './syntax';
 import { Option, some, none } from 'fp-ts/lib/Option';
 import { pair } from './utils';
+import { compose } from 'fp-ts/lib/function';
 
 const isoChar = iso<Char>();
 export const strToChars = (xs: string): Char[] => Array.from(xs).map(isoChar.wrap);
@@ -264,7 +265,6 @@ const pAnd: Parser<Bexpr> = pTermBExpr.chain(a1 =>
     .map(a2 => new And(a1, a2)),
 );
 
-// Syntactic sugar
 const pOr: Parser<Bexpr> = pTermBExpr.chain(a1 =>
   pLit('|')
     .chain(() => pBexpr)
@@ -328,6 +328,7 @@ const pFor: Parser<Stm> = pLit('for').chain(() =>
   ),
 );
 
+// Syntactic sugar
 const pRepeatUntil: Parser<Stm> = pLit('repeat')
   .chain(() => pStm)
   .chain(stm =>
@@ -355,3 +356,9 @@ export const pProg: Parser<Stm> = pStm
       .map(stm2 => new Comp(stm1, stm2) as Stm),
   )
   .alt(pStm);
+
+export const parse: (program: string) => Option<[Stm, Token[]]> = compose(
+  pProg.parse,
+  tokenizer,
+  strToChars,
+);
