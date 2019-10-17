@@ -1,6 +1,6 @@
 import { Stm, If, Comp, While, Skip } from '../syntax';
-import { substState, evalAexpr, evalBexpr } from './eval';
-import { State } from './state';
+import { evalAexpr, evalBexpr } from './eval';
+import { State, substState } from './state';
 
 export class InterConfig {
   type: 'InterConfig' = 'InterConfig';

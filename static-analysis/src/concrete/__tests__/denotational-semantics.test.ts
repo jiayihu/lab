@@ -31,13 +31,13 @@ describe('denotational semantic', () => {
   });
 
   // it('should not terminate whileNotZeroSkip', () => {
-  //   const finalState = semantic(whileNotZeroSkip)(initialState({ x: 1 }));
+  //   const finalState = semantic(whileNotZeroSkip)(initState({ x: 1 }));
 
   //   expect(finalState('x')).toBe(0);
   // });
 
   // it('should not terminate whileTrueSkip', () => {
-  //   const finalState = semantic(whileTrueSkip)(initialState({ x: 0 }));
+  //   const finalState = semantic(whileTrueSkip)(initState({ x: 0 }));
 
   //   expect(finalState('x')).toBe(0);
   // });

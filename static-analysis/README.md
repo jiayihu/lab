@@ -9,7 +9,5 @@ A static analyzer written in functional Typescript using [fp-ts](https://github.
 ## TODO
 
 - Nested loops
-- Fix removal of information
 - Test syntactic sugar in abstract semantics
-- Test parser with fixture programs
 - Check <= and > in Sign domain tests

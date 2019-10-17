@@ -8,7 +8,7 @@ factorial(3, id)
 () => factorial(2, res => id(3 * res))
 () => factorial(1, res' => (res => id(3 * res))(2 * res'))
 res' => (res => id(3 * res))(2 * res')(1)
-res => id(3 * res)(2 * 1)
+(res => id(3 * res))(2 * 1)
 id (3 * 2)
 id (6)
 6

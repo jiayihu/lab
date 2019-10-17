@@ -1,7 +1,7 @@
 import { Stm, T } from '../syntax';
-import { substState, evalAexpr, evalBexpr } from './eval';
+import { evalAexpr, evalBexpr } from './eval';
 import { compose } from 'fp-ts/lib/function';
-import { State } from './state';
+import { State, substState } from './state';
 
 /**
  * The set of partial functions State -> State is a chain complete partially ordered set.

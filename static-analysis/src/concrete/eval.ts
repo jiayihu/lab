@@ -118,7 +118,3 @@ export const substBexpr = (b: Bexpr) => (y: Name) => (a0: Aexpr): Bexpr => {
       return new Or(substBexpr(b.bexpr1)(y)(a0), substBexpr(b.bexpr2)(y)(a0));
   }
 };
-
-export const substState = (s: State) => (y: Name) => (v: Z): State => {
-  return (x: Name) => (x === y ? v : s(x));
-};

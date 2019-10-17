@@ -1,7 +1,7 @@
 import { Stm, T } from '../syntax';
-import { substState, evalAexpr, evalBexpr } from './eval';
+import { evalAexpr, evalBexpr } from './eval';
 import { identity, compose } from 'fp-ts/lib/function';
-import { State } from './state';
+import { State, substState } from './state';
 import { trampoline, Thunked } from '../utils';
 
 /**
@@ -39,16 +39,16 @@ export const semantic = (stm: Stm) => (state: State): State => {
     case 'While': {
       const { bexpr, stm: whileStm } = stm;
 
-      const KKT: Thunked<State> = (s, ret) => {
+      const KT: Thunked<State> = (s, ret) => {
         return evalBexpr(bexpr)(s)
           ? function next() {
               const s1 = semantic(whileStm)(s);
-              return KKT(s1, identity);
+              return KT(s1, identity);
             }
           : ret(s);
       };
 
-      return trampoline(KKT)(state);
+      return trampoline(KT)(state);
     }
   }
 };

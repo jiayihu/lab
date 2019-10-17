@@ -23,6 +23,19 @@ import { array } from 'fp-ts/lib/Array';
 import { evalBexpr, evalAexpr } from '../concrete/eval';
 import { semantic } from '../concrete/operational-semantics';
 import { initState } from '../concrete/state';
+import {
+  factorial,
+  division,
+  divisionByZero,
+  indirectDivByZero,
+  whileNotZeroSkip,
+  whileTrueSkip,
+  whileTrueIncrement,
+  whileNotZeroIncrement,
+  hundredLoop,
+  fourtyLoop,
+  whileXGeZeroDecrXAndIncrY,
+} from '../fixtures';
 
 describe('tokenizer', () => {
   it('should split in tokens', () => {
@@ -123,13 +136,13 @@ describe('parser', () => {
   });
 
   it('should handle syntactic sugar', () => {
-    const input = ['-1 + 2', '-(1 + 2)', '3 - 1'];
+    const input = ['-1 + 2', '-(1 + 2)', '3 - 1', '3 + (-2)'];
     const tokens = input.map(bexpr => tokenizer(strToChars(bexpr)));
     const syntaxes = tokens
       .map(ts => pAexpr.parse(ts))
       .map(syntax => syntax.map(([aexpr]) => evalAexpr(aexpr)(() => 0)));
     const result = array.sequence(option)(syntaxes);
-    const expected = some([1, -3, 2]);
+    const expected = some([1, -3, 2, 1]);
 
     expect(result).toEqual(expected);
   });
@@ -352,5 +365,49 @@ describe('parser', () => {
     const result = syntax.map(([stm]) => semantic(stm)(state)).map(s => s('x'));
 
     expect(result).toEqual(some(1));
+  });
+
+  it('should parse the fixture programs', () => {
+    const input = [
+      'y := 1; while (x != 1) do (y := y * x; x := x - 1)',
+      'Q := 0; R := A; while (B <= R) do (R := R - B; Q := Q + 1)',
+      'x := 5 / 0',
+      'x := 1; x := x - 1; y := 5 / x',
+      'while (x != 0) do skip',
+      'while true do skip',
+      'while true do x := x + 1',
+      'while x != 0 do x := x + 1',
+      'A := 0; B := 0; while (A <= 100) do (A := A + 1; B := B + 1)',
+      'x := 0; while (x <= 40) do (x := x + 1)',
+      'while (x >= 0) do (x := x - 1; y := y + 1)',
+    ];
+    const tokens = input.map(aexpr => tokenizer(strToChars(aexpr)));
+    const syntaxes = tokens.map(ts => pProg.parse(ts));
+    const result = array.sequence(option)(syntaxes);
+
+    expect(result).toEqual(
+      some([
+        [factorial, []],
+        [division, []],
+        [divisionByZero, []],
+        [indirectDivByZero, []],
+        [whileNotZeroSkip, []],
+        [whileTrueSkip, []],
+        [whileTrueIncrement, []],
+        [whileNotZeroIncrement, []],
+        [hundredLoop, []],
+        [fourtyLoop, []],
+        [whileXGeZeroDecrXAndIncrY, []],
+      ]),
+    );
+  });
+
+  it('should parse nested loops', () => {
+    const input = strToChars('while true do while true do skip');
+    const tokens = tokenizer(input);
+
+    expect(pProg.parse(tokens)).toEqual(
+      some([new While(new True(), new While(new True(), new Skip())), []]),
+    );
   });
 });
