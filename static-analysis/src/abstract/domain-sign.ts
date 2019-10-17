@@ -45,10 +45,6 @@ export const top = new Top();
 
 type Sign = Bottom | LZero | Zero | GZero | LeZero | NotZero | GeZero | Top;
 
-const isBottom = (x: Sign): x is Bottom => {
-  return x.type == 'Bottom';
-};
-
 function index(a: Sign): number {
   switch (a.type) {
     case 'Bottom':
@@ -93,19 +89,6 @@ const leTable: boolean[][] = [
 const le = (a: Sign) => (b: Sign): boolean => {
   return leTable[index(a)][index(b)];
 };
-
-/**
-[|
-[   BOT;    L0;    E0;    G0;   LE0;    N0;   GE0;   TOP |];
-[    L0;    L0;   LE0;    N0;   LE0;    N0;   TOP;   TOP |];
-[    E0;   LE0;    E0;   GE0;   LE0;   TOP;   GE0;   TOP |];
-[    G0;    N0;   GE0;    G0;   TOP;    N0;   GE0;   TOP |];
-[   LE0;   LE0;   LE0;   TOP;   LE0;   TOP;   TOP;   TOP |];
-[    N0;    N0;   TOP;    N0;   TOP;    N0;   TOP;   TOP |];
-[   GE0;   TOP;   GE0;   GE0;   TOP;   TOP;   GE0;   TOP |];
-[   TOP;   TOP;   TOP;   TOP;   TOP;   TOP;   TOP;   TOP |]
-|]
- */
 
 const joinTable: Sign[][] = [
   //          ⊥    < 0    0    > 0    <= 0    != 0    >= 0    T
@@ -265,7 +248,7 @@ const testLeTable: [Sign, Sign][][] = [
   /* T */ [
     [bottom, bottom], // ⊥
     [lZero, lZero], // < 0
-    [lZero, zero], // 0
+    [leZero, zero], // 0
     [top, gZero], // > 0
     [leZero, leZero], // <= 0
     [top, notZero], // != 0
@@ -274,17 +257,88 @@ const testLeTable: [Sign, Sign][][] = [
   ],
 ];
 
-// Difference of information
-const diffTable: Sign[][] = [
-  //          ⊥    < 0    0    > 0    <= 0    != 0    >= 0    T
-  /* ⊥ */ [bottom, bottom, bottom, bottom, bottom, bottom, bottom, bottom],
-  /* < 0 */ [bottom, bottom, lZero, lZero, bottom, bottom, lZero, bottom],
-  /* 0 */ [bottom, zero, bottom, zero, bottom, zero, bottom, bottom],
-  /* > 0 */ [bottom, gZero, gZero, bottom, gZero, bottom, bottom, bottom],
-  /* <= 0 */ [bottom, zero, lZero, leZero, bottom, zero, lZero, bottom],
-  /* != 0 */ [bottom, gZero, notZero, lZero, gZero, bottom, lZero, bottom],
-  /* >= 0 */ [bottom, geZero, gZero, zero, gZero, zero, bottom, bottom],
-  /* T */ [bottom, geZero, notZero, leZero, gZero, zero, lZero, bottom],
+const testGTable: [Sign, Sign][][] = [
+  //
+  /* ⊥ */ [
+    [bottom, bottom], // ⊥
+    [bottom, bottom], // < 0
+    [bottom, bottom], // 0
+    [bottom, bottom], // > 0
+    [bottom, bottom], // <= 0
+    [bottom, bottom], // != 0
+    [bottom, bottom], // >= 0
+    [bottom, bottom], // T
+  ],
+  /* < 0 */ [
+    [bottom, bottom], // ⊥
+    [lZero, lZero], // < 0
+    [bottom, bottom], // 0
+    [bottom, bottom], // > 0
+    [lZero, lZero], // <= 0
+    [lZero, lZero], // != 0
+    [bottom, bottom], // >= 0
+    [lZero, lZero], // T
+  ],
+  /* 0 */ [
+    [bottom, bottom], // ⊥
+    [zero, lZero], // < 0
+    [bottom, bottom], // 0
+    [bottom, bottom], // > 0
+    [zero, leZero], // <= 0
+    [zero, lZero], // != 0
+    [bottom, bottom], // >= 0
+    [zero, lZero], // T
+  ],
+  /* > 0 */ [
+    [bottom, bottom], // ⊥
+    [gZero, lZero], // < 0
+    [gZero, zero], // 0
+    [gZero, gZero], // > 0
+    [gZero, leZero], // <= 0
+    [gZero, notZero], // != 0
+    [gZero, geZero], // >= 0
+    [gZero, top], // T
+  ],
+  /* <= 0 */ [
+    [bottom, bottom], // ⊥
+    [leZero, lZero], // < 0
+    [bottom, bottom], // 0
+    [bottom, bottom], // > 0
+    [leZero, lZero], // <= 0
+    [leZero, lZero], // != 0
+    [bottom, bottom], // >= 0
+    [leZero, lZero], // T
+  ],
+  /* != 0 */ [
+    [bottom, bottom], // ⊥
+    [notZero, lZero], // < 0
+    [gZero, zero], // 0
+    [gZero, gZero], // > 0
+    [notZero, leZero], // <= 0
+    [notZero, notZero], // != 0
+    [gZero, geZero], // >= 0
+    [notZero, top], // T
+  ],
+  /* >= 0 */ [
+    [bottom, bottom], // ⊥
+    [geZero, lZero], // < 0
+    [geZero, zero], // 0
+    [gZero, gZero], // > 0
+    [geZero, leZero], // <= 0
+    [geZero, notZero], // != 0
+    [geZero, geZero], // >= 0
+    [geZero, top], // T
+  ],
+  /* T */ [
+    [bottom, bottom], // ⊥
+    [top, lZero], // < 0
+    [gZero, zero], // 0
+    [gZero, gZero], // > 0
+    [top, leZero], // <= 0
+    [top, notZero], // != 0
+    [gZero, geZero], // >= 0
+    [top, top], // T
+  ],
 ];
 
 const evalAexpr = (expr: Aexpr) => (s: State<Sign>): Sign => {
@@ -324,6 +378,7 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
   if (isBottomState(s)) return s;
 
   const fallbackSignTest = fallbackTest(signDomain);
+  const substSignState = substState(signDomain);
 
   switch (bexpr.type) {
     case 'True':
@@ -354,25 +409,14 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
           const a1 = evalAexpr(negBexpr.aexpr1)(s);
           const a2 = evalAexpr(negBexpr.aexpr2)(s);
 
-          // ! a <= b  <=>  a > b  <=>  (b <= a) - (a = b)
-          const [v1, v2] = testLeTable[index(a2)][index(a1)];
-          const met = meet(v1)(v2);
+          const [v1, v2] = testGTable[index(a1)][index(a2)];
 
           if (v1 === bottom || v2 === bottom) return bottomState;
 
           let s1: State<Sign> = s;
 
-          if (negBexpr.aexpr1.type === 'Var') {
-            const v1m = isBottom(met) || v1 === met ? v1 : diffTable[index(v1)][index(met)];
-            const v1final = le(v1m)(a1) ? v1m : a1;
-            s1 = substState(s1)(negBexpr.aexpr1.value)(v1final);
-          }
-
-          if (negBexpr.aexpr2.type === 'Var') {
-            const v2m = isBottom(met) || v2 === met ? v2 : diffTable[index(v2)][index(met)];
-            const v2final = le(v2m)(a2) ? v2m : a2;
-            s1 = substState(s1)(negBexpr.aexpr2.value)(v2final);
-          }
+          if (negBexpr.aexpr1.type === 'Var') s1 = substSignState(s1)(negBexpr.aexpr1.value)(v1);
+          if (negBexpr.aexpr2.type === 'Var') s1 = substSignState(s1)(negBexpr.aexpr2.value)(v2);
 
           return s1;
         }
@@ -392,8 +436,8 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
 
       let s1: State<Sign> = s;
 
-      if (bexpr.aexpr1.type === 'Var') s1 = substState(s1)(bexpr.aexpr1.value)(v1);
-      if (bexpr.aexpr2.type === 'Var') s1 = substState(s1)(bexpr.aexpr2.value)(v2);
+      if (bexpr.aexpr1.type === 'Var') s1 = substSignState(s1)(bexpr.aexpr1.value)(v1);
+      if (bexpr.aexpr2.type === 'Var') s1 = substSignState(s1)(bexpr.aexpr2.value)(v2);
 
       return s1;
     }

@@ -16,7 +16,7 @@ describe('abstract state', () => {
 
   it('should change the variable in the state', () => {
     const state = initState(signDomain)([['x', geZero]]);
-    const updatedState = substState(state)('x')(zero);
+    const updatedState = substState(signDomain)(state)('x')(zero);
 
     if (isBottomState(updatedState)) return fail('Unexpected bottom state');
 
@@ -25,7 +25,7 @@ describe('abstract state', () => {
 
   it('should add a new variable in the state', () => {
     const state = initState(signDomain)([['x', geZero]]);
-    const updatedState = substState(state)('y')(zero);
+    const updatedState = substState(signDomain)(state)('y')(zero);
 
     if (isBottomState(updatedState)) return fail('Unexpected bottom state');
 

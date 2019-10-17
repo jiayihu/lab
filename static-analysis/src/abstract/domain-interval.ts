@@ -189,6 +189,7 @@ const evalAexpr = (expr: Aexpr) => (s: State<Interval>): Interval => {
 const test = (bexpr: Bexpr) => (s: State<Interval>): State<Interval> => {
   if (isBottomState(s)) return s;
   const fallbackIntervalTest = fallbackTest(intervalDomain);
+  const substIntervalState = substState(intervalDomain);
 
   switch (bexpr.type) {
     case 'True':
@@ -233,10 +234,10 @@ const test = (bexpr: Bexpr) => (s: State<Interval>): State<Interval> => {
           let s1: State<Interval> = s;
 
           if (negBexpr.aexpr1.type === 'Var') {
-            s1 = substState(s1)(negBexpr.aexpr1.value)([Math.max(a, c + 1), b]);
+            s1 = substIntervalState(s1)(negBexpr.aexpr1.value)([Math.max(a, c + 1), b]);
           }
           if (negBexpr.aexpr2.type === 'Var') {
-            s1 = substState(s1)(negBexpr.aexpr2.value)([c, Math.min(b - 1, d)]);
+            s1 = substIntervalState(s1)(negBexpr.aexpr2.value)([c, Math.min(b - 1, d)]);
           }
 
           return s1;
@@ -261,10 +262,10 @@ const test = (bexpr: Bexpr) => (s: State<Interval>): State<Interval> => {
       let s1: State<Interval> = s;
 
       if (bexpr.aexpr1.type === 'Var') {
-        s1 = substState(s1)(bexpr.aexpr1.value)([a, Math.min(b, d)]);
+        s1 = substIntervalState(s1)(bexpr.aexpr1.value)([a, Math.min(b, d)]);
       }
       if (bexpr.aexpr2.type === 'Var') {
-        s1 = substState(s1)(bexpr.aexpr2.value)([Math.max(a, c), d]);
+        s1 = substIntervalState(s1)(bexpr.aexpr2.value)([Math.max(a, c), d]);
       }
 
       return s1;

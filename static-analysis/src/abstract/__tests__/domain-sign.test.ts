@@ -1,6 +1,6 @@
-import { Comp, Ass, Num, Add, Var } from '../../syntax';
-import { initState, isBottomState } from '../state';
-import { signDomain, zero, geZero, top, gZero, lZero } from '../domain-sign';
+import { Comp, Ass, Num, Add, Var, Neg, Le } from '../../syntax';
+import { initState, isBottomState, printState, bottomState } from '../state';
+import { signDomain, zero, geZero, top, gZero, lZero, notZero, leZero } from '../domain-sign';
 import { semantic } from '../denotational-semantics';
 import {
   hundredLoop,
@@ -16,7 +16,40 @@ import {
   whileXGeZeroDecrXAndIncrY,
 } from '../../fixtures';
 
+const print = printState(signDomain);
+print(bottomState);
+
 describe('domain sign', () => {
+  it('should test lZero > notZero correctly', () => {
+    const bexpr = new Neg(new Le(new Var('x'), new Var('y')));
+    const state = initState(signDomain)([['x', lZero], ['y', notZero]]);
+    const result = signDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('x')).toEqual(lZero);
+    return expect(result('y')).toEqual(lZero);
+  });
+
+  it('should test leZero > geZero correctly', () => {
+    const bexpr = new Neg(new Le(new Var('x'), new Var('y')));
+    const state = initState(signDomain)([['x', leZero], ['y', geZero]]);
+    const result = signDomain.test(bexpr)(state);
+
+    expect(isBottomState(result)).toEqual(true);
+  });
+
+  it('should test geZero > leZero correctly', () => {
+    const bexpr = new Neg(new Le(new Var('x'), new Var('y')));
+    const state = initState(signDomain)([['x', geZero], ['y', leZero]]);
+    const result = signDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('x')).toEqual(geZero);
+    return expect(result('y')).toEqual(leZero);
+  });
+
   it('should return the AS of simple math programs', () => {
     const program = new Comp(
       new Ass('x', new Num(3)),
@@ -132,7 +165,7 @@ describe('domain sign', () => {
 
     expect(result('A')).toEqual(gZero);
     expect(result('B')).toEqual(gZero);
-    expect(result('R')).toEqual(gZero);
+    expect(result('R')).toEqual(top);
     return expect(result('Q')).toEqual(geZero);
   });
 
@@ -192,7 +225,7 @@ describe('domain sign', () => {
 
     if (isBottomState(result)) return fail('Unexpected bottom state');
 
-    expect(result('x')).toEqual(zero);
+    expect(result('x')).toEqual(lZero);
     return expect(result('y')).toEqual(geZero);
   });
 });

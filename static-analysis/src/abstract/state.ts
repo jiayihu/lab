@@ -35,8 +35,13 @@ const createState = <T>(state: FState<T>, names: Name[]): FState<T> => {
   };
 };
 
-export const substState = <T>(state: State<T>) => (y: Name) => (value: T): State<T> => {
+export const substState = <T>(domain: Domain<T>) => (state: State<T>) => (y: Name) => (
+  value: T,
+): State<T> => {
   if (isBottomState(state)) return state;
+
+  // Coalescing bottom values to bottom state
+  if (value === domain.bottom) return bottomState;
 
   const names = Array.from(new Set([...getPrivateNames(state), y]));
 

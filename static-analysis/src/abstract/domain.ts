@@ -19,10 +19,7 @@ export type Domain<T> = {
 export const assign = <T>(domain: Domain<T>) => (ass: Ass) => (s: State<T>): State<T> => {
   const value = domain.evalAexpr(ass.aexpr)(s);
 
-  // Coalescing bottom values to bottom state
-  if (value === domain.bottom) return bottomState;
-
-  return substState(s)(ass.name)(value);
+  return substState(domain)(s)(ass.name)(value);
 };
 
 export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: State<T>): State<T> => {
@@ -78,8 +75,8 @@ export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: Stat
 
       let s1: State<T> = s;
 
-      if (bexpr.aexpr1.type === 'Var') s1 = substState(s1)(bexpr.aexpr1.value)(met);
-      if (bexpr.aexpr2.type === 'Var') s1 = substState(s1)(bexpr.aexpr2.value)(met);
+      if (bexpr.aexpr1.type === 'Var') s1 = substState(domain)(s1)(bexpr.aexpr1.value)(met);
+      if (bexpr.aexpr2.type === 'Var') s1 = substState(domain)(s1)(bexpr.aexpr2.value)(met);
 
       return s1;
     }
