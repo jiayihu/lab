@@ -12,6 +12,8 @@ import {
   division,
   hundredLoop,
   fourtyLoop,
+  whileNotZeroIncrement,
+  whileXGeZeroDecrXAndIncrY,
 } from '../../fixtures';
 
 describe('domain interval', () => {
@@ -153,5 +155,44 @@ describe('domain interval', () => {
     if (isBottomState(result)) return fail('Unexpected bottom state');
 
     return expect(result('x')).toEqual([41, posInf]);
+  });
+
+  it('should return the AS of whileNotZeroIncrement', () => {
+    const program = whileNotZeroIncrement;
+    const state = initState(intervalDomain)([['x', [-10, -5]]]);
+    const result = semantic(intervalDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual([0, 0]);
+  });
+
+  it('should return the AS of whileNotZeroIncrement', () => {
+    const program = whileNotZeroIncrement;
+    const state = initState(intervalDomain)([['x', [0, 0]]]);
+    const result = semantic(intervalDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual([0, 0]);
+  });
+
+  it('should return the AS of whileNotZeroIncrement', () => {
+    const program = whileNotZeroIncrement;
+    const state = initState(intervalDomain)([['x', [1, 10]]]);
+    const result = semantic(intervalDomain)(program)(state);
+
+    return expect(isBottomState(result)).toEqual(true);
+  });
+
+  it('should return the AS of whileXNotZeroDecrXAndIncrY', () => {
+    const program = whileXGeZeroDecrXAndIncrY;
+    const state = initState(intervalDomain)([['x', [10, 10]], ['y', [0, 0]]]);
+    const result = semantic(intervalDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('x')).toEqual([negInf, -1]);
+    return expect(result('y')).toEqual([0, posInf]);
   });
 });

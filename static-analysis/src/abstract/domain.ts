@@ -34,14 +34,14 @@ export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: Stat
     case 'False':
       return bottomState;
     case 'And': {
-      const test1 = fallbackTest(domain)(bexpr.bexpr1)(s);
-      const test2 = fallbackTest(domain)(bexpr.bexpr1)(s);
+      const test1 = domain.test(bexpr.bexpr1)(s);
+      const test2 = domain.test(bexpr.bexpr1)(s);
 
       return stateOps.meet(domain)(test1)(test2);
     }
     case 'Or': {
-      const test1 = fallbackTest(domain)(bexpr.bexpr1)(s);
-      const test2 = fallbackTest(domain)(bexpr.bexpr1)(s);
+      const test1 = domain.test(bexpr.bexpr1)(s);
+      const test2 = domain.test(bexpr.bexpr1)(s);
 
       return stateOps.join(domain)(test1)(test2);
     }
@@ -54,17 +54,13 @@ export const fallbackTest = <T>(domain: Domain<T>) => (bexpr: Bexpr) => (s: Stat
         case 'False':
           return s;
         case 'Neg':
-          return fallbackTest(domain)(negBexpr.value)(s);
+          return domain.test(negBexpr.value)(s);
         case 'And':
           // De Morgan !(a & b) = !a | !b
-          return fallbackTest(domain)(new Or(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(
-            s,
-          );
+          return domain.test(new Or(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(s);
         case 'Or':
           // De Morgan !(a | b) = !a & !b
-          return fallbackTest(domain)(new And(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(
-            s,
-          );
+          return domain.test(new And(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(s);
         case 'Eq':
         case 'Le':
           return s;

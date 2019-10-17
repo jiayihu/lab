@@ -1,6 +1,6 @@
-import { Domain } from './domain';
-import { Aexpr, Bexpr, Or, Neg, And } from '../syntax';
-import { State, isBottomState, stateOps, bottomState, substState } from './state';
+import { Domain, fallbackTest } from './domain';
+import { Aexpr, Bexpr } from '../syntax';
+import { State, isBottomState, bottomState, substState } from './state';
 
 class Bottom {
   type: 'Bottom' = 'Bottom';
@@ -323,63 +323,32 @@ const evalAexpr = (expr: Aexpr) => (s: State<Sign>): Sign => {
 const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
   if (isBottomState(s)) return s;
 
+  const fallbackSignTest = fallbackTest(signDomain);
+
   switch (bexpr.type) {
     case 'True':
-      return s;
     case 'False':
-      return bottomState;
-    case 'And': {
-      const test1 = test(bexpr.bexpr1)(s);
-      const test2 = test(bexpr.bexpr1)(s);
-
-      return stateOps.meet(signDomain)(test1)(test2);
-    }
-    case 'Or': {
-      const test1 = test(bexpr.bexpr1)(s);
-      const test2 = test(bexpr.bexpr1)(s);
-
-      return stateOps.join(signDomain)(test1)(test2);
-    }
+    case 'And':
+    case 'Or':
+      return fallbackSignTest(bexpr)(s);
     case 'Neg': {
       const negBexpr = bexpr.value;
 
       switch (negBexpr.type) {
         case 'True':
-          return bottomState;
         case 'False':
-          return s;
         case 'Neg':
-          return test(negBexpr.value)(s);
         case 'And':
-          // De Morgan !(a & b) = !a | !b
-          return test(new Or(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(s);
         case 'Or':
-          // De Morgan !(a | b) = !a & !b
-          return test(new And(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(s);
+          return fallbackSignTest(bexpr)(s);
         case 'Eq': {
           const a1 = evalAexpr(negBexpr.aexpr1)(s);
           const a2 = evalAexpr(negBexpr.aexpr2)(s);
 
-          // Zero is the only case where we can be sure they both have the same information
+          // Zero is the only case where we can be sure they both are the same value
           if (a1 === a2 && a1 === zero) return bottomState;
 
-          const met = meet(a1)(a2);
-
-          // No information in common
-          if (met === bottom) return s;
-
-          let s1: State<Sign> = s;
-
-          if (negBexpr.aexpr1.type === 'Var' && a1 !== met) {
-            const v1 = diffTable[index(a1)][index(met)];
-            s1 = substState(s1)(negBexpr.aexpr1.value)(v1);
-          }
-          if (negBexpr.aexpr2.type === 'Var' && a2 !== met) {
-            const v2 = diffTable[index(a1)][index(met)];
-            s1 = substState(s1)(negBexpr.aexpr2.value)(v2);
-          }
-
-          return s1;
+          return s;
         }
         case 'Le': {
           const a1 = evalAexpr(negBexpr.aexpr1)(s);
@@ -411,21 +380,8 @@ const test = (bexpr: Bexpr) => (s: State<Sign>): State<Sign> => {
 
       return s;
     }
-    case 'Eq': {
-      const a1 = evalAexpr(bexpr.aexpr1)(s);
-      const a2 = evalAexpr(bexpr.aexpr2)(s);
-
-      const met = meet(a1)(a2);
-
-      if (met === bottom) return bottomState;
-
-      let s1: State<Sign> = s;
-
-      if (bexpr.aexpr1.type === 'Var') s1 = substState(s1)(bexpr.aexpr1.value)(met);
-      if (bexpr.aexpr2.type === 'Var') s1 = substState(s1)(bexpr.aexpr2.value)(met);
-
-      return s1;
-    }
+    case 'Eq':
+      return fallbackSignTest(bexpr)(s);
     case 'Le': {
       const a1 = evalAexpr(bexpr.aexpr1)(s);
       const a2 = evalAexpr(bexpr.aexpr2)(s);

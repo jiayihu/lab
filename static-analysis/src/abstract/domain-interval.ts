@@ -1,6 +1,6 @@
-import { Z, Aexpr, Bexpr, Or, Neg, And } from '../syntax';
-import { Domain } from './domain';
-import { State, isBottomState, bottomState, stateOps, substState } from './state';
+import { Z, Aexpr, Bexpr } from '../syntax';
+import { Domain, fallbackTest } from './domain';
+import { State, isBottomState, bottomState, substState } from './state';
 import { Brand } from '../utils';
 
 type NegInf = Brand<number, 'NegInf'>;
@@ -29,6 +29,12 @@ const isPosInf = (x: Bound): x is PosInf => {
 
 const isBottom = (x: Interval): x is Bottom => {
   return !Array.isArray(x);
+};
+
+const isSingleton = (x: [Bound, Bound]): boolean => {
+  const [a, b] = x;
+
+  return a === b;
 };
 
 const print = (x: Interval): string => {
@@ -180,92 +186,36 @@ const evalAexpr = (expr: Aexpr) => (s: State<Interval>): Interval => {
   }
 };
 
-const diffIntervals = (x: Interval) => (y: Interval): Interval => {
-  if (isBottom(x)) return bottom;
-  if (isBottom(y)) return x;
-
-  const [a, b] = x;
-  const [c, d] = y;
-
-  // Leave the interval intact since we cannot express intervals with a "hole"
-  if (le(y)(x)) return x;
-
-  if (d >= b) return c <= a ? bottom : [a, Math.min(b, c - 1)];
-
-  // c <= a
-  return d >= b ? bottom : [Math.max(a, d + 1), b];
-};
-
 const test = (bexpr: Bexpr) => (s: State<Interval>): State<Interval> => {
   if (isBottomState(s)) return s;
+  const fallbackIntervalTest = fallbackTest(intervalDomain);
 
   switch (bexpr.type) {
     case 'True':
-      return s;
     case 'False':
-      return bottomState;
-    case 'And': {
-      const test1 = test(bexpr.bexpr1)(s);
-      const test2 = test(bexpr.bexpr1)(s);
-
-      return stateOps.meet(intervalDomain)(test1)(test2);
-    }
-    case 'Or': {
-      const test1 = test(bexpr.bexpr1)(s);
-      const test2 = test(bexpr.bexpr1)(s);
-
-      return stateOps.join(intervalDomain)(test1)(test2);
-    }
+    case 'And':
+    case 'Or':
+      return fallbackIntervalTest(bexpr)(s);
     case 'Neg': {
       const negBexpr = bexpr.value;
 
       switch (negBexpr.type) {
         case 'True':
-          return bottomState;
         case 'False':
-          return s;
         case 'Neg':
-          return test(negBexpr.value)(s);
         case 'And':
-          // De Morgan !(a & b) = !a | !b
-          return test(new Or(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(s);
         case 'Or':
-          // De Morgan !(a | b) = !a & !b
-          return test(new And(new Neg(negBexpr.bexpr1), new Neg(negBexpr.bexpr2)))(s);
+          return fallbackIntervalTest(bexpr)(s);
         case 'Eq': {
           const a1 = evalAexpr(negBexpr.aexpr1)(s);
           const a2 = evalAexpr(negBexpr.aexpr2)(s);
 
-          // Same information
-          if (eq(a1)(a2)) return bottomState;
+          if (isBottom(a1) || isBottom(a2)) return bottomState;
 
-          const met = meet(a1)(a2);
+          // Singletons are the only cases where we can be sure they both are the same value
+          if (eq(a1)(a2) && isSingleton(a1)) return bottomState;
 
-          // No information in common
-          if (met === bottom) return s;
-
-          let s1: State<Interval> = s;
-
-          /**
-           * If there is some overlapping information, it's removed from both
-           * values although it could lead to some false alarms. For instance:
-           * a1 := [1, 5], a2 := [4, 7]
-           * => met := [2, 5]
-           * => a1 := [1, 1], a2 := [2, 7] OR a1 := [1, 5], a2 := [6, 7]
-           * Both are valid cases, but the test will return a stricter
-           * a1 := [1, 1], a2 := [6, 7]
-           */
-
-          if (negBexpr.aexpr1.type === 'Var' && !eq(a1)(met)) {
-            const v1 = diffIntervals(a1)(met);
-            s1 = substState(s1)(negBexpr.aexpr1.value)(v1);
-          }
-          if (negBexpr.aexpr2.type === 'Var' && !eq(a2)(met)) {
-            const v2 = diffIntervals(a2)(met);
-            s1 = substState(s1)(negBexpr.aexpr2.value)(v2);
-          }
-
-          return s1;
+          return s;
         }
         case 'Le': {
           const x = evalAexpr(negBexpr.aexpr1)(s);
@@ -295,21 +245,8 @@ const test = (bexpr: Bexpr) => (s: State<Interval>): State<Interval> => {
 
       return s;
     }
-    case 'Eq': {
-      const a1 = evalAexpr(bexpr.aexpr1)(s);
-      const a2 = evalAexpr(bexpr.aexpr2)(s);
-
-      const met = meet(a1)(a2);
-
-      if (met === bottom) return bottomState;
-
-      let s1: State<Interval> = s;
-
-      if (bexpr.aexpr1.type === 'Var') s1 = substState(s1)(bexpr.aexpr1.value)(met);
-      if (bexpr.aexpr2.type === 'Var') s1 = substState(s1)(bexpr.aexpr2.value)(met);
-
-      return s1;
-    }
+    case 'Eq':
+      return fallbackIntervalTest(bexpr)(s);
     case 'Le': {
       const x = evalAexpr(bexpr.aexpr1)(s);
       const y = evalAexpr(bexpr.aexpr2)(s);

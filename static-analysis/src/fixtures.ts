@@ -25,12 +25,27 @@ export const division = new Comp(
   ),
 );
 
+export const divisionByZero = new Ass('x', new Div(new Num(5), new Num(0)));
+
+export const indirectDivByZero = new Comp(
+  new Ass('x', new Num(1)),
+  new Comp(
+    new Ass('x', new Sub(new Var('x'), new Num(1))),
+    new Ass('y', new Div(new Num(5), new Var('x'))),
+  ),
+);
+
 export const whileNotZeroSkip = new While(new Neg(new Eq(new Var('x'), new Num(0))), new Skip());
 
 export const whileTrueSkip = new While(new True(), new Skip());
 
 export const whileTrueIncrement = new While(
   new True(),
+  new Ass('x', new Add(new Var('x'), new Num(1))),
+);
+
+export const whileNotZeroIncrement = new While(
+  new Neg(new Eq(new Var('x'), new Num(0))),
   new Ass('x', new Add(new Var('x'), new Num(1))),
 );
 
@@ -53,12 +68,10 @@ export const fourtyLoop = new Comp(
   new While(new Le(new Var('x'), new Num(40)), new Ass('x', new Add(new Var('x'), new Num(1)))),
 );
 
-export const divisionByZero = new Ass('x', new Div(new Num(5), new Num(0)));
-
-export const indirectDivByZero = new Comp(
-  new Ass('x', new Num(1)),
+export const whileXGeZeroDecrXAndIncrY = new While(
+  new Le(new Num(0), new Var('x')),
   new Comp(
     new Ass('x', new Sub(new Var('x'), new Num(1))),
-    new Ass('y', new Div(new Num(5), new Var('x'))),
+    new Ass('y', new Add(new Var('y'), new Num(1))),
   ),
 );

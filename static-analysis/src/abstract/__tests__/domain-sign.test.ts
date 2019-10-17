@@ -12,6 +12,8 @@ import {
   divisionByZero,
   indirectDivByZero,
   fourtyLoop,
+  whileNotZeroIncrement,
+  whileXGeZeroDecrXAndIncrY,
 } from '../../fixtures';
 
 describe('domain sign', () => {
@@ -153,5 +155,44 @@ describe('domain sign', () => {
     if (isBottomState(result)) return fail('Unexpected bottom state');
 
     return expect(result('x')).toEqual(gZero);
+  });
+
+  it('should return the AS of whileNotZeroIncrement', () => {
+    const program = whileNotZeroIncrement;
+    const state = initState(signDomain)([['x', lZero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(zero);
+  });
+
+  it('should return the AS of whileNotZeroIncrement', () => {
+    const program = whileNotZeroIncrement;
+    const state = initState(signDomain)([['x', zero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(zero);
+  });
+
+  it('should return the AS of whileNotZeroIncrement', () => {
+    const program = whileNotZeroIncrement;
+    const state = initState(signDomain)([['x', gZero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    return expect(isBottomState(result)).toEqual(true);
+  });
+
+  it('should return the AS of whileNotZeroDecrement', () => {
+    const program = whileXGeZeroDecrXAndIncrY;
+    const state = initState(signDomain)([['x', gZero], ['y', zero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('x')).toEqual(zero);
+    return expect(result('y')).toEqual(geZero);
   });
 });
