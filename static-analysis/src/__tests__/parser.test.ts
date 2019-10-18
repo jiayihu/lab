@@ -195,6 +195,7 @@ describe('parser', () => {
       '!true & false',
       '!(true & false)',
       '!((4 = 8) & false)',
+      'x <= -3',
     ];
     const tokens = input.map(aexpr => tokenizer(strToChars(aexpr)));
     const syntaxes = tokens.map(ts => pBexpr.parse(ts));
@@ -207,6 +208,7 @@ describe('parser', () => {
         [new And(new Neg(new True()), new False()), []],
         [new Neg(new And(new True(), new False())), []],
         [new Neg(new And(new Eq(new Num(4), new Num(8)), new False())), []],
+        [new Le(new Var('x'), new Sub(new Num(0), new Num(3))), []],
       ]),
     );
   });

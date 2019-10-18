@@ -1,8 +1,8 @@
 import { semantic } from '../denotational-semantics';
 import { factorial, whileNotZeroSkip, hundredLoop, division } from '../../fixtures';
 import { initState } from '../state';
-import { parse } from '../../parser';
-import { Skip } from '../../syntax';
+// import { parse } from '../../parser';
+// import { Skip } from '../../syntax';
 
 describe('denotational semantic', () => {
   it('should return the factorial result', () => {

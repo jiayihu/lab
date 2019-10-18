@@ -1,4 +1,4 @@
-import { Comp, Ass, Num, Add, Var } from '../../syntax';
+import { Comp, Ass, Num, Add, Var, Le, Neg } from '../../syntax';
 import { initState, isBottomState } from '../state';
 import { semantic } from '../denotational-semantics';
 import { intervalDomain, top, negInf, posInf } from '../domain-interval';
@@ -17,6 +17,60 @@ import {
 } from '../../fixtures';
 
 describe('domain interval', () => {
+  it('should test correctly R >= B', () => {
+    const bexpr = new Le(new Var('B'), new Var('R'));
+    const state = initState(intervalDomain)([
+      ['Q', [0, 0]],
+      ['R', [0, 150]],
+      ['B', [1, 3]],
+      ['A', [0, 150]],
+    ]);
+    const result = intervalDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('Q')).toEqual([0, 0]);
+    expect(result('R')).toEqual([1, 150]);
+    expect(result('B')).toEqual([1, 3]);
+    return expect(result('A')).toEqual([0, 150]);
+  });
+
+  it('should test correctly R < B', () => {
+    const bexpr = new Neg(new Le(new Var('B'), new Var('R')));
+    const state = initState(intervalDomain)([
+      ['Q', [0, 0]],
+      ['R', [0, 150]],
+      ['B', [1, 3]],
+      ['A', [0, 150]],
+    ]);
+    const result = intervalDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('Q')).toEqual([0, 0]);
+    expect(result('R')).toEqual([0, 2]);
+    expect(result('B')).toEqual([1, 3]);
+    return expect(result('A')).toEqual([0, 150]);
+  });
+
+  it('should test correctly R <= B', () => {
+    const bexpr = new Le(new Var('R'), new Var('B'));
+    const state = initState(intervalDomain)([
+      ['Q', [0, 0]],
+      ['R', [0, 150]],
+      ['B', [1, 3]],
+      ['A', [0, 150]],
+    ]);
+    const result = intervalDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('Q')).toEqual([0, 0]);
+    expect(result('R')).toEqual([0, 3]);
+    expect(result('B')).toEqual([1, 3]);
+    return expect(result('A')).toEqual([0, 150]);
+  });
+
   it('should return the AS of simple math programs', () => {
     const program = new Comp(
       new Ass('x', new Num(3)),

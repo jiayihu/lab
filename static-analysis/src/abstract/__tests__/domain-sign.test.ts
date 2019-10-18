@@ -1,4 +1,4 @@
-import { Comp, Ass, Num, Add, Var, Neg, Le, Skip } from '../../syntax';
+import { Comp, Ass, Num, Add, Var, Neg, Le, Skip, Sub, If } from '../../syntax';
 import { initState, isBottomState, printState, bottomState } from '../state';
 import { signDomain, zero, geZero, top, gZero, lZero, notZero, leZero } from '../domain-sign';
 import { semantic } from '../denotational-semantics';
@@ -49,6 +49,80 @@ describe('domain sign', () => {
 
     expect(result('x')).toEqual(geZero);
     return expect(result('y')).toEqual(leZero);
+  });
+
+  it('should test correctly x <= -3', () => {
+    const bexpr = new Le(new Var('x'), new Sub(new Num(0), new Num(3)));
+    const state = initState(signDomain)([]);
+    const result = signDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(lZero);
+  });
+
+  it('should test correctly x <= gZero', () => {
+    const bexpr = new Le(new Var('x'), new Num(3));
+    const state = initState(signDomain)([['x', top]]);
+    const result = signDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(top);
+  });
+
+  it('should test correctly x <= 0', () => {
+    const bexpr = new Le(new Var('x'), new Num(0));
+    const state = initState(signDomain)([]);
+    const result = signDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual(leZero);
+  });
+
+  it('should test correctly R >= B', () => {
+    const bexpr = new Le(new Var('B'), new Var('R'));
+    const state = initState(signDomain)([['Q', geZero], ['R', top], ['B', geZero]]);
+    const result = signDomain.test(bexpr)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('Q')).toEqual(geZero);
+    expect(result('R')).toEqual(geZero);
+    return expect(result('B')).toEqual(geZero);
+  });
+
+  it('should test correctly if R >= B then R = R - B else skip', () => {
+    const program = new If(
+      new Le(new Var('B'), new Var('R')),
+      new Ass('R', new Sub(new Var('R'), new Var('B'))),
+      new Skip(),
+    );
+    const state = initState(signDomain)([['Q', zero], ['R', geZero], ['B', geZero]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('Q')).toEqual(zero);
+    expect(result('R')).toEqual(top);
+    return expect(result('B')).toEqual(geZero);
+  });
+
+  it('should test correctly if R <= B then K = B - R else skip', () => {
+    const program = new If(
+      new Le(new Var('R'), new Var('B')),
+      new Ass('K', new Sub(new Var('B'), new Var('R'))),
+      new Skip(),
+    );
+    const state = initState(signDomain)([['K', top], ['R', top], ['B', top]]);
+    const result = semantic(signDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    expect(result('K')).toEqual(top);
+    expect(result('R')).toEqual(top);
+    return expect(result('B')).toEqual(top);
   });
 
   it('should return the AS of simple math programs', () => {
