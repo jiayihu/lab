@@ -2,16 +2,11 @@ import { Stm, T } from '../syntax';
 import { evalAexpr, evalBexpr } from './eval';
 import { identity, compose } from 'fp-ts/lib/function';
 import { State, substState } from './state';
-import { trampoline, Thunked } from '../utils';
+import { trampoline, Thunker } from '../utils';
 
-/**
- * The set of partial functions State -> State is a chain complete partially ordered set.
- * A functional takes a state (function), and performs an operation with it that
- * results in another state.
- */
-type FunctionalStm = (state: State) => State;
+type FunctionalState = (state: State) => State;
 
-const cond = (p: (s: State) => T) => (g1: FunctionalStm) => (g2: FunctionalStm) => (
+const cond = (p: (s: State) => T) => (g1: FunctionalState) => (g2: FunctionalState) => (
   state: State,
 ) => {
   return p(state) ? g1(state) : g2(state);
@@ -39,11 +34,10 @@ export const semantic = (stm: Stm) => (state: State): State => {
     case 'While': {
       const { bexpr, stm: whileStm } = stm;
 
-      const KKT: Thunked<State> = (s, ret) => {
+      const KKT: Thunker<State> = (s, ret) => {
         return evalBexpr(bexpr)(s)
           ? function next() {
-              const s1 = semantic(whileStm)(s);
-              return KKT(s1, identity);
+              return KKT(semantic(whileStm)(s), identity);
             }
           : ret(s);
       };

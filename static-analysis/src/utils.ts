@@ -19,7 +19,7 @@ export function random() {
  * This wrapping delays the evaluation of the expression until the point at which
  * the function is called.
  */
-export type Thunked<T> = (s: T, ret: (s: T) => T) => T | (() => ReturnType<Thunked<T>>);
+export type Thunker<T> = (s: T, ret: (s: T) => T) => T | (() => ReturnType<Thunker<T>>);
 
 function isNextFn<T>(fn: T | (() => T)): fn is () => T {
   return typeof fn === 'function' && fn.name === 'next';
@@ -34,9 +34,9 @@ function isNextFn<T>(fn: T | (() => T)): fn is () => T {
  * @src https://eli.thegreenplace.net/2017/on-recursion-continuations-and-trampolines/
  * @src https://en.wikipedia.org/wiki/Trampoline_(computing)
  */
-export function trampoline<T>(thunk: Thunked<T>): (s: T) => T {
+export function trampoline<T>(thunker: Thunker<T>): (s: T) => T {
   return function(s: T): T {
-    let result = thunk(s, identity);
+    let result = thunker(s, identity);
 
     while (result && isNextFn(result)) result = result();
 

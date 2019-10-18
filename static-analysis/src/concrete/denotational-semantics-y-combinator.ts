@@ -3,11 +3,6 @@ import { evalAexpr, evalBexpr } from './eval';
 import { identity, compose } from 'fp-ts/lib/function';
 import { State, substState } from './state';
 
-/**
- * The set of partial functions State -> State is a chain complete partially ordered set.
- * A functional takes a state (function), and performs an operation with it that
- * results in another state.
- */
 type FunctionalState = (state: State) => State;
 
 /**
@@ -22,8 +17,6 @@ type FunctionalState = (state: State) => State;
  *  () => fix(F) // Next iteration generator, made lazy and called only if necessary
  * )
  * ```
- *
- * @param F Continous function, which preserves least upper bound of chain.
  */
 const fix = (F: (g: () => FunctionalState) => FunctionalState): FunctionalState => F(() => fix(F));
 

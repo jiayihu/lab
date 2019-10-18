@@ -13,8 +13,8 @@ id (3 * 2)
 id (6)
 6
 
-KKT({ x: 3 }, res => res)
-KKT({ x: 2 }, res' => res')
-KKT({ x: 1 }, res' => res')
+KKT(semantic('x := x - 1')({ x: 3 }), res => res)
+KKT(semantic('x := x - 1')({ x: 2 }), res' => res')
+KKT(semantic('x := x - 1')({ x: 1 }), res' => res')
 (res' => res')({ x: 1 })
 { x: 1 }
