@@ -1,4 +1,4 @@
-import { Comp, Ass, Num, Add, Var, Le, Neg } from '../../syntax';
+import { Comp, Ass, Num, Add, Var, Le, Neg, Sub } from '../../syntax';
 import { initState, isBottomState } from '../state';
 import { semantic } from '../denotational-semantics';
 import { intervalDomain, top, negInf, posInf } from '../domain-interval';
@@ -94,6 +94,16 @@ describe('domain interval', () => {
     if (isBottomState(result)) return fail('Unexpected bottom state');
 
     return expect(result('x')).toEqual([2, 2]);
+  });
+
+  it('should return a not optimal AS of sub', () => {
+    const program = new Ass('x', new Sub(new Var('x'), new Var('x')));
+    const state = initState(intervalDomain)([['x', [0, 1]]]);
+    const result = semantic(intervalDomain)(program)(state);
+
+    if (isBottomState(result)) return fail('Unexpected bottom state');
+
+    return expect(result('x')).toEqual([-1, 1]);
   });
 
   it('should return bottomState with while true', () => {
