@@ -1,7 +1,8 @@
 import { Stm, T } from '../syntax';
 import { evalAexpr, evalBexpr } from './eval';
-import { compose } from 'fp-ts/lib/function';
+import { identity, compose } from 'fp-ts/lib/function';
 import { State, substState } from './state';
+import { trampoline, Thunked } from '../utils';
 
 /**
  * The set of partial functions State -> State is a chain complete partially ordered set.
@@ -38,11 +39,16 @@ export const semantic = (stm: Stm) => (state: State): State => {
     case 'While': {
       const { bexpr, stm: whileStm } = stm;
 
-      let s = state;
+      const KKT: Thunked<State> = (s, ret) => {
+        return evalBexpr(bexpr)(s)
+          ? function next() {
+              const s1 = semantic(whileStm)(s);
+              return KKT(s1, identity);
+            }
+          : ret(s);
+      };
 
-      while (evalBexpr(bexpr)(s)) s = semantic(whileStm)(s);
-
-      return s;
+      return trampoline(KKT)(state);
     }
   }
 };
