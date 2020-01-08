@@ -3,6 +3,8 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from naive_bayes import NaiveBayes
+import matplotlib.pyplot as plt
+
 
 iris = load_iris()
 
@@ -15,6 +17,14 @@ nb = NaiveBayes(X_train, y_train)
 nb_pred = nb.predict(X_test)
 print("Accuracy custom Naive Bayes: %d points mislabeled" %accuracy(y_test, np.array(nb_pred)))
 
-gnb = GaussianNB().fit(X_train, y_train)
-gnb_pred = gnb.predict(X_test)
-print("Accuracy scikit Naive Bayes: %d points mislabeled" %accuracy(y_test, gnb_pred))
+plt.scatter(X_test[:, 0], X_test[:, 1], c = nb_pred)
+plt.xlabel('Sepal length')
+plt.ylabel('Sepal width')
+plt.xticks(())
+plt.yticks(())
+plt.show()
+
+# gnb = GaussianNB().fit(X_train, y_train)
+# gnb_pred = gnb.predict(X_test)
+# print("Accuracy scikit Naive Bayes: %d points mislabeled" %accuracy(y_test, gnb_pred))
+
