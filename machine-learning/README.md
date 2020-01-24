@@ -1,24 +1,14 @@
 # Machine Learning
 
-Created: Jan 23, 2020 2:18 PM
-Updated: Jan 23, 2020 3:07 PM
-
 ## Supervised learning
 
 - Inductive bias
 - Spazio delle ipotesi $H$ con ipotesi $h \in H$
-- Ad esempio spazio delle curve polinomiali, con obiettivo minimizzare formula
-
-$$min_{w} 1/n \sum_{i=1}^n (y_i - wx_i)^2$$
-
+- version space, spazio delle ipotesi tra gli estremi di quelle consistenti
+- Ad esempio spazio delle curve polinomiali, con obiettivo minimizzare: $min_{w} 1/n \sum_{i=1}^n (y_i - wx_i)^2$
 - Training/empirical error vs ideal error
-- Regularization con coefficiente di penalità alpha
-
-$$min_{w} 1/n \sum_{i=1}^n (y_i - wx_i)^2 + \alpha ||w||^2$$
-
-- Formula per calcolare $w$ da $X$ e $y$
-a
-$$w = (X^TX + \alpha I)^{-1}X^Ty$$
+- Regularization con coefficiente di penalità alpha: $min_{w} 1/n \sum_{i=1}^n (y_i - wx_i)^2 + \alpha ||w||^2$
+- Formula per calcolare $w$ da $X$ e $y$: $w = (X^TX + \alpha I)^{-1}X^Ty$
 
 ## PAC, generalization e SRM
 
@@ -29,18 +19,11 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
     $$P(|\sigma - \pi| \ge \epsilon) \le M 2e^{-2\epsilon^2 N}$$
 
 - In genere c'è molto overlapping di bad events: $m_H(N) \ll 2^ N$
-
-- Shattering
-
-    $$\forall S' \subseteq \ S, \exists h \in H, \forall x \in S,\  h(x) = 1\ sse\ x \in S'$$
-
+- Shattering $\forall S' \subseteq \ S, \exists h \in H, \forall x \in S,\  h(x) = 1\ sse\ x \in S'$
 - VC-dimension: $max{|S|_{S \subseteq X}}: H\ shatters\ S$
-
     - La VC dimension dello spazio di iperpiani in $R^n$ è $n + 1$
-- Generalization error con VC-confidence
-
-    $$error(g) \le error_S(g)+ F({VC(H)\over n}, \delta)$$
-
+    - Fortunatamente in genere i punti della stessa classe sono in una stessa densità di distribuzione, quindi non serve preoccuparsi per tutte le possibili labellings dei punti
+- Generalization error con VC-confidence $error(g) \le error_S(g)+ F({VC(H)\over n}, \delta)$
     - Inversamente proporzionale a n e $\delta$, direttamente proporzionale ad VC(H)
     - SRM (Structural Risk Minimization) per il miglior trade-off tra A e B
 
@@ -52,10 +35,11 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
   - Classificazione
   - Facile interpretazione (motivi legali)
   - Veloce valutazione $log(depth)$
+  - Non sono parametrici ma nemmeno conservano il dataset dopo il training
 - CART e ID3
 - Scelta dell'attributo ottimo (non sempre possibile, svantaggio del pre-pruning con XOR)
   - Entropia: $\sum_c^m p_c\ log\ p_c$ con $p_c = {|S_c| \over |S|}$
-  - Gini Index: $\ - \sum_c^m p_c^2$
+  - Gini Index: $1 - \sum_c^m p_c^2$
   - Miclassification: $1 - max_c(p_c)$
 - Information gain: $G(S, a) = E(s) - \sum_{v\in V(a)} {|S_v| \over |S|} E(S_{a=v})$
 - Bias del decision tree: l'information gain favorisce attribute con tanti valori discreti
@@ -64,10 +48,14 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
 - Valori continue
   - Calcolo splitting point nel mezzo tra due istanze di classe diversa
   - L'attributo può essere riutilizzato
+- Regressione: si calcola la media dei punti che raggiungono il nodo e si minimizza il MSE dalla media (varianza)
+- Multivariate trees: permettono di definire boundary lineari ma non allineate agli assi, più flessibili
 - Overfitting
   - Depth massima
   - Numero minimo di istanze in un branch, 5% del dataset
+  - Entropia > $\theta$
   - Pre-pruning
+    - Rischia di sbagliare se manca attributo ottimale quando serve combinazione di attributi come in XOR
   - Post-pruning con errore validation set o ipotesi nulla con confidence $1- \delta$
   - Rule post-pruning con regole ordinate per performance
 - Istanze con valore mancante per attributo $a$
@@ -94,6 +82,8 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
   - $w \leftarrow w + \eta(t - o)x_i$ con $o = sign(w \cdot x)$ e $t \in \{-1, +1\}$
     - Se la predizione è sbagliata $t = 1, o = 0$ e $x_i \ge 0$ allora il peso cresce per avvicinarsi a 1, altrimenti se $x_i \le 0$ decresce
   - Se lo spazio è linearmente separabile, termina in numero di passi finito
+  - $w$ sono inizializzati random in un intorno di zero. Fermare le iterazioni equivale a fare regularization
+  - Se $\eta$ è troppo largo potrebbe causare troppe oscillazioni e perdersi il minimo, se è troppo piccolo la convergenza è troppo piccola
 - activation function / threshold function
   - hard threshold (non derivabile): $sign(w\cdot x)$
   - sigmoide / logistic function (derivabile): ${1\over 1+e^{-w \cdot x}}$ 
@@ -132,14 +122,17 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
 - Difficoltà:
   - Topologia della rete e numero unità nascoste
   - Learning rate $\eta$
+    - Adaptive learning rate $\Delta\eta = +a$ se l'errore diminuisce, $\Delta\eta = -b\eta$ altrimenti
   - Tempo di apprendimento
-    - Aggiunta di un termine momento
+    - Aggiunta di un termine momento $\Delta w_i^t = -\eta {\partial E^t \over \partial w_i} + \alpha\Delta w_i^{t-1}$
   - Minimi locali
     - Apprendimento stocastico 
     - Reti diverse con diverse inizializzazioni o ensemble
 - Autoencoders
-- Overfitting con troppe iterazioni
+- Overfitting con troppe iterazioni o unità nascoste
   - Regularization sui pesi $w$
+  - Approccio costruttivo o distruttivo
+- Utilizzo di hints come immagine rotata e termine di errore per non riconoscimento degli hints
 
 ## GLM (Generalized Linear Models) & SVM (Support Vector Machines)
 
@@ -181,17 +174,21 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
   - Input non vettoriali, grazie alle funzioni kernel
   - Utilizzo di kernel matrix invece del dataset originale, NLP e bioinformatica
   - Speech and image recognition
+- One-class classification $min\ R^2 + C \sum_i \xi_i$
+- Kernel PCA che usa PCA sulla kernel matrix, facendo una linear dimension reduction nello feature space
 
 ## Preprocessing
 
 - Feature categoriche/simboliche
   - Nominali vs Ordinali
   - OneHot Encoding con dummy variables
+  - Bag of words
 - features quantitative/numeriche
   - Intervalli vs Reali
   - $\hat{x}_j = {1 \over n}\sum_i^n x_{ij}$ e $\sigma_j = \sqrt{{1 \over n}\sum_i^n (x_{ij}-\hat{x}_j)^2}$
   - Centering: $c(x_{ij}) = x_{ij} - \hat{x}_j$
   - Standardizzazione: $s(x_{ij}) = {c(x_{ij}) \over \sigma_j}$
+    - z-normalization
   - Scaling: $h(x_{ij}) = {x_{ij} - x_{min,j} \over x_{max, j}-x_{min, j}}$
   - Normalizzazione: $g(x) = {x \over ||x||}$
 - Il k-NN richiede normalizzazione esempi, come pure k-means o la rete neurale
@@ -206,6 +203,7 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
 
 - Bias $E[\hat{f}(x)] - E[f(x)]$ e varianza $E[(f(x) - E[f(x)])^2]$
 - Underfitting/overfitting
+- Rasoio di Occam
 - Cross validation
 - K-fold cross-validation
   - $k = |Tr|$ LOOCV
@@ -222,6 +220,30 @@ $$w = (X^TX + \alpha I)^{-1}X^Ty$$
   - One-vs-one (pairwise)
   - Confusion matrix: precision in colonna, recall in riga
   - Micro/macro-averaging
+
+## Representation learning
+
+- Miglior rappresentazione degli input per migliorare la regressione o classificazione
+- PCA
+  - Utilizza la matrice S, $\Sigma$ stimata sul dataset
+  - Conviene standardizzare il dataset nel pre-processing
+  - Scree graph
+  - Plottare le due principal components
+  - Minimum reconstruction error
+    - Usato per lossy compression
+  - Si può usare il kernel trick per mappare da $X$ a $\phi(X)$, ottenendo una non-linear reduction delle dimensioni originali
+- Autoencoders
+  - Unsupervised con NN
+  - Bottleneck hidden layer
+  - Si cerca di minimizzare la funzione reconstruction error $||x - \tilde{x}||_2^2 con $\tilde{x} = g_{w'}(f_w(x))$
+  - L'apprendimento viene fatto con SGD
+  - Deep non linear autoencoders con più hidden layers, progettano in piani non lineari
+  - Regularized autoencoders per favorire anche sparsity della rappresentazione oppure robustezza al rumore
+    - Sparsity significa che nella rappresentazione molti valori sono a zero
+- Word embedding trasforma dal testo a vettore di parole
+  - Word2vec cerca di mantenere la semantica e il contestoreconstruction error
+- Knowledge graph, nodi come entità e archi come relazioni
+  - Rappresentazione concisa delle relazioni tra le entità
 
 ## Apprendimento Bayesiano
 
@@ -282,6 +304,7 @@ true unknown function, avoiding to be stuck in local minima
   - Combinazione non lineare dei learners per aggiustare il loro bias
   - Richiede apprendimento dei parametri della combinazione non lineare su un diverso dataset
   - Learners complementari con diversi bias induttive
+- Gli ensemble learning sono usati in NLP con labbiale oppure in sistemi biometrics per autenticazione da diversi input
 
 ## Clustering
 
@@ -289,6 +312,7 @@ true unknown function, avoiding to be stuck in local minima
   - Similarità intra-class
   - Similarità inter-class
   - Misura di similarità, ad esempio norma euclidea
+    - Si può usare anche la distanza di Minkowski in generale o la matrice di Mahalonobis
 - Criteri esterni di valutazione
   - Classificazione esterna ground-truth
   - Purity: $|c| \over |K|$ con $c$ classe dominante e $K$ il cluster
@@ -298,6 +322,8 @@ true unknown function, avoiding to be stuck in local minima
   - k-means
     - Centroide $\mu(c) = {1 \over |C|} \sum_{x \in C} x$
     - Ad ogni esecuzione si riduce il valore della funzione obiettivo $V(D, \gamma) = \sum_{k}^K \sum_{i:\gamma(d_i) = k} ||d_i - c_k||^2$
+    - Usato per quantizzazione dei colori
+    - Possibile per dimension reduction
 - Algoritmi gerarchici
   - Bottom-up HAC (Hierarchycal Agglomerative Clustering)
       - Single-link: minor similarità di una coppia $O(N^2)$
@@ -306,3 +332,58 @@ true unknown function, avoiding to be stuck in local minima
       - Centroid: distanza dei centroidi, $O(N^2 log(N))$
   - Top-down
   - Dendrogramma
+- Scelta del numero di clusters
+  - Plottare i dati sulle componenti PCA per vedere i clusters
+  - Controllare la qualità dei clusters nel dominio, ad esempio visual check in color quantization
+
+## Recommender systems
+
+- Content-based: similarità degli elementi con quelli che l'utente ha già visto
+- Context-aware
+- Collaborative filtering: similarità delle interazioni
+  - Similarità item-item o utente-utente
+  - Feedback espliciti $r_{ui} \in [1, 5]$ ed impliciti $r_{ui} \in {0, 1}$
+  - Usano interaction matrix, o nel migliore dei casi rating matrix
+  - La task è apprendere l'utilità di ogni item per ogni utente
+  - Matrice molto grande, sparsa e con valori mancanti
+    - Density < 0.01%
+    - User activity e items popularity hanno caratteristica distribuzione con lunga coda
+- Approccio ibrido
+  - CB > CF senza history
+  - CF > CB con tante interazioni rispetto a reviews esplicite
+- Recommendation tasks
+  - Predire il rating
+  - Suggerire i top-N non visti che piacerebbero di più
+- Indici di qualità
+  - Rilevanza: piacciono
+  - Coverage: quanti di quelli che piacciono
+  - Novelty $\sum_{i,j} 1 - sim(i.j) \over m(m - 1)$
+  - Diversità: ${\sum_i log_2({1 \over popularity(i)}) \over |TP|}$ oppure $\# rilevanti\ e\ unknown \over \# rilevanti$
+  - Serendipity: sorprendere l'utente, non avrebbe trovato da solo
+- Errori di predizione nel test set $Te$
+  - MAE: ${1 \over |Te|} ||r_{ui} - \hat{r}_{ui}||^1$
+  - MSE: ${1 \over |Te|} ||r_{ui} - \hat{r}_{ui}||^2$
+  - RMSE: $\sqrt{{1 \over |Te|} ||r_{ui} - \hat{r}_{ui}||^2}$
+- top-N
+  - Recall e precision
+  - AUC
+  - AP (Average Precision)
+  - DCG (Discounted Cumulative Gain)
+  - MRR (Mean Reciprocal Rank)
+- Non-personalized RS
+  - Most popular
+  - Highest rated: con normalizzazione per favorire popolarità
+- Algoritmi di recommendation
+- k-NN: trova i k utenti più simili all'utente a e suggerisce i film non visti da a
+  - $sim(u, v) = {u \cdot v \over ||u|| \cdot ||v||}$
+  - $sim(i, j) = {i \cdot j \over ||i|| \cdot ||j||}$
+  - Pearson correlation
+- Matrix factorization: cerca di ridurre la dimensione della matrice da $n \times v$ in 2+ matrici $n \times k$ e $k \times v$ di componenti latenti $P$ e $Q$
+  - $p_u$ misura l'interesse dell'utente per i fattori
+  - $q_i$ misura quanto l'item possiede i fattori
+  - $L = ||R - P \times Q^T||^2$
+  - $\hat{r}_{ui} = p_u^T q_i$
+  - $argmin_{q,p} \sum_{(u, i) \in Tr} (\hat{r}_{ij} - p_i^T q_j)^2 + \lambda(||p_u||^2 + ||q_i||^2)$
+  - Discesa di gradient stocastica per trovare il minimo della derivata
+  - ALS (Alternate Least Square): A turno, fissando una delle matrici latenti, ad esempio P, il problema di ottimizzare l'altra, Q, diventa convesso con soluzione analitica
+    - Procedura ripetuta per diverse iterazioni
