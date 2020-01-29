@@ -134,11 +134,89 @@
   - Ottima con funzione costo di cammino monotona crescente della profondità di nodo
   - I nodi figli diretti del nodo radice sono generati $d$ volte
 - Ricerca bidirezionale
-  - Eseguire due ricerche in parallelo, una in avanti dallo stato iniziale e l'altra indietro dall'obiettivo. Si spera si incontrino a metà strada. $O(b^{d/2}) + O(b^{d/2}) \ll O(b^d)$
+  - Eseguire due ricerche BFS in parallelo, una in avanti dallo stato iniziale e l'altra indietro dall'obiettivo. Si spera si incontrino a metà strada. $O(b^{d/2}) + O(b^{d/2}) \ll O(b^d)$
   - Si usa un test di intersezione delle due frontiere invece che test obiettivo. Il controllo può essere in tempo costante con una tabella hash.
-  - Non è ottimale
+  - Ottimale assicurandosi che non esistano altre scorciatoie che colmino il gap
   - Complessità temporale e spaziale $O(b^{d/2})$
   - Infatti almeno una delle due frontiere deve essere mantenuta in memoria per il controllo di intersezione
   - Difficile da utilizzare con obiettivi astratti come 8 regine. Se invece ci sono più stati obiettivi espliciti, si può costruire uno stato obiettivo fittizio i cui predecessori siano tutti gli stati obiettivo.
 
 
+| criterio  | in ampiezza  | a costo uniforme  | in profondità  | a profondità limitata  | ad approfondimento iterativo  | bidirezionabile  | 
+|---|---|---|---|---|---|---|---|---|:-:|
+| completezza  | Sì  | Sì | No  | No | Sì  | Sì | 
+| ottimalità  | Sì  | Sì | No | No | Sì | Sì | 
+| tempo  |  $O(b^d)$ | $O(b^{1+\lfloor C^* / \epsilon\rfloor})$ | $O(b^m)$ | $O(b^l)$  | $O(b^d)$ | $O(b^{d/2})$ |
+| spazio  |  $O(b^d)$ | $O(b^{1+\lfloor C^* / \epsilon\rfloor})$ | $O(bm)$ | $O(bl)$ | $O(bd)$  | $O(b^{d/2})$ | 
+
+## Ricerca informata
+
+- Il nodo da espandere viene scelto in base ad una funzione di valutazione $f(n)$, come stima di costo
+- Identico alla ricerca a costo uniforme sostituendo $f$ con $g$ per ordinare la coda di priorità
+- $f$ include in genere una **funzione euristica** $h(n)$, come costo stimato del cammino più conveniente dal nodo $n$ ad uno stato obiettivo
+  - Si basa solo sullo stato del nodo
+- Ricerca best-first greedy
+  - Espande il nodo più vicino all'obiettivo: $f(n) = h(n)$
+  - Non ottimale
+  - Non completa: può finire in vicoli ciechi o cicli infiniti, salvo controllo di ripetizione di stati.
+  - Complessità temporale e spaziale $O(b^m)$, sebbene con una buona euristica la complessità possa essere ridotta notevolmente.
+- Ricerca A*
+  - $f(n) = g(n) + h(n)$, costo stimato della soluzione più conveniente che passa per $n
+  - Completa ed ottima se $h(n)$ è consistente
+  - Ammissibilità: $h(n)$ non sbaglia mai per eccesso la stima del costo per arrivare all'obiettivo, quindi è una stima _ottimista_ pper natura
+  - **Consistenza**/monotonicità:
+    - $h(n) \le c(n, a, n') + h(n')$, $n'$ successore di $n$ tramite azione $a$ (disuguaglianza triangolare)
+    - condizione più forte dell'ammissibilità.
+  - Ottimalità per ricerca ad albero: se un nodo obiettivo non ottimale $G_2$ viene generato e si ha $n$ nodo sul cammino minimo verso il nodo obiettivo ottimale $G$, A* sceglierà $n$: $f(G_2) = g(G_2) \ge f(G) \ge f(n)$
+    - Non vale per ricerca a grafo, rischia di scartare un nodo già visitato che si trova però sul cammino ottimo
+  - Ottimalità per ricerca a grafo:
+    1. $f(n)$ è crescente lungo ogni cammino: $f(n') = g(n') + h(n') = g(n) + c(n, a, n') + h(n') \ge g(n) + h(n) = f(n)$
+    2. Il cammino trovato per il nodo $n$ selezionato per l'espansione è ottimo.
+       - Altrimenti esisterebbe un altro $n'$ lungo il cammino verso $n$, che avrebbe però avuto un $f(n') \le f(n)$ e quindi sarebbe stato selezionato prima
+    - Il primo nodo obiettivo selezionato deve quindi essere ottimo, perché ho trovato il cammino minimo verso quel nodo e tutti i nodi obiettivo successivi avranno un costo $\ge$
+  - Complessità temporale e spaziale $O(b^{\epsilon d})$
+  - A* espande gradualmente il contour in ordine di $f$: contiene tutti i nodi che hanno $f_i \le f_{i+1}$
+    - Con ricerca a costo uniforme $h(n) = 0$ le bande sono circolare, con l'euristica $h(n)$ sono allungate verso lo stato obiettivo e si stringono intorno al cammino ottimo.
+  - A* espande tutti i nodi con $f(n) \lt C^*$ ed alcuni con $f(n) = C^*$ con $C^*$ costo del cammino ottimale
+  - La completezza richiede che esista un numero finito di nodi $f(n) \le C^*$, vera se $f(n) \ge \epsilon$ e $b$ è finito
+  - A* non espande alcun nodo $f(n) \gt C^*$, i relativi alberi sono _pruned_
+  - A* è ottimamente efficiente, non è possibile espandere meno nodi
+  - La complessità temporale è $O(b^{\epsilon d})$ ove $\epsilon = (h^* - h) / h^*$
+  - La complessità spaziale è $O(b^{\epsilon d})$, non applicabile per problemi di grandi dimensioni
+- Iterative Deepening A* (IDA*)
+  - Invece di tagliare a profondità $d$, si taglia a costo $f$, ove il limite è il $f$-costo minimo tra quelli di tutti i nodi che hanno superato il limite nell'iterazione precedente
+- Recursive Best-First Search (RBFS):
+  - come ricerca ricorsiva in profondità, con spazio lineare
+  - Tiene traccia di $f\_limite$, come $f$-costo del miglior cammino alternativo di uno degli antenati del nodo corrente
+  - Quando il nodo corrente supera il limite, torna indietro a quello alternativo e sostituisce l'$f$-valore di ogni nodo lungo il ritorno con un valore di backup, il migliore dei suoi nodi figli.
+  - Eccessiva rigenerazione dei nodi: in uno spazio di ricerca grande e vicini all'obiettivo, il cammino alternativo tende a diventare quello migliore in assoluto, ma poi la ricerca deve tornare di nuovo indietro sul cammino ottimale per rieseguirlo. Ogni "ripensamento" corrisponde ad un'iterazione di IDA* e ne può ruchiedere diversi per estendere il cammino migliore di un nodo.
+  - Ottima se $h(n)$ è ammissibile
+  - Complessità spaziale $O(bd)$, temporale difficile da definire ma esponenziale nel caso pessimo
+- IDA* e RBFS usano troppa poca memoria, dimenticando ciò che hanno fatto riespandono nuovamente gli stessi stati più volte.
+- Memory-bounded A* (MA*) o Simplified MA* (SMA*)
+  - Espande la foglia migliore finché la memoria non è piena. A quel punto scarta la foglia peggiore, con $f$-valore più alto, memorizzando nel nodo padre il valore del nodo scartato.
+  - Rigenera il sottoalbero dimenticato solo quando _tutti gli altri cammini_ sono peggiori.
+  - Se $f$-valore è uguale, espande la foglia più recente e rimuove quella più vecchia. Se c'è una sola foglia la rimuove, perché in ogni caso non ci sarebbe abbastanza memoria.
+  - Completo se il cammino fino a $d$ è raggiungibile con la memoria disponibile
+  - Ottima se c'è la soluzione tra quelle raggiungibili, altrimenti restituisce la migliore tra quelle disponibili
+  - In problemi molto difficili, SMA* passa continuamente da un cammino candidato all'altro e potrà tenere in memoria solo un piccolo sottoinsieme. Dovrà rigenerare ripetutamente i nodi.
+    - Le limitazioni di memoria possono rendere temporalmente intrattibile un problema altrimenti risolvibile in A*
+- Euristiche
+  - 8-puzzle
+    - $h_1(n)$ = numero di tasselli fuori posto
+    - $h_2(n)$ = somma della distanza Manhattan, distanza in orizzontale e verticale per ogni tassello dalla posizione obiettivo
+  - TSP: MST come euristica, limite inferiore al percorso aperto più breve
+  - La qualità dell'euristica si misure con $b^*$, fattore di branching effettivo indicato come $N+1 = 1 + b^* + (b^*)^2 + ... + (b^*)^d$
+  - Il valore ideale di $b$ è vicino a 1, in modo che i tempi siano ragionevoli anche per problemi di dimensioni grandi. Già 2 significa esplorare tutti i nodi di un albero binario.
+  - Se un'euristica $h_2$ domina su $h_1$ si traduce in maggior efficienza perché ci saranno meno nodi espansi: $f(n) < C^* \Leftrightarrow h(n) < C^* - g(n)$
+  - Il costo di una soluzione ottima di un problema rilassato è un'euristica ammissibile per il problema originale
+    - Un problema rilassato ha meno vincoli sulle azioni possibili
+    - Il grafico del problema rilassato corrisponde ad un _supergrafo_ dell'originale, con più archi quindi potenziali scorciatoie verso la soluzione ottima
+    - Se invece il problema rilassato è ancora difficile da risolvere, i valori dell'euristica saranno difficili da ottenere 
+      - Altrimenti potremmo sempre usare la ricerca in ampiezza come euristica "perfetta"
+  - Si può derivare euristiche ammissibili dal costo della soluzione di un sottoproblema (e.g. 4 tasselli)
+    - Database di pattern: memorizzare i costi delle soluzioni dei sottoproblemi (programmazione dinamica)
+  - Algoritmi di miglioramento iterativo
+    - Il cammino non è rilevante, conta trovare una configurazione ottima nello spazio degli stati dato dall'insieme delle configurazioni "complete"
+    - Si mantiene un singolo stato corrente e si tenta di migliorarlo iterativamente
+    - Complessità spaziale costante, quindi adatto per la ricerca online
