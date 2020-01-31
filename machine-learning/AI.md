@@ -413,10 +413,10 @@
 - UN CSP è composto da:
   - $X$ insieme di variabili $\{X_1, ..., X_n\}$
   - $D$ insieme di domini delle variabili $\{D_1, ..., D_n\}$ ove ogni dominio contiene i valori ammessi $\{v_1, ..., v_n\}$
-    - Le variabili possono avere domini discreti e finiti o infiniti, oppure domini continui (programmazione lineare)
+    - Le variabili possono avere domini discreti e finiti o infiniti, oppure domini continui (programmazione lineare). Per domini discreti e infiniti serve linguaggio di vincoli $J_1 + d \le J_2$
   - $C$ è un insieme di vincolo, ogni vincolo è costituito da $\lang ambito, relazione \rang$, ambito è una tupla di variabili che partecipano al vincolo e relazione definisce i valori che possono assumere.
   - I vincoli possono essere lineari (risolvibili) o non lineari (non risolvibili da alcun algoritmo)
-  - I vincoli possono essere unari, binari o globali a seconda del numero di variabili interessate
+  - I vincoli possono essere unari, binari, di ordine superiore (Sudoku) o globali a seconda del numero di variabili interessate
   - Ogni relazione supporta due operazioni:
     1. Appartenenza alla relazione
     2. Enumerazione dei membri stessi
@@ -456,7 +456,7 @@
   - Sudoku: CSP con 81 variabili, 27 vincoli $Tuttediverse$
     - Per gli schemi più facile si può applicare algoritmo AC-3
     - Naked triples: trovare tre caselle in un'unità riga, colonna o riquadro, che abbiano lo stesso dominio. Possiamo rimuovere allora il dominio dalle altre caselle
-- Ricerca con backtracking
+- Ricerca con backtracking: essenzialmente ricerca depth-first per CSP con assegnamento di singole variabili
   - Applicare ricerca a profondità limitata avrebbe complessità temporale $O(n!d^n)$
   - I CSP sono **commutativi**: qualsiasi ordine di assegnamento alle variabili produce lo stesso assegnamento parziale indipendentemente
     - Basta considerare una sola variabile in ogni livello dell'albero di ricerca
@@ -482,7 +482,7 @@
       - Si può usare in combinazione con l'euristica MRV come modo efficiente per calcolarne le informazioni 
       - Problema: non guarda avanti per rendere arco-consistenti le variabili non collegate a $X$
       - MAC (Maintaining Arc Consistency): richiama AC-3 per solo gli archi $(X_i, X_j)$ per le $X_j$ non assegnate adiacenti a $X_i$ e **si propaga in avanti** ricorsivamente quando si apportano modifiche ai deomini delle variabili
-  - **Backjumping**: nacktracking ad una delle variabili che ha causato il fallimento
+  - **Backjumping**: backtracking ad una delle variabili che ha causato il fallimento
     - Invece di fare backtracking cronologico al punto decisionale più recente
     - L'insieme dei conflitti per una variabile $X$ è l'insieme delle variabili precedentemente assegnate che sono collegate a $X$ da vincoli.
     - Il forward checking può fornire l'insieme dei conflitti senza lavoro aggiuntivo
@@ -547,3 +547,108 @@
         - Trovare la scomposizione larghezza d'albero minima è NP-hard, ma ci sono metodi euristici
   - Struttura dei valori: per ogni soluzione consistente esiste un insieme $n!$ di soluzioni permutando i nomi dei colori (**simmetria di valore**)
   - Si può ridurre quindi di $n!$ lo spazio di ricerca introducendo un vincolo di rottura della simmestra, ad esempio un ponendo un vincolo di ordinamento dei colori
+
+## Agenti logici
+
+- Base di conoscenza (KB knowledge base): insieme di formule, espresse mediante un linguaggio di rappresentazione della conoscenza
+  - Ogni formula rappresenta un'asserzione sul mondo
+  - Deve prevedere meccanismi per aggiungere nuove formule e per interrogazioni tramite $TELL$ e $ASK$
+    - Richiedono **inferenza**: derivazione di nuove formule a partire da quelle conosciute
+    - La risposta deve essere una conseguenza di quello che è stato detto $TELL$ in precedenza
+  - Può avere una base di conoscenza iniziale (_background knowledge_)
+- Un agente basato sulla conoscenza fa tre cose:
+  1. Comunica le percezioni alla base di conoscenza attraverso $TELL$
+  2. Chiede $ASK$ quale azione eseguire
+  3. Registra l'azione nella base di conoscenza con $TELL$ prima di eseguirla
+- Un agente basato sulla conoscenza può essere costruito semplicemente dicendogli $TELL$ ciò che deve sapere. QUesto è un approccio dichiarativo, invece di codificare direttamente i comportamenti desiderati con un approccio procedurale.
+- PEAS del mondo di Wumpus
+  - Misura di performance: +1000 se si esce dalla caverna, -1000 se si muore, -1 per ogni azione, -10 uso freccia
+  - Ambiente: griglia 4x4, inizio in [1, 1]. Tutti i riquadri hanno probabilità 0.2 di contenere un pozzo
+    - Discreto, statico, monoagente, sequenziale, parzialmente osservabile
+  - Attuatori: Avanti, GiraSinistra, GiraDestra, Afferra, Scocca
+  - Sensori: Fetore, Brezza, Scintillio, Urto, Ululato
+  - La principale difficoltà è l'ignoranza della configurazione dell'ambiente, bisogna usare un ragionamento logico
+- Modelli
+  - $m$ è un modello di una sentenza $\alpha$ se $\alpha$ è vera in $m$
+  - $M(\alpha)$ è l'insieme di tutti i modelli di $\alpha$
+  - $KB \models M(KB) \subseteq M(\alpha)$
+  - Il model checking è un algoritmo di inferenza logica che enumera tutti i possibili modelli per verificare che $KB \models \alpha$ 
+    - I.e. $KB$ = "nulla in [1, 1] e brezza in [2, 1]" e $\alpha$="Non c'è nulla in [1, 2]"
+    - Completo se lo spazio dei modelli di $KB$ è finito
+    - Corretto, poiché applica solo la definizione di conseguenza logica
+    - Complessità temporale $O(2^n)$ e spaziale $O(n)$ (l'enumerazione viene fatta in profondità)
+      - La conseguenza logica proposizionale è co.NP-completa, quindi nel caso peggiore ogni algoritmo di inferenza è esponenziale
+- Proprietà algoritmi di inferenza
+  - Correttezza: preserva la verità
+  - Completezza: può derivare ogni formula che è conseguenza logica
+- Logica proposizionale
+  - La sintassi definisce le formule accettabili
+  - Formule atomiche: consistono di un singolo simbolo. Sono vere o false.
+  - Formule complesse formate da formule più semplici usando connettivi logici: not, and,, or, implicazione, sse.
+  - Due formule sono logicamente equivalenti $\alpha \equiv \beta$ se sono vere nello stesso insieme di modelli
+  - Una formula è valida se è vera in tutti i modelli: tautologia, cioè equivalente a True
+  - > Date due formule qualsiasi $\alpha$ e $\beta$, $\alpha \models \beta$ sse la formula ($\alpha \Rarr \beta$) è valida, cioè equivalente a True
+  - Una formula è soddisfacibile se è vera in qualche modello. Determinare la soddisfacibilità delle formule della logica proposizionale, problema SAT, è NP-completo.
+  - > Dimostrazione per refutazione o per contraddizione: $\alpha \models \beta$ sse la formula ($\alpha \land \lnot\beta$) è insoddisfacibile
+  - Monotonicità: conoscenze aggiuntive possono solo aiutare a trorre nuove conclusioni, mai invalidare conclusioni già dedotte. Se $KB \models \alpha$ allora $KB \land \beta \models \alpha$
+    - Oppure anche: le regole di inferenza possono essere applicate non appena si trovano nella base di conoscenze le premesse necessarie, indipendentemente dal resto delle formule nella KB
+- Regole di inferenza: applicabile per derivare una dimostrazione, conclusioni che portano all'obiettivo desiderato
+  - **Modus Ponens**: $\alpha \Rarr \beta, \alpha \over \beta$
+- Dimostrazione di teoremi: applicando regole di inferenza direttamente alle formule della KB per costruire una dimostrazione della formula desiderata senza consultare i modelli
+  - Possiamo applicare uno degli algoritmi di ricerca per trovare una sequenza di passi che costituisca una dimostrazione
+    - Stato iniziale: KB
+    - Azioni: insieme delle regole di inferenza applicate a tutte le formule che corrispondono alla metà superiore della regola di inferenza
+    - Risultato: aggiunta della formula nella metà inferiore della regola di inferenza
+    - Obiettivo: Uno stato che contiene la formula che vogliamo dimostrare
+  - Trovare una dimostrazione può essere molto efficiente perché si possono ignorare le proposizioni irrilevanti
+  - Singola regola di inferenza, la **risoluzione**: unita a qualsiasi algoritmo di ricerca completo dà lungo ad un algoritmo di inferenza completo
+  
+  $$
+  l_1 \lor ... \lor l_k,\ m_1 \lor ... \lor m_n \over l_1 \lor ... \lor l_{i-1} \lor l_{i+1} \lor ... \lor l_k \lor m_1 \lor ... \lor m_{i-1} \lor m_{i+1} \lor ... \lor m_n
+  $$
+
+  1. Prende due clausole, disgiunzioni di letterali, con $l_i$ e $m_i$ letterali complementari e ne produce una nuova che contiene tutti i letterali delle due clausole tranne i due complementari
+  2. La clausola risultante contiene solo una copia di ogni letterale (**fattorizzazione**)
+  - Ogni formula della logica proposizionale è equivalente ad una congiunzione di clausole: **conjunctive normal form (CNF)**
+  - Le procedure di inferenza basate sulla risoluzione sfruttano il principio di dimostrazione per assurdo. Algoritmo $\text{CP-RISOLUZIONE}$:
+    1. Si converte $KB \land \lnot \alpha$ in CNF
+    2. Viene applicata la risoluzione ad ogni coppia di clausole
+       1. Ogni coppia che contiene letterali complementari è risolta e la nuova clausola viene aggiunta all'insieme se non presente
+    3. Il processo continua finché:
+       1. Non è più possibile aggiungere nuove clausole. $KB \not \models \alpha$
+       2. La risoluzione tra due clausola dà la clausola vuota. $KB \models \lnot \alpha$ è False, quindi $KB \models \alpha$
+        - La clausola vuota è equivalente a False perché è una disgiunzione senza alcun disgiunto ed una disgiunzione è vera solo se è vero almeno uno dei disgiunti
+  - L'algoritmo è completo
+    - **Chiusura della risoluzione** $RC(S)$ di un insieme di clausole $S$: è l'insieme di tutte le clausole derivabili dall'applicazione ripetuta della regola di risoluzione alle clausole in $S$ o a quelle da loro derivate
+      - $RC(S)$ è finito in quanto è finito il numero di clausole distinte costruite con i simboli di $S$ grazie alla fattorizzazione $\implies$ $\text{CP-RISOLUZIONE}$ termina sempre l'esecuzione
+    - **Teorema di risoluzione ground**: se un insieme di clausole è insoddisfacibile, la sua chiusura della risoluzione contiene la clausola vuota.
+      1. Dimostrazione per contrapposizione: se la chiusura $RC(S)$ non contiene la clausola vuota, $S$ è soddisfacibile
+      2. Possiamo costruire un modello di S assegnando adeguati valori di verità a $P_1, ...,P_k$
+      3. L'assegnamento dato è un modello di $S$. Dimostriamo ipotizzando l'opposto
+      4. In qualche fase $i$ c'è stata un'assegnazione che rende falsa una clausola $C$
+         - $i$ non può essere 1 altrimenti $RC(S)$ conterrebbe una clausola vuota
+         - Devono esserci due letterali complementari $P_i$ e $\lnot P_i$
+         - Dato che $RC(S)$ è chiuso rispetto alla risoluzione, contiene anche il risolvente, che però avrà già tutti i letterali falsi per $P_1, ..., P_{i-1}$
+         - Viola l'ipotesi che la prima clausola falsa appaia nella fase $i$
+- Clausole di Horn e clausole definite
+  - Se le formule della KB hanno certe restrizioni, si possono applicare algoritmi di inferenza più ristretti ed efficienti della risoluzione
+  - **Clausola definita**: disgiunzione di letterali di cui _esattamente uno_ è positivo. $\lnot L_{1, 1} \lor \lnot Brezza \lor B_{1,1}$
+  - **Clausola di Horn**: disgiunzione di letterali in cui _al massimo uno_ dei letterali è positivo
+    - Le clausole definite sono un caso particolare
+    - Le clausole senza letterale positivo si chiamano _clausole obiettivo_
+    - Sono interessanti perché:
+      1. Possono essere riscritte come implicazione $L_{1, 1} \land Brezza \Rarr B_{1,1}$. La premessa si chiama corpo, la conclusione testa. I letterali positivi nel corpo sono fatti.
+      2. L'inferenza sulle clausole di Horn può essere fatta con concatenazione in avanti e all'indietro
+      3. Si può determinare la conseguenza logica in tempo lineare rispetto alla dimensione della KB
+  - Concatenazione in avanti: determina se un singolo simbolo $q$ è conseguenza logica dei _fatti_ nella KB
+    1. Se tutte le premesse di un'implicazione sono verificate, la conclusione è aggiunta ai fatti noti
+    2. Continua finché non viene aggiunta la query $q$ oppure non sono possibili ulteriori inferenze
+    - Corretto: applica il Modus Ponens
+    - Completo: ogni formula atomica conseguenza logica sarà derivata
+    - Ragionamento guidato dai dati: l'attenzione parte dai fatti conosciuti
+  - Concatenazione all'indietro: parte dalla query e lavora a ritroso
+    1. Trova tutte le implicazioni nella KB che hanno $q$ come conclusione
+    2. Se tutte le premesse di una delle implicazioni possono essere dimostrate vere, allora $q$ è vera
+    3. Si ripete il procedimento quindi per le premesse, viste come query, fino a raggiungere un insieme di fatti noti che formano la base della dimostrazione
+    - Ragionamento basato sugli obiettivi
+    - Complessità spesso meno che lineare sulla dimensione della KB, in quanto coinvolge solo i fatti rilevanti
