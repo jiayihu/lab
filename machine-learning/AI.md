@@ -214,9 +214,336 @@
     - Il grafico del problema rilassato corrisponde ad un _supergrafo_ dell'originale, con più archi quindi potenziali scorciatoie verso la soluzione ottima
     - Se invece il problema rilassato è ancora difficile da risolvere, i valori dell'euristica saranno difficili da ottenere 
       - Altrimenti potremmo sempre usare la ricerca in ampiezza come euristica "perfetta"
-  - Si può derivare euristiche ammissibili dal costo della soluzione di un sottoproblema (e.g. 4 tasselli)
+  - Si può derivare euristiche ammissibili dal costo della soluzione di un sottoproblema (i.e. 4 tasselli)
     - Database di pattern: memorizzare i costi delle soluzioni dei sottoproblemi (programmazione dinamica)
-  - Algoritmi di miglioramento iterativo
-    - Il cammino non è rilevante, conta trovare una configurazione ottima nello spazio degli stati dato dall'insieme delle configurazioni "complete"
-    - Si mantiene un singolo stato corrente e si tenta di migliorarlo iterativamente
-    - Complessità spaziale costante, quindi adatto per la ricerca online
+
+## Algoritmi di miglioramento iterativo / Ricerca locale
+
+- Il cammino non è rilevante, conta trovare una configurazione ottima nello spazio degli stati dato dall'insieme delle configurazioni a stato completo (es 8 regine)
+- > Si mantiene un singolo stato corrente e si tenta di migliorarlo iterativamente
+- Complessità spaziale costante, quindi adatto per la ricerca online, e possono trovare soluzioni ragionevoli in spazi degli stati grandi o infiniti
+- Il panorama dello spazio degli stati mostra una posizione, definita dallo stato, e un'altezza che corrisponde al valore della funzione costo o di obiettivo. Rispettivamente si punta a trovare il minimo e massimo globali.
+- Completo se trova sempre un obiettivo, ottimale se trova il minimo/massimo globale
+- **Hill climbing**
+  - Ciclo che si muove continuamente verso l'alto, nella direzione dei valori crscenti e termina quando raggiunge un picco che non ha vicino di valore più alto
+  - I.e. 8 regine: stati con 8 regine e i possibili stati muovono una singola regina. $h$ è il numero di coppie di regine che si stanno attaccando a vicenda
+    - $p = 14\%$ delle volte soluzione ottima
+  - Procede molto rapidamente verso una soluzione, ma spesso rimane bloccato:
+    - **massimo locali**: piccolo più alto degli stati vicini, ma inferiore al massimo globale
+    - **creste**: sequenza di massimo locali molto difficili da esplorare
+    - **plateau**: area piatta nello spazio degli stati, può essere un massimo locale piatto o una _spalla_ da cui si potrà salire ulteriormente
+      - Utilizzo di una _mossa laterale_ per spostarsi nel plateau. Bisogna porre limite massimo di mosse consecutive per evitare ciclo infinito.
+        - - $p = 94\%$ delle volte soluzione ottima
+  - Hill climbing stocastico: sceglie a caso tra le mosse che vanno verso l'alto
+  - Hill climbing con riavvio casuale: serie di ricerche hill climbing con stati inziiali generati casualmente
+    - Se la probabilità di ricerca è $p$, sono richiesti $1/p$ riavii in media
+
+      $
+      x_i = \begin{cases}
+      0 & \text{se la i-esima ricerca non trova la soluzione ottima} \\
+      1 & \text{se la i-esima ricerca non trova la soluzione ottima}
+       \end{cases}
+      $
+
+      $\forall i, P(x_i = 1) = p$ e $P(x_i = 0) = 1 - p$
+
+      La probabilità che la k-esima ricerca sia la prima con soluzione ottima è quindi: $P(\sum_j^{k-1} x_j = 0 \land (x_k = 1)) = (1 - p)^{k - 1}p$
+
+      Il valore atteso quindi è: $\sum_{k=1}^\infty k(1-p)^{k - 1}p = {1 \over p}$
+    - 8 regine:
+      - Con $p = .14$ sono richieste in media $1 / .14 = 7$ ricerche
+      - Con mosse laterali sono richieste in media $1 / .94 = 1.06$ ricerca per la soluzione ottima
+  - La bontà della ricerca dipende dal panorama dello spazio degli stati, soprattutto dalla presenza di massimi locali o plateau
+- Simulated annealing
+  - Combinazione del hill climbing con esplorazione casuale partendo da mosse "cattive"
+  - Prende il nome dalla tecnica di raffreddamento del metallo, che viene portato ad alta temperatura e poi raffreddato lentamento ottenendo lo stato con minor configurazione energetica
+  - Si usa discesa di gradiente, quindi minimizzazione di costo
+  - Scelta casuale della mossa che migliora, con probabilità pesata in base al grado di miglioramento $\Delta E$ e alla temperatura $T$. Quest'ultima decresce gradualmente, quindi all'inizio ci sono maggiori probabilità di scegliere mosse "cattive"
+  - Se la temperatura descresce abbastanza lentamente, trova ottimo globale con probabilità tendente a 1
+  - $p(x) = e^{E(x) \over kT}$, $k$ è la costante che regola la temperatura
+  - Usato per configurazione VLSI
+
+## Ricerca online
+
+- Ricerca offline: la soluzione completa viene calcolata e poi eseguita
+- Ricerca online: l'angete opera alternando computazione ed azione, prima esegue un'azione, poi osserva l'ambiente e determina l'azione succesiva
+  - Si presta a domini dinamici e in ambienti ignoti, stati ed effetti delle azioni sono sconosciuti all'agente
+  - Adatta a problemi di esplorazione
+- Problema di ricerca online
+  - L'agente conosco solo $AZIONI(s)$, $c(s, a, s')$ e $TEST-OBIETTIVO(s)$
+  - > L'agente non può determinare $RISULTATO(s, a)$ se non trovandososi effettivamente in $s$ ed eseguendo $a$
+  - La funzione di costo $c(s, a, s')$ non può essere usata finché l'agente non appura che $s'$ è il risultato dell'azione
+  - rapporto di competitività rispetto ad un algoritmo che conosco lo spazio di ricerca
+    - Può essere infinito nel caso di azioni irreversibili e **vicoli ciechi**
+    - Può essere non limitato anche nel caso di spazio degli stati _esplorabile in modo sicuro_ e con azioni reversibili, immaginando un avversario che blocca il cammino migliore con un lungo muro sottile
+- $AGENTE-ONLINE-RIP$ (ricerca in profondità)
+  - Un agente online può espandere solo nodi fisicamente successori di quello che sta occupando, quindi per evitare di spostarsi continuamente è meglio espande secondo un ordine locale: ricerca in profondità.
+  - L'agente mantiene in memoria gli stati risultanti delle azioni $RISULTATO(s, a)$ e prova ogni azione non ancora esplorata
+  - Se tutte le azioni sono state provate in uno stato, torna indietro con backtracking (richiede quindi azioni reversibili)
+  - Nel caso peggiore attraverso lo spazio degli stati due volte
+    - Ottimo per l'esplorazione
+    - Non ottimo per il raggiungimento del goal esplorare lunghe distanze quando si è vicini all'obiettivo
+    - Variante ad approfondimento iterativo
+- Ricerca hill climbing
+  - È già una ricerca online in quanto mantiene solo lo stato corrente
+  - Non è utile perché si può bloccare a massimo locale e non si può usare riavvio casuale perché l'agente non può trasferirsi in un altro stato magicamente
+  - **Random walk**: sceglie a caso una delle possibili azioni, prediligendo quelle non ancora provate
+    - Converge _prima o poi_ all'obiettivo ma può essere molto lento, soprattutto se ci sono alte probabilità di tornare indietro
+  - Trick LRTA*: arricchire con memoria, memorizzando la miglior stima corrente $H(s)$ ad ogni stato $s$, che inizialmente è l'euristica $h(s)$. Man mano con l'esperienza nello spazio degli stati, il valore viene aggiornato per "sfuggire" ad esempio da minimi locali "appiattendoli"
+    - Mantiene memoria dei risultati delle azioni come $AGENTE-ONLINE-RIP$
+    - Aggiorna la stima del costo $H(s)$ dello stato appena lasciato, $H(s) = c(s, a, s') + H(s')$
+    - Ottimismo in condizioni di incertezza: si privilegiano le azioni non ancora provate in uno stato, poiché si pensa coducano all'obiettivo con il minimo costo possibile $h(s)$.
+  - Completo in spazi finiti, non completo in spazi degli stati infiniti poiché può lasciarsi sviare senza possibilità di ritorno
+  - Complessità temporale $O(n^2)$ con $n$ stati, nel caso peggiore
+
+## Ricerca con avversari
+
+- Ambienti multiagente competitivi, bisogna considerare le azioni degli altri e gli obiettivi degli agenti sono in conflitto
+- **Giochi a somma zero con informazione perfetta**: ambienti deterministici e completamente osservabili, in cui due agenti agiscono alternandosi e i cui valori di unità, a fine partita, sono uguali ma di segno opposto (a somma zero). 
+- I giochi sono facili da rappresentare in astratto ma difficili da risolvere
+  - Scacchi hanno fattore di ramificazione 35
+  - Richiedono abilità di prendere una decisione quando calcolare quella ottima non è realizzabile per inefficienza
+  - L'obiettivo è sfruttare al meglio il tempo disponibile
+- Un gioco è composto dalle seguenti componenti:
+  - $S_0$ stato iniziale
+  - $GIOCATORE(s)$: a chi tocca tra $MIN$ e $MAX$
+  - $AZIONI(s)$
+  - $RISULTATO(s, a)$
+  - $TEST-TERMINAZIONE(s)$
+  - $UTILITÀ(s, p)$ o funzione di payoff: attribuisce il valore numerico finale nello stato $s$ al giocatore $p$. Un gioco a somma zero ha payoff totale 0 ed uguale per tutte le istanze del gioco
+- Stato iniziale, le azioni ed i risultati compongono **l'albero di gioco**
+  - Costrutto teorico che non possiamo realizzare nel mondo fisico perché troppo grande con giochi non banali
+  - Si usa **albero di ricerca**, porzione dell'albero di gioco esaminato per consentire di determinare quale mossa fare
+- A differenza della ricerca normale, in un gioco con avversari $MIN$ può dire la sue: $MAX$ deve elaborare una strategia che valuti la propria mossa, gli stati possibili dalle mosse di $MIN$, le proprie mosse risultati e così via
+- La strategia ottima esamina il **valore minimax** di ogni nodo: miglior utilità per $MAX$ contro un avversario che gioca in modo ottimo
+  - $
+    \text{MINIMAX}(n) = \begin{cases}
+    \text{UTILITÀ}(s, MAX) & \text{se TEST-TERMINALE}(s) \\
+    max_{a \in AZIONI} \text{VALORE-MINIMAX-RISULTATO}(s, a) & \text{se GIOCATORE(s) = MAX} \\
+    min_{a \in AZIONI} \text{VALORE-MINIMAX-RISULTATO}(s, a) & \text{se GIOCATORE(s) = MIN} \\
+    \end{cases}
+    $
+- Algoritmo minimax
+  - Calcola ricorsivamente il valore minimax di ogni stato successore fino alle foglie, di cui ottiene $\text{UTILITÀ}$ poiché terminali
+  - I valori minimax sono portati su nella fase di ritorno
+  - Esegue esplorazione completa in profondità dell'albero di gioco
+  - Complessità temporale $O(b^m)$ e spaziale $O(bm)$
+  - Completo con alberi di gioco finiti
+  - Ottimo contro avversari ottimali, altrimenti ancora meglio perché il minimax è il massimo del minimo vantaggio ottenibile
+  - Multiplayer A, B, C: ogni nodo ha un vettore $\lang v_A, v_B, v_C\rang$
+    - Stati terminali: il vettore è riempito con $\text{UTILITÀ}$
+    - Stati intermedi: il vettore di utilità passato in alto più favore a chi sta scegliendo la mossa
+    - Alleanze: conseguenza naturale delle strategie ottime di ogni giocatore
+- **Potatura alfa-beta**: pota i rami che non possono influenzare la decisione finale
+  - Ogni nodo ha un intervallo dei possibili valori minimax dei successori
+    - $\alpha$ il valore migliore, più alto, per $MAX$
+    - $\beta$ il valore migliore, più basso, per $MIN+$
+  - $\text{MINIMAX(radice)} = max(min(3, 12, 8), min(2, x, y), min(14, 5, 2)) = 3$ a prescindere da $x$ e $y$ che quindi possono essere potati
+  - Possiamo potare un nodo appena abbiamo raccolto abbastanza informazioni per concludere che esiste una scelta sicuramente migliore in un nodo precedente
+  - L'efficacia della potatura dipende fortemente dall'ordine con cui si esaminano gli stati
+    - Per l'ordine perfetto serve poter:
+      - conoscere il valore esatto di uno stato:
+        - conoscere il valore esatto di utilità per uno figlio
+        - conoscere un bound sulla utilità di tutti gli altri figli
+        - $E(d + 1) = E(d) + (b - 1)B(d)$
+      - conoscere un bound sulla utilità di uno stato:
+        - conoscere il valore esatto di utilità per uno stato figlio
+        - $B(d + 1) = E(d)$
+      - $E(d)$ / $B(d)$ numero minimo di stati da considerare per conoscere il (valore esatto) / bound di utilità di uno stato a profondità d dagli stati terminali
+      - $E(m) \le (\sqrt{2b})^m = (\sqrt{2})^mb^{m/2}$ upper-bound
+    - Complessità temporale $O(b^{m/2})$ se sono esaminati prima i successori più promettenti tramite ordinamento perfetto
+    - Il fattore di ramificazione effettivo diventa $b^* = \sqrt{b}$
+      - Scacchi con ordinamento esemplice che cerca prima di catturare i pezzi, poi di minacciarti, poi mosse in avanti e infine quelle indietro: $\sqrt{35}=6$
+  - Complessità $O(b^{3m/4})$ con ordine casuale
+  - Si può usare ricerca ad approfondimento iterativo per avere informazioni sull'ordinamento delle mosse
+  - Utile usare **tabella delle trasposizioni**: hashmap che memorizza le valutazioni delle trasposizioni, permutazioni diverse della stessa sequenza di mosse che portano alla stessa configurazione
+    - Negli scacchi raddoppia la profondità raggiungibile
+- **Funzioni di valutazione**
+  - Limiti alle risorse di tempo per calcolare una mossa
+  - Tagliare la ricerca minimax o alfa-beta prima che raggiunga una foglia, usando una funzione di valutazione euristica $\text{EVAL}$ che stima l'utilità della posizione raggiunta
+  - $\text{TEST-TAGLIO}$ decide quando applicare $\text{EVAL}$
+  - $\text{EVAL}$ fornisce una stima del guadagno atteso in uno stato, analogo all'euristica distanza dall'obiettivo
+    - È quello che fanno i giocatori di scacchi
+    - Il comportamento corretto è preservato per trasformazioni monotone: conta mantenere l'ordine.
+    1. Deve ordinare gli stati terminali nello stesso modo della funzione $\text{UTILITÀ}$, per evitare che si sbagli quando l'agente è capace di "vedere" fino alla fine della partita
+    2. Deve essere efficiente
+    3. Per gli stati non terminali deve avere una forte correlazione con la probabilità di vincere
+       - In genere è in base alle **caratteristiche** dello stato, che prese insieme definisco _categorie o classi di equivalenza_: gli stati di una categoria hanno lo stesso valore per le caratteristiche (i.e. 
+       - "due pedoni vs uno")
+       - Il valore di ogni categoria può essere stimato dal valore atteso pesando le % di vittoria, pareggio e sconfitta con i rispettivi valori di utilità. Nella pratica richiede troppe categorie.
+       - Si preferisce invece l'insieme di valori delle caratteristiche sommato in maniera pesata come **funzione lineare pesata**: $\text{EVAL}(s) = \sum_i^n w_i f_i (s)$
+       - Si possono usare anche combinazioni non lineari per includere dipendenze tra caratteristiche (i.e. alfiere con _numero di mosse_ alto)
+       - I pesi $w_i$ possono essere stimato con Machine Learning
+  - $\text{TEST-TAGLIO}(s, d)$
+    - Può usare un limite di profondità, ma va scelto affinché la scelta della mossa avvenga nel tempo allocato
+      - Più robusto usare ricerca ad approfondimento iterativo
+        - Restituisce la mossa calcolata con la più profonda ricerca completata in tempo
+        - Aiuta anche l'ordinamento delle mosse
+      - Rischio di errore causa approssimazione
+    - Meglio tagliare e valutare in posizioni quiescenti tramite **ricerca di quiescenza**, ad esempio posizioni senza catture
+  - Potatura in avanti: la potatura alfa-beta non influenza il risultato finale, quella in avanti potrebbe.
+    - $\text{PROBCUT}$: utilizza statistiche da esperienza precedente per potare mosse _probabilmente_ fuori dall'intervallo alfa-beta.
+      1. Esegue ricerca poco prfonda per calcolare il valore minimax $v$ portato su di un nodo
+      2. Stima la probabilità che il valore $v$ a profondità $d$ sia fuori da $(\alpha, \beta)$
+- Giochi stocastici
+  - Backgammon: vengono tirati due dati per determinate possibili mosse, 21 casi distinti
+  - L'albero di gioco deve includere **nodi di casualità** i cui archi uscenti rappresentano i diversi esiti e relativa probabilità
+  - **valore expectiminimax**: i nodi casualità hanno valore atteso minimax, come somma pesata dei minimax in base alla probabilità della mossa $\sum_r P(r) \cdot \text{EXPECTIMINIMAX(RISULTATO(s, r))}$ con $r$ risultato del tiro di dati
+  - La funzione di valutazione deve essere una trasformazione lineare positiva della probabilità di vincere, altrimenti valutazioni che preservano l'ordinamento comunque modificano la scelta della mossa migliore
+  - Complessità temporale $O(b^m n^m)$ con $n$ numero di tiri di dado distinti
+  - Quando entra in gioco l'incertezza le possibilità si moltiplicano enormemente e diventa inutile formulare piani dettagliati
+  - Se limitiamo i valori della funzione $\text{UTILITÀ}$ possiamo derivare dei limiti anche per la media dei nodi di casualità e di conseguenza potarne alcuni
+- Giochi ad informazione parziale e stocastici (i.e. carte)
+  - Approccio naive: come se tutti i dadi fossero stati tirati all'inizio della partita
+  - Considerare tutte le possibili distribuzioni di carte nascoste e risolverle una per una come fosse un gioco completamente osservabile. Scegliere poi il miglior risultato pesato sulle probabilità $P(s)$ delle distribuzioni. $argmax_a \sum_s P(s) \text{MINIMAX(RISULTATO(s, a))}$ o $\text{H-MINIMAX}$ se non è possibile
+  - $26 \choose 13$ possibili distribuzioni, impossibile risolvere per tutte
+    - Approssimazione Monte carlo: prendiamo casualmente N distribuzioni, ognuna con probabilità di essere pescata proporzionale a $P(s)$: $argmax_a {1 \over N} \sum_i^N \text{MINIMAX(RISULTATO}(s_i, a))$
+    - Con $N = [100,1000]$ fornisce una buona approssimazione
+  - La strategia viene chiamata _media sulla chiaroveggenza_: ipotizza che il gioco diventerà osservabile per tutti dopo la prima mossa. Assunzione falsa
+    - Racconto della strada A con montagna d'oro e strada B con bivio, montagna d'oro più grande o autobus
+    - Con informazione non completa, il valore di un'azione dipende dallo stato di credenza in cui si trova l'agente
+    - Non sceglie mai azioni che ottengano informazioni o le nascondano all'avversario, assume anzi che si sappiano già.
+
+## Constraint Satisfaction Problem
+
+- Finora lo stato era atomico, scatola nera priva di struttura atomica
+  - IN CPS si usa una rappresentazione fattorizzata, una serie di variabili con vincoli
+  - L'idea è eliminare ampie porzioni dello spazio di ricerca, individuando combinazioni di variabili e valori che violano i vincoli
+    - Più efficiente di una ricerca classica sull'intero spazio degli stati
+- UN CSP è composto da:
+  - $X$ insieme di variabili $\{X_1, ..., X_n\}$
+  - $D$ insieme di domini delle variabili $\{D_1, ..., D_n\}$ ove ogni dominio contiene i valori ammessi $\{v_1, ..., v_n\}$
+    - Le variabili possono avere domini discreti e finiti o infiniti, oppure domini continui (programmazione lineare)
+  - $C$ è un insieme di vincolo, ogni vincolo è costituito da $\lang ambito, relazione \rang$, ambito è una tupla di variabili che partecipano al vincolo e relazione definisce i valori che possono assumere.
+  - I vincoli possono essere lineari (risolvibili) o non lineari (non risolvibili da alcun algoritmo)
+  - I vincoli possono essere unari, binari o globali a seconda del numero di variabili interessate
+  - Ogni relazione supporta due operazioni:
+    1. Appartenenza alla relazione
+    2. Enumerazione dei membri stessi
+- Assegnamento: dare valori alle variabili
+  - Completo/parziale se tutte le variabili hanno un valore o meno
+  - Consistente se ogni assegnamento non viola alcun vincolo
+  - **Soluzione se completo e consistente**
+- Si può visualizzare un CSP come **grafo di vincoli**, i nodi corrispondono alle variabili del problema e un arco connette ogni coppia di variabili che partecipano ad un vincolo
+  - Ogni vincolo a dominio finito puà essere ridotto ad un insieme di vincoli binari usando variabili ausiliarie. Si ottiene il grafo duale.
+- **Propagazione dei vincoli**: utilizzare i vincoli per ridurre il numero di valori legali per una variabile, che a sua volta può ridurre i valori legali per un'altra variabile e così via.
+  - Il concetto è forzare la **consistenza locale**, eliminando i valori inconsistenti dal grafo
+  - Consistenza di nodo: tutti i valori del dominio soddisfano i vincoli unari del nodo (nodo-consistente)
+  - Consistenza d'arco: ogni valore del dominio di un nodo soddisfa i vincoli binari in cui partecipa (arco-consistente)
+    - $X_i$ è arco-consistente rispetto a $X_j$ se $\forall v \in D_i, \exists w \in D_j$ che soddisfa in vincolo binario sull'arco $(X_i, X_j)$
+    - Algoritmo AC-3:
+      1. Mantiene un insieme degli archi
+      2. Estrae un arco $(X_i, X_j)$ e rende $X_i$ arco-consistente rispetto a $X_j$
+      3. Se il dominio $D_i$ è rimasto invariato si passa all'arco successivo, altrimenti si aggiungono alla coda tutti gli archi $(X_k, X_i)$ con $X_k$ vicino di $X_j$
+      4. Se $D_i$ è vuoto allora il CSP non ha soluzione e AC-3 può ritornare fallimento
+      5. Otteniamo altrimenti un CSP equivalente all'oroginale ma con future ricerche più rapide perché le variabili hanno domini più piccoli
+      - Complessità $O(cd^3)$, $c$ numero di vincoli binari, $d$ dimensione massima di un dominio. Ogni vincolo richiede al più $O(d^2)$ controlli e può essere riaggiunto al più $d$ volte
+      - A volte inutile perché ogni variabile è già arco-consistente
+  - Consistenza di cammino: restringe i vincoli binari usando vincoli _implicit_ inferiti considerando triplette di variabili
+    - Due variabili $\{X_i, X_j\}$ sono cammino-consistenti rispetto ad una terza variabile $X_m$ se per ogni assegnamento $\{X_i=a, X_j=b\}$ consistente con i vincoli $\{X_i, X_j\}$ esiste un assegnamento di $X_m$ che soddisfa i vincoli su $\{X_i, X_m\}$ e $\{X_m, X_j\}$.
+    - Si considera essenzialmente un cammino da $X_i$ a $X_j$ con $X_m$ nel mezzo
+    - Algoritmo PC-2
+  - k-consistenza: per ogni insieme di $k-1$ variabili e loro assegnamento consistente, è sempre possibile assegnare un valore consistente a ogni $k$-esima variabile
+    - Fortemente k-consistente se è $k-1$ consistente, $k-2$ consistente etc. fino a $1$-consistente
+  - Vincoli globali
+    - $Tuttediverse$: se il numero di variabili $m$ è $\gt$ $n$ numero di possibili valori distinti, allora il vincolo non può essere soddisfatto
+      - Semplice algoritmo: per ogni variabile del vincolo con dominio con un solo valore, rimuoviamo il valore dai domini delle altre variabili. Se un dominio rimane vuote o $m \gt n$ allora c'è un'inconsistenza
+    - Vincolo delle risorse ($atmost(10, P1, P2, P3, P4)$): controllare se la domma dei valori minimi dei domini $\gt$ 10
+    - Propagazione degli estremi per ottenere variabili con estremi consistenti: 
+      - $D_1 = [0, 165], D_2 = [0, 385]$
+      - $F_1 + F_2 = 420$
+      - $D_1 = [35, 165], D_2 = [255, 385]$
+  - Sudoku: CSP con 81 variabili, 27 vincoli $Tuttediverse$
+    - Per gli schemi più facile si può applicare algoritmo AC-3
+    - Naked triples: trovare tre caselle in un'unità riga, colonna o riquadro, che abbiano lo stesso dominio. Possiamo rimuovere allora il dominio dalle altre caselle
+- Ricerca con backtracking
+  - Applicare ricerca a profondità limitata avrebbe complessità temporale $O(n!d^n)$
+  - I CSP sono **commutativi**: qualsiasi ordine di assegnamento alle variabili produce lo stesso assegnamento parziale indipendentemente
+    - Basta considerare una sola variabile in ogni livello dell'albero di ricerca
+    - Il numero di foglie si restringe a $d^n$
+  - La ricerca con backtracking assegna valori ad una variabile per volta e torna indietro quando non ci sono più valori legali da assegnare
+    1. Sceglie man mano una variabile non assegnata
+    2. Prova uno ad uno tutti i valori del suo dominio
+        - Se viene rilevata un'inconsistenza si ritorna alla chiamata precedente che prova un altro valore
+  - Miglioramenti:
+    - Ordinamento delle variabili
+      - Euristica MRV (Minimum Remaining Values): scegliere la variabili con il minor numero di valori legali.
+        - Chiamata anche variabile più vincolata o fail-first: con maggior probabilità di arrivare ad un fallimento, potando così l'albero di ricerca
+        - Ad esempio se una variabile non ha più valori sarà scelta subita, rilevando il fallimento
+        - Miglioramento di fattore 1000
+      - Euristica di grado: cerca di contenere il fattore di ramificazione scegliendo la variabile coinvolta nel maggior numero di vincoli con le altre variabili non assegnate
+        - Da usare in grado di pareggio dell'euristica MRV
+      - Euristica valore meno vincolante: predilige il valore che lascia più flessibilità alle variabili adiecenti sul grafo dei vincoli
+  - Alternanza di ricerca e inferenza
+    - Invece che applicare AC-3 prima di iniziare la ricerca, possiamo farlo ogni volta che scegliamo un valore per una variabile
+    - Verifica in avanti (**forward checking**)
+      1. Ogni volta che una variabile $X$ è assegnata, si stabilisce la consistenza d'arco per ogni variabile non assegnata $Y$ collegata a $X$ da un vincolo
+      2. Si cancella dal dominio di $Y$ ogni valore non consistente con quello scelto per $X$
+      - Si può usare in combinazione con l'euristica MRV come modo efficiente per calcolarne le informazioni 
+      - Problema: non guarda avanti per rendere arco-consistenti le variabili non collegate a $X$
+      - MAC (Maintaining Arc Consistency): richiama AC-3 per solo gli archi $(X_i, X_j)$ per le $X_j$ non assegnate adiacenti a $X_i$ e **si propaga in avanti** ricorsivamente quando si apportano modifiche ai deomini delle variabili
+  - **Backjumping**: nacktracking ad una delle variabili che ha causato il fallimento
+    - Invece di fare backtracking cronologico al punto decisionale più recente
+    - L'insieme dei conflitti per una variabile $X$ è l'insieme delle variabili precedentemente assegnate che sono collegate a $X$ da vincoli.
+    - Il forward checking può fornire l'insieme dei conflitti senza lavoro aggiuntivo
+      - Ogni volta che si cancella un valore dal dominio di $Y$ a causa di un assegnamento in $X$, si aggiunge $X$ all'insieme di conflitti di $Y$
+      - Se viene cancellato l'ultimo valore dal dominio di $Y$, tutti gli assegnamenti dell'insieme di conflitto di $Y$ vanno aggiunti a quello di $X$
+      - Allo stesso tempo ridondante con forward checking: ogni ramo dell'albero potato dal backjumping è parimento potato dalla verifica in avanti
+    - Backjumping guidato dai conflitti: ci indica fino a dove risalire in modo da non perdere tempo a modificare variabili che non risolveranno il problema
+      - Si applica laddove il backjumping fallisce in quanto questi rileva un fallimento quando il dominio di una variabile diventa vuoto, ma in molti casi un ramo è condannato molto prima che questo si verifichi
+      1. Sia $X_j$ la variabile corrente e $conf(X_j)$ l'insieme dei suoi conflitti
+      2. Se ogni possibile valore di $X_j$ fallisce, si salta indietro alla variabile più recente $X_i$ in $conf(X_j)$ e si assegna $conf(X_i) \leftarrow conf(X_i) \cup conf(X_j) - \{X_i\}$
+    - Insieme **no-good**: insieme minimo di variabili dell'insieme dei conflitti, con i relativi valori, che è la responsabile dell'inconsistenza.
+      - Si aggiunge ad una cache separata, per evitare di imbattersi nello stesso problema
+- Ricerca locale:
+  - Si usa uno stato completo e si modifica il valore di una variabile per volta (i.e. 8 regine)
+  - Generalmente l'ipotesi iniziale viola diversi vincoli, che si punta ad eliminare
+  - L'euristica **min-conflicts**: scegliere il valore che risulta nel numero minimo di conflitti con le altre variabili
+    - Nelle 8 regine, il tempo di esecuzione è quasi indipendente dalle dimensioni del problema! In media 50 passi
+    - Funziona bene per le 8 regine perché è un problema facile: le soluzioni sono distribuite densamente nello spazio degli stati
+    - Purtroppo presenta solitamente un plateau: potrebbero esserci milioni di assegnamenti che distano di un conflitto dalla soluzione
+      - Si può indirizzare la ricerca nel plateau tramite **tabu search**, mantenendo un elencato degli stati visitati di recente per impedire all'algoritmo di ritornarvici
+    - **Contraint weighting**: si aggiunge una topografia ai plateau
+      1. A ogni vincolo è assegnato un peso numerico $W_i=1$ per tutti
+      2. L'euristica è modificare una variabile col valore che porterà il minimo peso totale di tutti i vincoli violato
+      3. I pesi sono aggiustati incrementando il peso di ciascun vincolo violato
+  - Molto usati in ambiente online, ad esempio nelle linee aeree per ottenere schedule alternativo con numero minimo di cambiamenti
+    - Una ricerca con backtracking potrebbe prendere molto più tempo e trovare una soluzione molto diversa dall'originario
+- Sfruttare la struttura del grafo dei vincoli
+  - Sottoproblemi indipendenti, trovabili cercando componenti connessi
+    - Se l'assegnamento $S_i$ è una soluzione di $CSP_i$, allora $\cup_i S_i$ è una soluzione di $\cup_i SCP_i$
+    - Complessità $O(d^c n/c)$ se ci sono $n/c$ sottoproblemi risolvibili in $d^c$, invece che $O(d^n)$
+  - Alberi: un grafo dei vincoli è un albero quando variabili qualsiasi sono collegate da un solo cammino
+    - Può essere risolto in tempo lineare al numero di variabili
+    - Directed Arc Consistency (DAC): un CSP è arco orientato consistente con ordinamento di variabili $X_1, ..., X_n \Leftrightarrow$ ogni $X_i$ è arco-consistente con ogni $X_j, j \gt i$
+    1. Si ordina topologicamente le variabili scelta la radice dell'albero
+    2. Si rende l'albero arco-consistente in $O(nd^2)$
+    3. Si percorre la lista di variabili e scegliere qualsiasi valore rimanenti
+       1. Poiché ogni collegamento è arco-consistente, si può percorrere la lista delle variabili e scegliere qualsiasi valore rimanente sapendo che ci sarà un valore valido nel figlio
+    - Non occorre backtracking, $O(nd^2)$ sul numero di variabili
+  - Riduzione di grafo dei vincoli ad albero
+    - Rimozione dei nodi
+      1. Scegliere sottoinsieme di S, chiamato **cycle cutset**, delle variabili del CSP
+        - Trovare il più piccolo insieme di taglio dei ciclo è NP-hard, ma ci sono algoritmi approssimati efficienti
+      2. Per ogni assegnmaneto delle variabili in S che soddisfi i vincoli in S
+        - Rimuovere dal dominio delle variabili rimanenti tutti i valori non consistenti con gli assegnamenti in S
+        - Restituire l'eventuale soluzione insieme all'assegnamento per S
+      - Complessità $O(d^c \cdot (n - c)d^2)$ se l'insieme di taglio dei cicli ha dimensioni $c$
+        - Funziona bene se il grafo è "quasi-albero", quindi $c$ basso
+    - Fusione dei nodi: si scompone in un albero di sottoproblemi collegati.
+      - Una scomposizione deve soddisfare:
+        1. Ogni variabile del problema originare deve comparire in almeno uno dei sottoproblemi
+        2. Se due variabili sono collegate da un vincolo devono comparire insieme con il vincolo in almeno uno dei sottoproblemi
+        3. Se una variabile compare in due sottoproblemi sull'albero, deve essere presente in tutti i sottoproblemi che compongono il cammino che li collega
+            - Ogni variabile deve avere lo stesso valore in ognuno dei sottoproblemi in cui appare
+      - Ogni sottoproblema viene risolto in maniera indipendente
+        - Se un sottoproblema non ha soluzione, non ce l'ha nemmeno il problema originale
+        - Altrimenti ogni sottoproblema viene vista come una variabile il cui dominio è l'insieme delle soluzioni
+        - Usando l'algoritmo degli alberi, si possono risolvere i vincoli sui sottoproblemi 
+          - La regola 3 impone alle rispettive soluzioni di concordare sui valori delle variabili comuni
+      - La dimensione del sottoproblema più grande $-1$ si chiama **larghezza d'albero**. Quella di un grafo è la minima tra le sue scomposizioni ad albero.
+        - Complessità temporale $O(nd^{w+1})$
+        - I CSP i cui grafi dei vincoli hanno una larghezza d'albero limitato sono risolvibili in tempo polinomiale. 
+        - Trovare la scomposizione larghezza d'albero minima è NP-hard, ma ci sono metodi euristici
+  - Struttura dei valori: per ogni soluzione consistente esiste un insieme $n!$ di soluzioni permutando i nomi dei colori (**simmetria di valore**)
+  - Si può ridurre quindi di $n!$ lo spazio di ricerca introducendo un vincolo di rottura della simmestra, ad esempio un ponendo un vincolo di ordinamento dei colori
