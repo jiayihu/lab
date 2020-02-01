@@ -561,18 +561,20 @@
   2. Chiede $ASK$ quale azione eseguire
   3. Registra l'azione nella base di conoscenza con $TELL$ prima di eseguirla
 - Un agente basato sulla conoscenza può essere costruito semplicemente dicendogli $TELL$ ciò che deve sapere. QUesto è un approccio dichiarativo, invece di codificare direttamente i comportamenti desiderati con un approccio procedurale.
-- PEAS del mondo di Wumpus
-  - Misura di performance: +1000 se si esce dalla caverna, -1000 se si muore, -1 per ogni azione, -10 uso freccia
-  - Ambiente: griglia 4x4, inizio in [1, 1]. Tutti i riquadri hanno probabilità 0.2 di contenere un pozzo
-    - Discreto, statico, monoagente, sequenziale, parzialmente osservabile
-  - Attuatori: Avanti, GiraSinistra, GiraDestra, Afferra, Scocca
-  - Sensori: Fetore, Brezza, Scintillio, Urto, Ululato
+- Mondo di Wumpus
+  - PEAS
+    - Misura di performance: +1000 se si esce dalla caverna, -1000 se si muore, -1 per ogni azione, -10 uso freccia
+    - Ambiente: griglia 4x4, inizio in [1, 1]. Tutti i riquadri hanno probabilità 0.2 di contenere un pozzo
+      - Discreto, statico, monoagente, sequenziale, parzialmente osservabile
+    - Attuatori: Avanti, GiraSinistra, GiraDestra, Afferra, Scocca
+    - Sensori: Fetore, Brezza, Scintillio, Urto, Ululato
   - La principale difficoltà è l'ignoranza della configurazione dell'ambiente, bisogna usare un ragionamento logico
+  - $KB$ = regole del mondo dei wumpus + percezioni 
 - Modelli
   - $m$ è un modello di una sentenza $\alpha$ se $\alpha$ è vera in $m$
   - $M(\alpha)$ è l'insieme di tutti i modelli di $\alpha$
   - $KB \models M(KB) \subseteq M(\alpha)$
-  - Il model checking è un algoritmo di inferenza logica che enumera tutti i possibili modelli per verificare che $KB \models \alpha$ 
+  - Il model checking è un algoritmo di inferenza logica che enumera depth-first tutti i possibili modelli per verificare che $KB \models \alpha$ 
     - I.e. $KB$ = "nulla in [1, 1] e brezza in [2, 1]" e $\alpha$="Non c'è nulla in [1, 2]"
     - Completo se lo spazio dei modelli di $KB$ è finito
     - Corretto, poiché applica solo la definizione di conseguenza logica
@@ -610,6 +612,13 @@
   1. Prende due clausole, disgiunzioni di letterali, con $l_i$ e $m_i$ letterali complementari e ne produce una nuova che contiene tutti i letterali delle due clausole tranne i due complementari
   2. La clausola risultante contiene solo una copia di ogni letterale (**fattorizzazione**)
   - Ogni formula della logica proposizionale è equivalente ad una congiunzione di clausole: **conjunctive normal form (CNF)**
+    1. Eliminare i sse $\Lrarr$ $\alpha \Lrarr \beta \equiv (\alpha \Rarr \beta) \land (\beta \rArr \alpha)$
+    2. Eliminare le implicazioni $\alpha \Rarr \beta \equiv \lnot \alpha \lor \beta$
+    3. Richiede che $\lnot$ si applichi solo ai letterali applicando De Morgan e la doppia negazione
+       - $\lnot (\lnot \alpha) \equiv \alpha$
+       - $\lnot (\alpha \land \beta) \equiv \lnot \alpha \lor \lnot \beta$
+       - $\lnot (\alpha \lor \beta) \equiv \lnot \alpha \land \lnot \beta$
+    4. Applicare la legge distributive ($\lor$ su $\land$) per portare tutto su un livello $(\alpha \land \beta) \lor \gamma \equiv (\alpha \lor \gamma) \land (\beta \lor \gamma)$
   - Le procedure di inferenza basate sulla risoluzione sfruttano il principio di dimostrazione per assurdo. Algoritmo $\text{CP-RISOLUZIONE}$:
     1. Si converte $KB \land \lnot \alpha$ in CNF
     2. Viene applicata la risoluzione ad ogni coppia di clausole
@@ -626,8 +635,8 @@
       2. Possiamo costruire un modello di S assegnando adeguati valori di verità a $P_1, ...,P_k$
       3. L'assegnamento dato è un modello di $S$. Dimostriamo ipotizzando l'opposto
       4. In qualche fase $i$ c'è stata un'assegnazione che rende falsa una clausola $C$
-         - $i$ non può essere 1 altrimenti $RC(S)$ conterrebbe una clausola vuota
          - Devono esserci due letterali complementari $P_i$ e $\lnot P_i$
+         - $i$ non può essere 1 altrimenti $RC(S)$ conterrebbe una clausola vuota
          - Dato che $RC(S)$ è chiuso rispetto alla risoluzione, contiene anche il risolvente, che però avrà già tutti i letterali falsi per $P_1, ..., P_{i-1}$
          - Viola l'ipotesi che la prima clausola falsa appaia nella fase $i$
 - Clausole di Horn e clausole definite
@@ -640,15 +649,172 @@
       1. Possono essere riscritte come implicazione $L_{1, 1} \land Brezza \Rarr B_{1,1}$. La premessa si chiama corpo, la conclusione testa. I letterali positivi nel corpo sono fatti.
       2. L'inferenza sulle clausole di Horn può essere fatta con concatenazione in avanti e all'indietro
       3. Si può determinare la conseguenza logica in tempo lineare rispetto alla dimensione della KB
+    - Forma di Horn: congiunzione di clausole di Horn
   - Concatenazione in avanti: determina se un singolo simbolo $q$ è conseguenza logica dei _fatti_ nella KB
     1. Se tutte le premesse di un'implicazione sono verificate, la conclusione è aggiunta ai fatti noti
     2. Continua finché non viene aggiunta la query $q$ oppure non sono possibili ulteriori inferenze
     - Corretto: applica il Modus Ponens
-    - Completo: ogni formula atomica conseguenza logica sarà derivata
+    - Completo: ogni sentenza atomica che è conseguenza della KB sarà derivata
+      1. L'algoritmo raggiunge un punto fisso dove nessuna nuova sentenza atomica è derivata
+      2. Si può considerare lo stato finale come un modello $m$ che assegna True ai simboli inferiti, False agli altri
+      3. Ogni clausola nella $KB$ originale è vera in $m$, altrimenti avremmo qualche clausola $a_1 \land ... \land a_k \Rarr b$ falsa nel modello
+         - Allora $a_1 \land ... \land a_k$ è True in $m$ e $b$ è False in $m$ quindi non avremmo raggiunto un punto fisso
+      4. $m$ è quindi un modello per $KB$
+      5. Se $KB \models q$ allora in ogni modello di $KB$ $q$ è vera, compreso $m$
     - Ragionamento guidato dai dati: l'attenzione parte dai fatti conosciuti
   - Concatenazione all'indietro: parte dalla query e lavora a ritroso
     1. Trova tutte le implicazioni nella KB che hanno $q$ come conclusione
     2. Se tutte le premesse di una delle implicazioni possono essere dimostrate vere, allora $q$ è vera
     3. Si ripete il procedimento quindi per le premesse, viste come query, fino a raggiungere un insieme di fatti noti che formano la base della dimostrazione
+    - Per evitare cicli controlla se un nuovo sottogoal è già presente nella lista dei goal o se è già fallito
     - Ragionamento basato sugli obiettivi
     - Complessità spesso meno che lineare sulla dimensione della KB, in quanto coinvolge solo i fatti rilevanti
+
+## Logica di primo ordine
+
+- Ciò che manca nei linguaggi di programmazione è un meccanismo che consenta di derivare fatti da altri fatti
+- La logica proposizionale separata invece la conoscenza dall'inferenza e quest'ultima rimane totalmente indipendente dal dominio
+- La logica proposizionale è un linguaggio troppo poco potente per rappresentare la conoscenza di ambiti complessi in modo compatto
+  - Siamo stati costretti a scrivere per ogni stanza $B_{1,1} \Lrarr (P_{1,2} \lor P_{2,1})$
+  - I modelli collegano simboli a valori di verità
+- I modelli della logica di primo ordine contengono oggetti
+  - Il **dominio** di un modello è l'**insieme di oggetti** che contiene (non solo True e False) e non deve essere vuoto
+    - $\{\text{Riccardo Cuor di Leone, suo fratello minore, una corona, il malvagio Re Giovanni, le gambe sinistre di Riccardo e Giovanni}\}$
+  - Una **relazione** è un insieme di tuple di oggetti collegati.
+    - Relazione fratello: $\{\lang \text{Riccardo Cuor di Leone, Re Giovanni}, \lang \text{Re Giovanni, Riccardo Cuor di Leone} \rang \rang\}$
+  - **Funzioni** relazioni particolari in cui ogni dato oggetto può essere collegato ad esattamente un altro oggetto
+    - Funzione unaria "Gamba sinistra":
+      - $\lang \text{Riccardo Cuor di Leone} \rang \rarr \text{la gamba sinistra di Riccardo}$
+      - $\lang \text{Re Giovanni} \rang \rarr \text{la gamba sinistra di Giovanni}$
+  - Un **termine** è un'espressoine logica che si riferisce ad un oggetto: $\text{GambaSinistra(Giovanni)}$
+  - Una formula atomica è composta da un simbolo di predicato seguito da una lista di termini tra parentesi $\text{Fratello(Riccardo, Giovanni)}$
+    - Una formula atomica è vera in un dato modello se la relazione a cui fa riferimento il simbolo di predicato è verificata tra gli oggetti a cui fanno riferimento gli argomenti (nel mondo reale)
+  - Formule complesse:
+    - Utilizzo dei connettivi logici della logica proposizionale
+    - Quantificatori: per esprimere caratteristiche di intere collezioni di oggetti senza doverli enumerare
+      - Universale $\forall x \text{ Re(x)} \Rarr \text{Persona(x)}$
+        - $\forall x\ P$ è vera in un dato modello se è $P$ è vera in tutte le possibili interpretazioni estese costruite a partire dall'interpretazione fornita nel modello
+        - Interpretazione estesa: specifica un elemento del dominio a cui $x$ fa riferimento
+      - Esistenziale $\exists x \text{ Corona(x)} \land \text{SullaTesta(x, Giovanni)}$: per formulare enunciati circa alcuni oggetti del dominio senza citarli per nome
+        - $\exists x P$ è vera in un modello se $P$ è vera in almeno una interpretazione estesa
+      - I due quantificatori sono strettamente  correllati attraverso la negazione.
+        - $\forall$ è una congiunzione degli oggetti, $\exists$ è una disgiunzione
+        - Leggi di De Morgan:
+          - $\forall x\ \lnot P \equiv \lnot \exists x\ P$
+          - $\forall x\ P \equiv \lnot \exists x\ \lnot P$
+          - $\exists x\ \lnot P \equiv \lnot \forall x\ P$
+          - $\exists x\ P \equiv \lnot \forall x\ \lnot P$
+  - Semantica dei database:
+    - "Riccardo ha due fratelli, Giovanni e Goffredo": $\text{Fratello(Giovanni, Riccardo)} \land \text{Fratello(Goffredo, Riccardo)}$
+    - Ipotesi dei nomi unici: ogni simbolo di costante fa riferimento ad un oggetto distinto
+    - Ipotesi del mondo chiuso: le formule atomiche non conosciute come vere sono considerate false
+    - Chiusura del dominio: ogni modello contiene un numero di elementi del dominio non superiore a quello degli elementi denominati dai simboli di costante
+- Inferenza proposizionale e inferenza del primo ordine
+  - Si converte la KB in logica proposizionale per poi usare l'inferenza proposizionale
+  - Regola di **istanziazione universale**: possiamo inferire tutte le formule ottenute dal quantificatore universale sostituendo un _termine ground_ (senza variabili) alla variabile
+    - Da non confondersi con l'interpretazione estesa che mette in corrispondenza variabili con oggetti del dominio
+    - **Sostituzione**: per ogni variabile $v$ e termine ground $g$
+      $$
+      \forall v\ \alpha \over \text{SUBST}(\{v/g\}, \alpha)
+      $$
+  - Regola di **istanziazione esistenziale**: la variabile è sostituita da un unico nuovo simbolo di costante che non compare da nessun'altra parte nella KB (costante di Skolem)
+    $$
+    \exists v\ \alpha \over \text{SUBST}(\{v/k\}, \alpha)
+    $$
+  - Si considerano le formule atomiche ground alla stregua di simboli proposizionali
+  - Il metodo della proposizionalizzazione è completo: ogni formule che segue logicamente può essere dimostrata. tuttavia quando non lo è è impossibile determinare il contrario
+  - Il problema della conseguenza logica per la logica del primo ordine è **semi-decidibile**: esistono algoritmo che rispondono affermativamente per ogni formula che p conseguenza logica, ma nessun algortimo potrà rispondere negativamente per ogni formula che non è conseguenza logica.
+  - La proposizionalizzazione è piuttosto inefficiente, genera formule inutili dall'istanziazione.
+- **Modus Ponens generalizzato**: troviamo una sostituzione sia per le variabili nell'implicazione che per quelle nelle formule della KB.
+  - Per le formule atomiche $p_i, p_i', q$ dove ci sia una sostituzione $\theta$ tale che $\text{SUBST}(\theta, p_i') = \text{SUBST}(\theta, p_i)$ per tutti gli $i$
+    $$
+    p_1', ..., p_n', (p_1 \land ... \land p_n \Rarr q) \over \text{SUBST}(\theta, q)
+    $$
+    - È più generale del Modus Ponens in quanto i fatti noti e le premesse dell'implicazione devono corrispondere soltato tramite una sostituzione. Allo stesso tempo il Modus Ponens però permette come premessa qualsiasi formula $\alpha$ e non soltato una congiunzione di formule atomiche
+    - Il Modus Ponens generalizzato è ottenuto da quello proposizionale attraverso il processo di **lifting**, "sollevando" il Modus Ponens dalla logica proposizionale, ground senza variabili, a quella del primo ordine
+      - Si effettuano solo le sostituzione effettivamente necessarie per portare avanti le inferenze
+- **Unificazione**: trovare sostituzioni che rendono identiche espressioni logiche diverse
+  - $\text{UNIFY}(p,q) = \theta$ ove $\text{SUBST}(\theta, p) = \text{SUBST}(\theta, q)$
+  - $\text{UNIFY(Conosce(Giovanni, x)), Conosce(y, Guglielmo)} = \{x/Guglielmo, y/Giovanni\}$
+  - Standardizzazione separata: rinomina delle variabili di una delle formule per evitare collisioni
+    - $\text{UNIFY(Conosce(Giovanni, x)), Conosce(z, Elisabetta)} = \{x/Elisabetta, z/Giovanni\}$
+  - MGU: per ogni coppia di espressioni unificabili, esiste un singolo unificatore più generale distinto da tutti gli altri qualora esista più di un unificatore.
+    - Questo calcolo spesso include un controllo di occorrenza, $S(x)$ non si può unificare con $S(S(x))$, rende quadratica la complessità di $\text{UNIFY}$, per cui viene omesso in alcuni sistemi.
+- Clausole definite del primo ordine: una formula atomica oppure un'implicazione in cui il corpo è una congiunzione di letterali positvi e la conseguenza è un singolo letterale positivo
+  - Possono includere variabili, considerate come quantificate universalmente
+  - > La legge americana afferma che per un cittadino è un crimine vendere armi a una nazione ostile. Lo stato di Nono, un nemico dell'America, possiede dei missili, e gli sono stati venduti tutti dal Colonnello West, un americano."
+    - La relativa base di conoscenza non contiene simboli di funzione: Datalog. L'assenza di funzioni rende l'inferenza molto più facile
+- Concatenazione in avanti
+  - Partendo dai fatti noti, si fanno scattare tutte le regole le cui premesse sono soddisfatte, aggiungendo le relative conclusioni ai fatti noti
+  - Il processo si ripete finché si trova una risposta oppure non è più possibile aggiungere nuovi fatti (punto fisso)
+  - Un fatto non è nuovo se consiste solo nella rinominazione di uno noto
+  - Corretto: ogni inferenza è applicazione del Modus Ponens generalizzato
+  - Completo per le query che sono conseguenza logica di una KB composta di sole clausole definite
+  - Complessità $O(pn^k)$ con $p$ predicati, $n$ simboli di costante, $k$ arità massima dei predicati
+    - Se le clausole definite includono simboli di funzione si possono generare un numero infinito di fatti. In tal caso se la query $q$ è una conseguenza logica, si può ricorre al teorema di Herbrand per asserire che terminerà con successo. Altrimenti l'algoritmo potrebbe non terminare mai.
+  - 3 inefficienze:
+    1. Pattern matching: trovare tutti gli unificatori tali che la premessa di una regola possa unificare con un insieme adeguato di fatti presenti nella KB
+       - $\text{Missile(x)} \land \text{Possiede(Nono, x)} \Rarr \text{Arma(x)}$: in una KB indicizzata trovare i fatti che unificano può essere fatto in tempo costante
+       - Nel caso di congiunti multipli, conviene ordinarli in modo tale che il costo sia minimizzato
+         - Trovare l'ordinamento ottimo è NP-hard ma si possono usare euristiche come MRV
+       - In generale cercare il matching tra una clausola definita e un insieme di fatti è un problema NP-hard
+         - La maggior parte delle regole però sono piccole e semplici
+         - Si possono eliminare tentativi di matching ridondanti
+    2. Ricontrollare tutte le regole ad ogni iterazione, anche se la KB è cambiata poco
+       - Si possono evitare matching ridondanti stabilendo che ogni nuovo fatto inferito durante l'iterazione deve venire da almeno un fatto nuovo inferito nell'iterazione precedente
+       - Ad ogni iterazione saranno controllate solo le regole le cui premesse includono un congiunto $p_i$ che unifica con un fatto $p_i'$ inferito nell'iterazione precedente
+       - È utile mantenere in memoria le corrispondenze parziali delle premesse delle regole, completandole gradualmente man mano che giungono nuovi fatti (algoritmo rete)
+    3. Generare molti fatti che sono irrilevanti per l'obiettivo
+       - Usare la concatenazione all'indietro
+       - Riscrivere l'insieme di regole utilizzando informazione dall'obiettivo, in modo tale che solo i legami rilevanti appartenenti al _magic set_ siano presi in considerazione durante l'inferenza in avanti
+         - Idea proveniente dai database deduttivi, che usano l'inferenza anzicché le query SQL
+- Concatenazione all'indietro
+  - Una query è dimostrata se la KB contiene una regola della forma $\text{lhs} \Rarr \text{obiettivo}$ con $\text{lhs}$ una lista di congiunti
+  - Può essere visto come un caso particolare di ricerca $AND/OR$
+    - $OR$ perché la query può essere dimostrata da qualsiasi regola della KB
+    - $AND$ perché tutti i congiunti della $\text{lhs}$ devono essere dimostrati
+  1. L'algoritmo cerca tutte le clausole che potrebbero unificare con l'obiettivo
+  2. Per ogni clausola dimostra ogni congiunto uno per uno, tenendo traccia della sosituzione accumulata
+  - È una ricerca in profondità: requisiti spaziali lineari con le dimensioni della dimostrazione
+  - Problematiche di stati ripetuti ed incompletezza
+  - Programmazione logica (Prolog)
+    - Insieme di clausole separate dalla virgola $\text{criminale(X) :- americano(X), arma(Y), vende(X, Y, Z), ostile(Z)}$
+    - Può descrivere relazioni tra diversi argomenti
+    - Utilizza la semantica dei database
+- Risoluzione
+  - Le formule devono essere in CNF e possono contenere variabili, considerate come universalmente quantificate
+  - Ogni formula della logica del primo ordine può essere convertita in una formula CNF inferenzialmente equivalente.
+    - La formula CNF non sarà soddisfacibile esattamente nei casi in cui non lo era quella originale
+    - I passi sono i seguenti:
+      1. Eliminazione delle implicazioni
+      2. Spostamento all'interno delle negazioni
+      3. Standardizzazione delle variabili
+      4. Skolemizzazione: rimozione dei quantificatori esistenziali per eliminazione
+         - Nel caso più semplice si tratta di applicare l'istanziazione esistenziale
+         - In generale le entità di Skolem devono dipendere da $x$: $\forall x [Animale(F(x)) \land \lnot Ama(x, F(x))] \lor Ama(G(x), x)$
+         - $F$ e $G$ sono dette funzioni di Skolem
+      5. Omissione dei quantificatori universali
+      6. Distribuzione di $\lor$ su $\land$
+  - La regola di risoluzione è semplicemente una versione "sollevata" tramite lifting di quella proposizionale.
+    $$
+    l_1 \lor ... \lor l_k,\ m_1 \lor ... \lor m_n \over \text{SUBST}(\theta, l_1 \lor ... \lor l_{i-1} \lor l_{i+1} \lor ... \lor l_k \lor \lor m_1 \lor ... \lor m_{j-1} \lor m_{j+1} \lor ... \lor m_n)
+    $$
+  - Due clausole, che non hanno variabili in comune grazie alle standardizzazione, possono essere risolte se contengono letterali complementali, ovvero se uno _unifica con la negazione_ dell'altro.
+  - Risoluzione binaria $\text{UNIFY}(l_i, \lnot m_i) = \theta$
+  - Fattorizzazione: rimozione di letterali ridondanti, ovvero se due letterali sono unificabili
+  - La combinazione di risoluzione binaria e fattorizzazione è completa
+  - La risoluzione dimostra che $KB \models \alpha$ provando che $KB \land \lnot \alpha$ non è soddisfacibile, ovvero deriva la clausola vuota
+  - La concatenazione all'indietro può essere vista come un caso speciale di risoluzione che adotta una particolare strategia di controllo per decidere l'ordine di esecuzione delle risoluzioni
+    - Si scegliere di risolvere con una clausola il cui letterale positivo si unifica con quello più a sinistra della clausola corrente sulla linea principale della dimostrazione
+  - Completezza
+    - Completa per refutazione: se un insieme di formule $S$ è insoddisfacibile, la risoluzione sarà sempre in grando di derivare una contraddizione in un numero finito di passi.
+    1. Teorema di Herbrand: se $S$ non è soddisfacibile, esiste un particolare insieme di istanze ground anch'esso insoddisfacibile
+    2. Teorema di risoluzione ground: la risoluzione proposizionale è completa per le formule ground
+    3. Lemma di lifting: per ogni dimostrazione con risoluzione proposizionale che usa un insieme di formule ground, esiste una corrispondente dimostrazione che usa le formule del primo ordine da cui sono state ricavate le formule ground originarie
+  - Miglioramenti:
+    - Preferenze per clausole unitarie a cui applicare la risoluzione, in quanto stiamo cercando di produrre una clausola vuota. Si preferiscono quindi inferenze che producono clausole più corte
+      - Nel caso particolare la risoluzione unitaria, in cui ogni passo deve obbligatoriamente coinvolgere una clausola unitaria, è completa per le clausole di Horn. Assomiglia alla concatenazione in avanti
+    - Insieme di supporto: imporre che ogni passo di risoluzione coinvolta almeno un elemento dell'insieme, in modo da diminuire notevolmente lo spazio di ricerca. Si può ad esempio usare la query negata come insieme di supporto.
+    - Risoluzione di input: ogni risoluzione usa solo risoluzioni di formule input (della KB o query). Il Modus Ponens ne è un esempio ed è completo per le KB in forma di Horn.
+    - Sussunzione: elimina tutte le formule più specifiche di una esistente nella KB. $\text{P(A)}$ è più specifica di $\text{P(x)}$
+    - 
