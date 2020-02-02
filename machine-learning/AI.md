@@ -688,15 +688,17 @@
       - $\lang \text{Re Giovanni} \rang \rarr \text{la gamba sinistra di Giovanni}$
   - Un **termine** è un'espressoine logica che si riferisce ad un oggetto: $\text{GambaSinistra(Giovanni)}$
   - Una formula atomica è composta da un simbolo di predicato seguito da una lista di termini tra parentesi $\text{Fratello(Riccardo, Giovanni)}$
-    - Una formula atomica è vera in un dato modello se la relazione a cui fa riferimento il simbolo di predicato è verificata tra gli oggetti a cui fanno riferimento gli argomenti (nel mondo reale)
+    - Una formula atomica è vera in un dato modello se la relazione a cui fa riferimento il simbolo di predicato è verificata tra gli oggetti a cui fanno riferimento gli argomenti (nel mondo reale). I.e. $Arma(M_1)$ se $M_1$ è effettivamente un'arma
   - Formule complesse:
     - Utilizzo dei connettivi logici della logica proposizionale
     - Quantificatori: per esprimere caratteristiche di intere collezioni di oggetti senza doverli enumerare
       - Universale $\forall x \text{ Re(x)} \Rarr \text{Persona(x)}$
         - $\forall x\ P$ è vera in un dato modello se è $P$ è vera in tutte le possibili interpretazioni estese costruite a partire dall'interpretazione fornita nel modello
         - Interpretazione estesa: specifica un elemento del dominio a cui $x$ fa riferimento
+        - Tipicamente $\Rarr$ è il connettivo principale usato con $\forall$
       - Esistenziale $\exists x \text{ Corona(x)} \land \text{SullaTesta(x, Giovanni)}$: per formulare enunciati circa alcuni oggetti del dominio senza citarli per nome
         - $\exists x P$ è vera in un modello se $P$ è vera in almeno una interpretazione estesa
+        - Tipicamente $\land$ è il connettivo principale usato con $\exists$
       - I due quantificatori sono strettamente  correllati attraverso la negazione.
         - $\forall$ è una congiunzione degli oggetti, $\exists$ è una disgiunzione
         - Leggi di De Morgan:
@@ -711,20 +713,26 @@
     - Chiusura del dominio: ogni modello contiene un numero di elementi del dominio non superiore a quello degli elementi denominati dai simboli di costante
 - Inferenza proposizionale e inferenza del primo ordine
   - Si converte la KB in logica proposizionale per poi usare l'inferenza proposizionale
-  - Regola di **istanziazione universale**: possiamo inferire tutte le formule ottenute dal quantificatore universale sostituendo un _termine ground_ (senza variabili) alla variabile
+  - Regola di **istanziazione universale** (UI): possiamo inferire delle le formule ottenute dal quantificatore universale sostituendo un _termine ground_ (senza variabili) alla variabile
     - Da non confondersi con l'interpretazione estesa che mette in corrispondenza variabili con oggetti del dominio
     - **Sostituzione**: per ogni variabile $v$ e termine ground $g$
       $$
       \forall v\ \alpha \over \text{SUBST}(\{v/g\}, \alpha)
       $$
-  - Regola di **istanziazione esistenziale**: la variabile è sostituita da un unico nuovo simbolo di costante che non compare da nessun'altra parte nella KB (costante di Skolem)
+    - UI si può applicare più volte per aggiungere nuove sentenze
+  - Regola di **istanziazione esistenziale** (EI): la variabile è sostituita da un unico nuovo simbolo di costante che non compare da nessun'altra parte nella KB (costante di Skolem)
     $$
     \exists v\ \alpha \over \text{SUBST}(\{v/k\}, \alpha)
     $$
-  - Si considerano le formule atomiche ground alla stregua di simboli proposizionali
-  - Il metodo della proposizionalizzazione è completo: ogni formule che segue logicamente può essere dimostrata. tuttavia quando non lo è è impossibile determinare il contrario
+    - Si può applicare EI solo una volta per rimpiazzare la sentenza esistenziale
+  - **Proposizionalizzazione**: si applica UI in tutti i possibili modi, EI a tutte le istanze esistenziali e si considerano le formule atomiche ground alla stregua di simboli proposizionali
+  - Il metodo della proposizionalizzazione è completo: ogni formula che segue logicamente dalla KB originale può essere dimostrata nella nuova KB. tuttavia quando non lo è è impossibile determinare il contrario
+  - Problema per i simboli di funzione con infinito numero di termini ground
+    - Teorema di Herbrand: se una sentenza $\alpha$ è conseguenza logica di una KB in FOL, esse è conseguenza logica di un sottoinsieme _finito_ della KB proposizionale
+    - Applicare una sorta di approfondimento iterativo con profondità crescente della KB proposizionale, ma funziona solo se $\alpha$ è conseguenza logica
   - Il problema della conseguenza logica per la logica del primo ordine è **semi-decidibile**: esistono algoritmo che rispondono affermativamente per ogni formula che p conseguenza logica, ma nessun algortimo potrà rispondere negativamente per ogni formula che non è conseguenza logica.
-  - La proposizionalizzazione è piuttosto inefficiente, genera formule inutili dall'istanziazione.
+  - La proposizionalizzazione inoltre è piuttosto inefficiente, genera formule inutili dall'istanziazione.
+  - Genera $pn^k$ istanziazioni!
 - **Modus Ponens generalizzato**: troviamo una sostituzione sia per le variabili nell'implicazione che per quelle nelle formule della KB.
   - Per le formule atomiche $p_i, p_i', q$ dove ci sia una sostituzione $\theta$ tale che $\text{SUBST}(\theta, p_i') = \text{SUBST}(\theta, p_i)$ per tutti gli $i$
     $$
@@ -743,7 +751,7 @@
 - Clausole definite del primo ordine: una formula atomica oppure un'implicazione in cui il corpo è una congiunzione di letterali positvi e la conseguenza è un singolo letterale positivo
   - Possono includere variabili, considerate come quantificate universalmente
   - > La legge americana afferma che per un cittadino è un crimine vendere armi a una nazione ostile. Lo stato di Nono, un nemico dell'America, possiede dei missili, e gli sono stati venduti tutti dal Colonnello West, un americano."
-    - La relativa base di conoscenza non contiene simboli di funzione: Datalog. L'assenza di funzioni rende l'inferenza molto più facile
+    - La relativa base di conoscenza non contiene simboli di funzione: Datalog. L'assenza di funzioni rende l'inferenza molto più facile. Termina in tempo polinomiale $O(pn^k)$
 - Concatenazione in avanti
   - Partendo dai fatti noti, si fanno scattare tutte le regole le cui premesse sono soddisfatte, aggiungendo le relative conclusioni ai fatti noti
   - Il processo si ripete finché si trova una risposta oppure non è più possibile aggiungere nuovi fatti (punto fisso)
@@ -751,7 +759,7 @@
   - Corretto: ogni inferenza è applicazione del Modus Ponens generalizzato
   - Completo per le query che sono conseguenza logica di una KB composta di sole clausole definite
   - Complessità $O(pn^k)$ con $p$ predicati, $n$ simboli di costante, $k$ arità massima dei predicati
-    - Se le clausole definite includono simboli di funzione si possono generare un numero infinito di fatti. In tal caso se la query $q$ è una conseguenza logica, si può ricorre al teorema di Herbrand per asserire che terminerà con successo. Altrimenti l'algoritmo potrebbe non terminare mai.
+    - Se le clausole definite includono simboli di funzione si possono generare un numero infinito di fatti. In tal caso se la query $q$ è una conseguenza logica, si può ricorre al teorema di Herbrand per asserire che terminerà con successo in un numero finito di passi. Altrimenti l'algoritmo potrebbe non terminare mai.
   - 3 inefficienze:
     1. Pattern matching: trovare tutti gli unificatori tali che la premessa di una regola possa unificare con un insieme adeguato di fatti presenti nella KB
        - $\text{Missile(x)} \land \text{Possiede(Nono, x)} \Rarr \text{Arma(x)}$: in una KB indicizzata trovare i fatti che unificano può essere fatto in tempo costante
@@ -776,8 +784,10 @@
   1. L'algoritmo cerca tutte le clausole che potrebbero unificare con l'obiettivo
   2. Per ogni clausola dimostra ogni congiunto uno per uno, tenendo traccia della sosituzione accumulata
   - È una ricerca in profondità: requisiti spaziali lineari con le dimensioni della dimostrazione
-  - Problematiche di stati ripetuti ed incompletezza
+  - Incompleta a causa di cicli infiniti, bisogna controllare il goal rispetto ai goals sulla pila della ricerca in profondità
+  - Inefficiente a causa di goal ripetuti, bisogna usare una cache che contiene i risultati già calcolati
   - Programmazione logica (Prolog)
+    - Esegue concatenazione all'indietro con clausole di Horn
     - Insieme di clausole separate dalla virgola $\text{criminale(X) :- americano(X), arma(Y), vende(X, Y, Z), ostile(Z)}$
     - Può descrivere relazioni tra diversi argomenti
     - Utilizza la semantica dei database
@@ -815,6 +825,91 @@
     - Preferenze per clausole unitarie a cui applicare la risoluzione, in quanto stiamo cercando di produrre una clausola vuota. Si preferiscono quindi inferenze che producono clausole più corte
       - Nel caso particolare la risoluzione unitaria, in cui ogni passo deve obbligatoriamente coinvolgere una clausola unitaria, è completa per le clausole di Horn. Assomiglia alla concatenazione in avanti
     - Insieme di supporto: imporre che ogni passo di risoluzione coinvolta almeno un elemento dell'insieme, in modo da diminuire notevolmente lo spazio di ricerca. Si può ad esempio usare la query negata come insieme di supporto.
-    - Risoluzione di input: ogni risoluzione usa solo risoluzioni di formule input (della KB o query). Il Modus Ponens ne è un esempio ed è completo per le KB in forma di Horn.
+    - Risoluzione di input: ogni risoluzione usa solo risoluzioni di formule input (della KB o query). Il Modus Ponens ne è un esempio ed è completo per le KB in forma di Horn. Genera una tipica struttura a spina di pesce
+    - Risoluzione lineare: come risoluzione di input ma ammette anche la combinazione del risolvente con i suoi antenati nell'albero di dimostrazione
     - Sussunzione: elimina tutte le formule più specifiche di una esistente nella KB. $\text{P(A)}$ è più specifica di $\text{P(x)}$
-    - 
+
+## Trattamente dell'incertezza
+
+- Gli agenti devono gestire l'incertezza in ambienti parzialmente osservabili e/o stocastici
+- Lo stato di credenza (belief state) è una rappresentazione di tutti i possibili stati in cui può trovarsi l'agente
+  - Svantaggi
+    - Nella valutazione delle percezioni, sono considerati tutti i possibili casi nonostante quanto siano improbabili. Comporta grandi e complessi rappresentazioni degli stati di credenza
+    - Un piano di contingenza che deve gestire tutti i possibili casi diventa molto grande
+    - Spesso bisogna agire per raggiungere l'obiettivo anche in assenza di un piano che ne garantisca il successo
+- La decisione razionale, laddove non vi sia garanzia di successi, dipende dall'importanza degli obiettivi e dalla probabilità di raggiungerli
+- In campi come quello medico l'uso della logica fallisce per 3 motivi:
+  - Pigrizia: troppo lavoro per elencare tutte le possibili cause o sintomi
+  - Ignoranza teorica: la scienza non ha ancora la completa informazione del dominio
+  - Ignoranza pratica: pur sapendo tutte le cause teoriche, non sappiamo tutto del paziente
+- Teoria delle probabilità: fornisce un modo per quantificare l'incertezza causata da pigrizia ed ignoranza
+- Teoria dell'utilità: per prendere una decisione tra diverse azioni, l'agente stabilisce una preferenza in base al grado di utilità dello stato risultante
+- Teoria delle decisioni: combinazione delle probabilità e delle utilità degli stati
+  - **Maximum expected utility**: Un agente razionale sceglie l'azione che risulta nella massima utilità attesa, pesata per la relativa probabilità
+  - Nella teoria delle decisioni lo stato credenza non rappresenta solo i possibili stati, ma anche la loro probabilità.
+    - $0 \le P(w) \le 1$ e $\sum_w P(w) = 1$
+  - Probabilità a priori/incondizionata $P(cavity)$: probabilità in asssenza di ogni altra informazione/evidenza
+  - Probabilità condizionale o a posteriori $P(cavity | toothache)$ data da $P(a|b) = {P(a \land B) \over P(b)}$
+    - **Product rule**: $P(a \land b) = P(a|b) P(b)$
+    - La costante $1 / P(toothache)$ può essere vista come **costante di normalizzazione** per assicurarsi che la somma sia 1.
+      - Può essere calcolata alla fine come somma sulle probabilità congiunte
+    - Quando deve prendere una decisione, un agente deve condizionare su tutte le percezioni osservate
+  - **Distribuzione di probabilità**: fornisce le probabilità per tutti i possibili assegnamenti delle variabile discreta. I.e. $P(Weather)$
+    - Per una variabile continua $P(x)$ è la probabilità che $x$ cadda in un intervallo arbitrariamente piccolo intorno a $x$
+  - **Distribuzione di probabilità congiunta**: per un insieme di variabili aleatorie, fornisce la probabilità di ogni evento atomico su tali variabili come una matrice. I.e. $P(Weather, Cavity)$
+- Inferenza probabilistica: calcolo delle probabilità a posteriori per le proposizioni query data l'evidenza osservata
+  - Probabilità di una proposizione $P(\phi) = \sum_{w:w \models \phi} P(w)$ si sommano gli eventi atomici dove essa è vera
+    - Marginalization/summing out: sommiamo le probabilità di ogni possibili valore delle altre variabili, togliendole dalla equazione
+  - In genere siamo interessanti alla distribuzione congiunta a posteriori delle variabili di query $X$, dati $e$ specifici valori delle variabili di evidenza $E$, con $Y$ variabili nascoste
+    - $P(X|e) = \alpha P(X, E=e) = \alpha \sum_y P(X, E=e, Y=y)$
+    - $X, E, Y$ danno tutte le variabili aleatore del dominio
+    - Data la distribuzione di probabilità congiunta, possiamo calcolare la probabilità di qualsiasi query di variabili discrete
+    - Complessità spaziale e temporale $O(d^n)$ con $d$ arietà massima delle variabili aleatore
+- Indipendenza
+  - Due variabili $X, Y$ sono indipendenti se $P(X|Y) = P(X)$ o $P(Y|X) = P(Y)$ o $P(X,Y) = P(X)P(Y)$
+  - L'indipendenza tra due variabili si può stabilisce sulla base della conoscenza del dominio
+  - L'indipendenza riduce drasticamente la dimensione della tabella delle probabilità congiunte
+    - Se tutte le variabili sono indipendenti, la distribuzione congiunta può essere fattorizzata nelle distribuzioni di probabilità delle singole variabili
+  - 
+  - Regola di Bayes: $P(Y|X) = {P(X|Y) P(Y) \over P(X)}$
+    - In campo medico: $P(causa|effetto) = {P(effetto|causa) P(causa) \over P(effetto)}$
+      - $P(effetto|causa)$ quantifica la relazione in senso causale
+      - $P(causa|effetto)$ quantifica la relazione in senso diagnostico
+    - Con la normalizzazione: $P(Y|X) = \alpha P(X|Y) P(Y)$
+    - Di per sé non aiuta molto rispetto ad usare la probabilità congiunta, in quanto $P(X|Y)$ non scala con tante variabili aleatore in $X$
+  - Indipendenza condizionale tra due variabili $X, Y$ data una terza variabile $Z$: $P(X,Y|Z) = P(X|Z)P(Y|Z)$
+    - $P(Toothache, Catch|Cavity) = P(Toothache|Cavity)P(Catch|Cavity)$
+    - La dimensione delle tabelle di probabilità cresce lineare invece che esponenziale, oltre al fatto che è molto pià facile avere a disposizione la semplice probabilità condizionale tra 2 variabili, che quella congiunta di tutte variabili
+    - **Naive Bayes**: $P(Causa|Effetto_1, ..., Effetto_n) = P(Causa) \prod_i P(Effetto_i|Causa)$
+      - Assume che gli effetti siano tra loro condizionalmente indipendenti data la causa
+- Mondo di Wumpus con modello probabilistico
+  - Incertezza causa dalla parziale osservabilità dell'ambiente
+  - Un agente logico non saprebbe concludere alcuna informazione utile sapendolo solo della possibilità di $P_{1, 3}, P_{2, 2}, P{3,1}$
+  - Un agente probabilistico può prendere una decisione migliore
+- Reti Bayesiane
+  - Rappresentano qualsiasi distribuzione di probabilità congiunta in maniera concisa
+  - Una rete bayesiana è un grafo diretto aciclico in cui:
+    - Ogni nodo corrisponde ad una variabile aleatoria
+    - Un arco da $Y$ a $X$ indica che $X$ è condizionalmente dipendente da $Y$, che ne è il genitore
+    - Ogni nodo ha le probabilità condizionali $P(X_i|Parents(X_i))$ specificate in una conditional probabilità table (CPT)
+  - La topologia della rete specifica le indipendenze condizionali del dominio
+    - In genere è meglio creare collegamenti da cause ad effetti invece che il contrario, in modo da sfruttare l'indipendenza condizionale ed avere valori di probabilità più facili da reperire
+  - L'insieme delleìa topologia e delle probabilità condizionate è sufficiente per specificare la distribuzione congiunta per tutte le variabili
+    - $P(X_i,...,X_n) = \prod_i^n P(X_i|Parents(X_i))$
+  - Compattezza: la rete Bayesiana è un sistema **localmente strutturato** (sparse) in cui ogni nodo interagisce direttamente con solo un numero limitato di altri nodi, a prescindere dal numero totale di nodi.
+    - La complessità cresce in maniera lineare invece che esponenziale
+    - La complessità spaziale è $O(n2^k)$ per $n$ variabili booleane con al massimo $k$ costante genitori
+  - Inferenza esatta: avendo implicitamente tutte le probabilità congiunte è possibile calcolare $P(X|E=e)$
+    - Reti singolarmente connesse (polytree) in cui c'è al più un cammino epr ogni coppia di connessi
+      - Complessità dell'inferenza lineare sulla dimensione della rete definita come numero di righe CPT. Se ogni nodo ha un limite $k$ costante di genitori, allora è lineare anche sul numero di nodi $O(nd^k)$
+    - Reti multi-connesse: l'eliminazione di variabile ha complessità spaziale e temporale esponenziale
+      - Possibile ridurre £SAT all'inferenza esatta, per cui la complessità è NP-hard
+- Inferenza tramite simulazione stocastica con metodo Monte Carlo
+  1. Estrarre $N$ campioni da una distribuzione di campionamento $S$
+     - Direct sampling: si generare eventi da una rete vuota in ordine topologico
+     - Rejection sampling: si rigettano i campioni in disaccordo con l'evidenza. $P(X=x|E=e)$ è stimato contando quanto spesso $X=x$ nei rimanenti campioni
+     - Likelihood weighting: genera solo eventi consistenti con l'evidenza $e$ ed ogni evento è pesato dalla verosomiglianza (likelihood) dell'evidenza
+     - Markov Chain Monte Carlo: ogni campione è generato tramite modifiche random al campione precedente
+  2. Calcolare la probabilità a posteriori approssimata $\hat{P}$
+  3. Mostrare che converge alla vera probabilità $P$
+  
