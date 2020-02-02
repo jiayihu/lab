@@ -912,4 +912,112 @@
      - Markov Chain Monte Carlo: ogni campione è generato tramite modifiche random al campione precedente
   2. Calcolare la probabilità a posteriori approssimata $\hat{P}$
   3. Mostrare che converge alla vera probabilità $P$
-  
+
+## Apprendimento automatico
+
+- Quando usarlo
+  - Difficoltà del formalizzare il problema, ma ampia disponibilità di esempi
+    - Gli esempi sono rappresentati in genere come vettore di caratteristiche
+  - Presenza di rumore
+- I tre elementi fondamentali di un algoritmo di apprendimento sono
+  - La task
+    - Classificazione, regressione, traduzione automatica, stima di densità etc.
+  - La misura di performance
+    - Accuracy della classificazione ad esempio oppure 0-1 loss
+    - Dipende dal task, MSE per regressione ad esempio
+  - L'esperienza
+    - Caratteristiche a valori discreti o reali
+    - Dati ottenuti una volta per tutte (batch learning) o incrementalmente agendo con l'ambiente (online learning)
+- Apprendimento supervisionato: dato un insieme di esempi con output $Tr = \{(x^i, f(x^i)\}$, apprendere una funzione che stimi la reale funzione $f$
+  - Tale stimatore viene usato per generalizzare, ovvero viene applicato per esempi non ancora visti
+  - Si assume che un esperto fornisca la supervisione, ovvero fornisca i valori della $f$
+  - I dati sono divisi in **training set** e **test set**
+    - Training set a sua volta diviso in ulteriore training set e validation set
+    - Il validation set serve per scegliere l'ipotesi $h \in H$ migliore tra quelle **consistenti** con il training set, ovvero senza errori di classificazione
+- Apprendimento non supervisionato: dato un insieme di esempi senza output $Tr = \{\x^i}$ estrarre delle regolarità o pattern
+  - Non esiste un esperto che fornisca aiuta, anche se ovviamente una conoscenza del campo aiuta a indirizzare la ricerca dei pattern
+  - Clustering
+- Si assume che la funzione da apprendere $f$ possa essere rappresentata, o perlomeno approssimata, da una ipotesi $h \in H$
+  - Dobbiamo ovviamente restringere lo spazio delle ipotesi $H$, per cui si parla di **bias induttivo**
+  - L'errore ideale è la probabilità che $h$ classifichi erroneamente un input non ancora visto
+  - L'errore empirico è il numero di esempi di training set che $h$ classifica erroneamente
+  - Il validation set serve per evitare overfit, ovvero di preferire ipotesi $h$ che abbiano errore empirico migliore di un'altra ipotesi, ma maggior errore ideale
+  - VC-dimension e Shattering: la VC-dimension di un iperpiano in $R^n$ è $n+1$
+  - $error_D(h(x)) \le error_{Tr}(h(x)) + \epsilon(N_{Tr}, VC(H), \delta)$
+    - $\text{errore ideale} \le \text{errore empirico + VC-confidence}$
+    - La VC-confidence è inversamente proporzionale alla dimensione del training set $N$, all'intervallo di confidenza $\delta$ e direttamente proporzionale alla VC-dimension $VC(H)$
+  - Structural Risk Minimization (SRM)
+    - All'aumentare della VC-dimensione diminuisce l'errore empirico ma aumenta la VC-confidence
+    - L'approccio SRM tenta di trovare un compromesso tra i due termini
+
+## Apprendimento con rinforzo
+
+- Problema a decisione sequenziale: l'utilità di un agente dipende dalla sequenza di decisioni
+- **Markov decision process** (MDP): problema a decisione sequenziale con ambiente osservabile ma stocastico, modello di transizione Markoviano e ricompense addittive
+  - Transition model: descrive il risultato stocastico di ogni azione in ogni stato $P(s'|s,a)$.
+    - Assunzione di Markov: $s_{t+1} = P(s_t, a_t)$ e $r_t = r(s_t, a_t)$
+      - Lo stato successivo e la ricompensa dipendono solo dallo stato corrente
+      - Le funzionio $P, r$ possono essere **deterministiche o non deterministiche** oltre che conosciute o non conosciute
+  - La funzione di utilità dipende dalla sequenza di stati piuttosto che dal singolo stato
+    - In ogni stato $s$ l'agente riceve una ricompensa $R(s)$ che può essere positiva o negativa, ma deve essere limitata..
+    - L'utilità di una sequenza di stati è la somma delle ricompense ricevute
+    - L'equilibrio tra rischio e ricompensa cambia in base al valore di $R(s)$ per gli stati non terminali
+    - Può avere **orizzonte finito o infinito**:
+      - Orizzonte finito: dopo un tempo fisso $N$ la soluzione non ha più valore, per cui influenza la decisione dell'azione ottimale nel tempo (non-stazionario)
+      - Orizzonte infinito: non c'è alcun motivo per comportarsi diversamente nello stesso stato in tempi diversi (stazionario)
+    - Le ricompense possono essere addittive o scontate
+      - **Ricompense addittive**: l'utilità di una sequenza di stati è $U([s_0, s_1, s_2, ...]) = R(s_0) + R(s_1) + R(s_2) + ...$ (algoritmi euristici)
+      - **Ricompense scontate**: l'utilità di una sequenza di stati è $U([s_0, s_1, s_2, ...]) = R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2) + ...$ con $\gamma \lt 1$
+        - Describe la preferenza dell'agente verso ricompense immediate rispetto a quelle future
+        - Un buon modello delle preferenze degli umani e degli animali nel tempo
+        - L'utilità di una sequenza di stati infinita è finita: se $\gamma \lt 1$ e le ricompense sono bounded $\pm R_{max}$ si ha $U([s_0, s_1, s_2, ...]) = \sum_t^\infty R(s_t) \le \sum_t^\infty \gamma^t R_{max} = R_{max} / (1- \gamma)$
+  - Una sequenza fissa di azioni non può risolvere il problema, per cui c'è bisogna di una strategia **policy** $\pi$ che specifichi cosa l''agente deve fare in ogni stato che raggiunge $\pi(s)$.
+  - La strategia ottimale $\pi^*$ è quella che massimixxa l'utilità attesa $U^\pi(s) = E \lbrack \sum_t^\infty \gamma^t R(s_t) \rbrack$
+    - Sceglie l'azione che massimizza l'utilità attesa dello stato successivo $\pi^s(s) = argmax_{a \in A(s)} \sum P(s'|s,a)U(s')$
+      - Funziona solo si conosce il modello di transizione $P(s'|s,a)$
+    - **Equazione di Bellman**: $U(s) = R(s) + \gamma max_{a \in A(s)} \sum P(s'|s,a)U(s')$
+      - Con $n$ possibili stati, ci sono $n$ equazioni di Bellman, una per ogni possibile stato. La risoluzione avviene con approccio iterativo, aggiornando man mano i valori delle utilità di ogni stato fino a raggiungere un punto fisso.
+      - Funzione di update: $U_{i+1}(s) \larr R(s) + \gamma max_{a \in A(s)} \sum P(s'|s,a)U_i(s')$
+      - Convergenza dell'iterazione
+        - La funzione di update è una contrazione, ovvero presi due input produce due valori di output che sono più vicini di un fattore costante rispetto agli input
+          - Una funzione contrazione ha un solo punto fisso
+          - L'applicazione ripetuta della funzione contrazione raggiunge sempre il punto fisso nel limite
+        - Nel caso di Bellman si può vedere che l'update è una contrazione di fattore $\gamma$ se $\gamma \lt 1$
+- Apprendimento con rinforzo
+  - Gioco di scacchi: la ricompensa (il reinforcement) è ricevuta solo al termine della partita e viene visto come parte della percezione
+  - A differenza della strategia ottimale $\pi^*$, in questo problema di decisione di Markov non si conosce il vero modello di transizione o la funzione di ricompensa
+    - L'agente percepisce le ricompense solo quando si muove in uno stato
+    - Si può immaginare di giocare ad un gioco di cui non si conoscono le regole e dopo un centinaio di mosse, l'avversario annuncia che abbiamo perso. Questo è l'apprendimento con rinforzo
+    - L'agente non sa come l'ambiente stocastico funzioni o il risultato delle sue azioni (**unknown Markov Decision Problem**)
+  - **Agente Q-learning** sa confrontare le utilità attese delle azioni senza conoscere i loro risultati o il modello di transizione
+    - Invece di apprendere la funzione di utilità $U(s)$ e il modello di transizione $P(s'|s,a)$, apprende una rappresentazione del valore dell'azione $a$ nello stato $s$, denotato con $Q(s, a)$ ed osserva le ricompense immediate $r$
+      - $U(s) = max_aQ(s, a)$
+    - L'agente calcola iterativamente l'equazione $\hat{Q}(s, a) = r + \gamma max_{a'} \hat{Q}(s', a')$, dove $\hat{Q}$ è la funzione corrente appresa che approssima $Q$
+    - Deve saper bilanciare il tradeoff tra **exploitation**, ovvero eseguire azioni che massimizzano le ricompense secondo il modello stimato corrente, e **l'esplorazione** che massimizza il benessere a lungo termine
+    - Passi:
+      1. Per ogni stato $s$, inizializza la entry della tabella $Q(s, a) = 0$
+      2. Osserva lo stato corrente $s$
+      3. loop
+         1. Seleziona un'azione $a$ ed eseguila
+            - Strategia random che favorisce l'esplorazione o $max_a \hat{Q}(s, a)$ per sfruttamento del modello corrente
+         2. Ricevi la ricompensa immediata $r$
+         3. Osserva il nuovo stato $s'$
+         4. Aggiorna la entry $\hat{Q}(s, a) \larr r + \gamma max_a' \hat{Q}(s', a')$
+         5. $s \larr s'$
+    - Convergenza (caso deterministico): ogni $(s, a)$ è visitato un numero infinito di volte
+      1. Definiamo un intervallo pieno un intervallo durante il quale ogni $s(a, a)$ è visitato. Durante ogni intervallo pieno l'errore più grande nella tabella $\hat{Q}$ (calcolato come **norma max**) è ridotto di un fattore $\gamma$.
+         - Sia $\hat{Q}_n$ la tabella dopo $n$ aggiornamenti e $\Delta_n$ l'errore massimo in $\hat{Q}_n$, ovvero $\Delta_n = max_{s,a} |\hat{Q}_n(s, a) - Q(s, a)|$
+      2. Ad ogni iterazione $n+1$, l'errore nella stima rivista $\hat{Q}_{n+1}(s, a)$ è
+         $$
+          \begin{aligned}
+            |\hat{Q}_{n+1}(s, a) - Q(s, a)| & = |(r + \gamma max_{a'} \hat{Q}_n(s', a')) - (r + \gamma max_{a'} Q(s', a'))| \\
+            & = \gamma |max_{a'} \hat{Q}_n(s', a') - max_{a'}Q(s', a')| \\
+            & \le \gamma max_{a'} |\hat{Q}_n(s', a') - Q_n(s', a')| \\
+            & \le \gamma max_{s'', a'} |\hat{Q}(s'', a') - Q(s'', a')|
+          \end{aligned} \\
+          |\hat{Q}_{n+1}(s, a) - Q(s, a)| \le \gamma \Delta_n
+         $$
+         Sapendo che $|max_a f_1(a) - max_a f_2(a)| \le max_a |f_1(a) - f_2(a)|$
+    - Caso non deterministico, la regola di aggiormanento è $\hat{Q_n}(s, a) \larr (1-\alpha_n) \hat{Q}_{n-1}(s, a) + \alpha_n[r + \gamma \hat{Q}_{n-1}(s', a')]$
+      - $\alpha_n = {1 \over 1 + \text{visite}_n(s, a)}$ è il learning rate che decresce man mano
+
