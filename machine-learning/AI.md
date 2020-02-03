@@ -1012,7 +1012,7 @@
           \begin{aligned}
             |\hat{Q}_{n+1}(s, a) - Q(s, a)| & = |(r + \gamma max_{a'} \hat{Q}_n(s', a')) - (r + \gamma max_{a'} Q(s', a'))| \\
             & = \gamma |max_{a'} \hat{Q}_n(s', a') - max_{a'}Q(s', a')| \\
-            & \le \gamma max_{a'} |\hat{Q}_n(s', a') - Q_n(s', a')| \\
+            & \le \gamma max_{a'} |\hat{Q}_n(s', a') - Q(s', a')| \\
             & \le \gamma max_{s'', a'} |\hat{Q}(s'', a') - Q(s'', a')|
           \end{aligned} \\
           |\hat{Q}_{n+1}(s, a) - Q(s, a)| \le \gamma \Delta_n
@@ -1021,3 +1021,266 @@
     - Caso non deterministico, la regola di aggiormanento è $\hat{Q_n}(s, a) \larr (1-\alpha_n) \hat{Q}_{n-1}(s, a) + \alpha_n[r + \gamma \hat{Q}_{n-1}(s', a')]$
       - $\alpha_n = {1 \over 1 + \text{visite}_n(s, a)}$ è il learning rate che decresce man mano
 
+## Natural Language Processing
+
+- Obiettivo: un agente informatico in grado di comprendere il linguaggio naturale, acquisendo la conoscenze, e di comunicare con l'uomo
+- 4 compiti fondamentali nell'elaborazione o comprensione del linguaggio naturale
+  - Named entity recognition: trovare menzioni ad entità con nomi nel testo ed etichettarle per tipo di classe. I possibili tipi di entità dipendono dal dominio: luoghi, persone, organizzazione, proteine etc.
+  - Entity mention detection: trovare le menzioni nel documento, ovvero riferimenti alla stessa entità
+  - Relation extraction: trovare e classificare le relazioni semantiche tra le entità: figlio-di, part-di, relazioni geospaziali
+  - Coreference resolution: collegare entità in insiemi corrispondenti ad entità del mondo reale: _United Airlines_ e _United_ o pronomi. Si basa su entity mention detection.
+- NLP in termini di ricerca di informazioni:
+  - Classificazione del testo
+  - Information retrieval
+  - Information extraction: processo di acquisizione della conoscenza dai documenti alla ricerca di occorrenze di una particolare classe, come ad esempio estrazioni di indirizzi da pagine web
+- N-gram: stima la probabilità dell'ultima parola di una sequenza di N parole, come 2-gram (bigram) o 3-gram (trigram), date le precedenti parole
+  - Oppure stima la probabilità dell'intera sequenza
+  - Utilizzi:
+    - Conoscere le probabilità delle probabilità è essenziale in task che devono identificare le parole in presenza di rumore, come nel caso di speech recognition, per sapere quali sono le parole più probabili da riconoscere
+    - Identificazione della lingua: $argmax_I P(I | w_1^n) = argmax_I P(w_1^n|I)P(I)$
+      - $P(w_1^n|I)$ è dato contando i trigram in uno corpus della lingua
+      - $P(I)$ è data ad esempio dalla frequenza della lingua nelle pagine web 
+    - Correzione ortografica
+    - Classificazione del testo
+    - Named-entity recognition
+  - Essenziale anche per correzione grammaticale e machine translations
+  - Modelli che assegnano probabilità a sequenze di parole si chiamano **language models**
+  - Computare $P(w|h)$, probabilità di una parola dato il testo precedente
+    - **Chain rule of probabilità**: $P(w_1, w_2, ..., w_m) = P(w_1^n) = P(w_1)P(w2|w1)P(w3|w_1^2)...P(w_n|w_1^{n-1})$
+    - Possiamo stimare le probabilità contando $P(\text{caldo}|\text{Oggi è}) = {Count(\text{Oggi è caldo}) \over Count(\text{Oggi è})}$
+      - Sarebbe impossibile in quanto il web stesso non è abbastanza grande per dare buone stime di tante possibili combinazioni
+  - Possiamo invece approssimare usando solo le ultime $n$ parole che precedono
+  - Bi-gram approssima $P(w_n|w_1^{n-1}) \approx P(w_n|w_{n-1})$
+    - Maximum Likelihood Estimate: $P(w_n|w_{n-1}) = {Count(w_n|w_{n-1}) \over Count(w_{n-1})}$
+    - Assunzione di Markov: la probabilità della parola dipende non dal passato, ma solo dalla parola precedente
+    - Date le probabilità bigram, possiamo quindi approssimare la probabilità dell'intera sequenza $P(w_1^n) = \prod_k^n P(w_k|w_{k-1})$
+    - Le probabilità del bigram sono ottenute contando le occorrenza da un corpus molto grande e normalizzando i risultati affinché la somma delle probabilità sia 1
+  - Nella pratica si usano modelli trigram o 4-gram/5-gram laddove ci siano sufficiente dati
+    - Usiamo i logaritmi delle probabilità, altrimenti il prodotto delle probabilità tenderebbe a zero velocemente
+  - Possiamo misurare la qualità del modello n-gram usando un corpus di test: maggiore è la probabilità assegnata dal modello per il test maggiore è l'acuratezza del modello. Tuttavia la probabilità di un corpus grande sarà sempre molto piccola, rischiando quindi di incappare in floating-point underflow.
+    - **perplexity** $PP$: è la probabilità inversa del test set, normalizzata dal numero di parole
+      $$
+      PP(W) = P(w_1w_2...w_N)^{-1 \over N} = \sqrt[N]{1 \over P(w_1w_2...w_N)}
+      $$
+      - Più è piccola la probabilità, più grande è la perplexity
+  - Problema: combinazioni di parole non viste nel training corpus o con poche occorrenze
+    - Smoothing: processo di regolarizzazione delle probabilitù dei conteggi a bassa frequenza su una probabilità piccola, diversa da zero
+      - Smoothing di Laplace: assegniamo probabilità $1 \over (n+2)$, ovvero assumiamo con con altre 2 prove troveremo una osservazione
+    - **Backoff**: stimiamo la probabilità di un N-gram usando il (N-1)-gram di ordine inferiore
+      - A volte usare meno contesto aiuta a generalizzare
+    - **Linear Interpolation**: combiniamo le probabilità stimate da tutti gli n-gram, pesando e combinando trigram, bigram e unigram in base alle occorrenze
+      - $\hat{P}(w_n|w_{n-2}w_{n-1}) = \lambda_1 P(w_n|w_{n-2}w_{n-1}) + \lambda_2P(w_n|w_{n-1}) + \lambda P(w_n)$ con $\sum_i \lambda_i = 1$
+    - Possiamo valutare il modello migliore tramite cross-validation
+  - Parole sconosciute: si introduce la parola artificiale $\lang UNK \rang$ e si contano le occorrenze nel corpus ogni volta che si incontra per la prima volta una parola.
+  - Esempio: Berkeley Restaurant Project con circa 9200 frasi che rispondeva a domande riguardo un database di ristoranti in Berkeley
+    - Le probabilità bigram sono in grado di codificare fatti come preferenze di cibo, relazioni sintattiche (nome dopo aggettivo) o errori grammaticali
+- Text classification: dato un testo decidere a quale classe appartiene
+  - Esempi: identificazione della lingua, classificazione del genere, sentiment analysis e rilevamento di spam
+  - Diversi approcci:
+    1. Si può classificare usando la regola di Bayes: $argmax_{c \in \{spam, ham\}} P(c|message) = argmax_{c \in \{spam, ham\}} P(message|c)P(c)$
+       - Possiamo definire un linguaggio del modello usando gli n-gram per $P(message|spam)$
+       - Naive Bayes: $c_{MAP} = argmax_{c \in C}P(c|d) = argmax_{c \in C} {P(d|c)P(c) \over P(d)} 0 argmax_{c \in C} P(d|c)P(c)$
+         - $P(c)$ può essere calcolata nel corpus
+         - $P(d|c) = P(x_1, x_2, ..., x_n|c)$ come probabilità congiunta sarebbe difficile da calcolare e richiederebbe un dataset molto grande, ma possiamo usare l'assunzione Naive Bayes di indipendenza condizionale data la classe $c$
+         - $P(d|c) = \prod_i^n P(x_i|c)$
+    2. Possiamo altrimenti usare l'apprendimento automatico
+       1. Si rappresentano le parole del messaggio come un insieme di caratteristiche discrete
+           - **Bag of words**: si può usare un contatore per ogni volta che viene contato la parola, ma risulta in un vettore molto grande a causa del numero di parole nel vocabolario ma sparse perché solo alcune saranno usate nel messaggio
+             - Perde nozione di ordine delle parole e di contesto, assume indipendenza di ordine del testo
+           - one-hot encoder: ancora più semplice, segna solo 1 se la parola compare
+             - Perde completamente nozione di similarità
+             - Si può usare tassonomie come Wordnet per ottenere insieme di sinonimi o altre relazioni
+               - Assenza di sfumature: "proficient" è sinonimo di "good" ma solo in alcuni contesti
+               - Difficile da tenere aggiornato
+               - Soggettivo e richiede lavoro umano
+               - Difficile quantificare la somiglianza esatta delle parole
+           - Word2vec embedding
+       2. Si apprende un classificatore sulle caratteristiche 
+    3. Pensare alla classificazione come un problema di **data compression**
+       -  Un algoritmo di compressione lossless prende una sequenza di simboli, rileva pattern ripetuti e scrive una descrizoine della sequenza che è più compatta dell'originale (LZW algoritm)
+       -  In classificazione, si comprimono tutti di messaggi di spam nel training set compure una singola unità. Analogo per ham. Dato quindi un nuovo messaggio da classificare, aggiungengiamo all'unità degli spam e degli ham e coprimiamo il risultato.
+       -  La classe che comprime meglio, ovvero aggiunge minor numero di bytes per il nuovo messaggio, è la classe predetta
+          -  L'idea è che un messaggio di spam tenderà a condividere le parole del dizionario di altri messaggi spam e quindi sarà compresso più efficaciemente
+    4. Usare regole codificate a mano, come black-list-address o regex. Può avere alta accuracy ma è mplto costoso, non sempre possibile e difficile da mantenere aggiornato
+- Word2vec: vettori corti (50-1000 valori) e densi
+  - Vettori densi funzionano meglio rispetto a quelli sparsi come bag-of-words o one-hot encoder per i task NLP
+    - Catturano meglio la similarità tra parole: due vettore delle parole hanno meno distanza se occorono negli stessi contesti linguistici
+  - Invece di contare la frequenza di occorrenza di ogni parola $w$ accanto ad un'altra, apprendiamo un classificatore binario. Non ci importa del classificatore, ma del vettore di pesi appreso da usare come word embedding
+    - Word embedding: rappresentazione delle parole che permette di memorizzare le informazioni siano semantiche che sintattiche delle parole partendo da un corpus non annotato. 
+    - L'idea è nata dalle reti neurali che predicono la parola successiva date le precedenti
+    - Il classificatore è più semplice come problema e ritorna $P(+|t,c)$, la probabilità che $c$ sia una parola del contesto di $ts$
+    - Il vettore embedding è inizializzato con valori random e iterativamente modificato, usando la discesa di gradiente, affinché gli embeddings di parole vicine nel testo siano simili tra loro e diversi dagli embeddings di parole che non appaiono insieme
+  - Una caratteristica molto interessante degli embeddings è la loro abilità nel catturare relazioni tra i significati. La distanza tra due vettori racchiude qualche relazione di analogia tra le parole.
+    - I.e. $\text{vector(king) - vector(man) + vector(woman) = vector(queen)}$
+    - I.e. $\text{vector(Paris) - vector(France) + vector(Italy) = vector(Roma)}$
+- Part-of-Speech Tagging (POS)
+  - Fin dal tempo dei greci, sono state notate 8 parti del discorso: nome, verbo, pronome, preposizione, avverbio, congiunzione, participio e articolo
+  - Le parti del discorso (o categorie sintattiche) forniscono informazioni sulle parole vicine, i.e. i nomi sono preceduti da articoli o aggettivi, i verbi dai nomi
+    - Sono utili anche per la struttura sintattica, i.e. i nomi sono parte di una frase nominale
+    - Addirittura utili per speech recognition o sintesi, i.e. pronuncia diversa in parte alla parte del discorso
+  - Le parti del discorso sono tradizionalmente definite in base alla sintassi e alla morfologia, raggruppando parole che sono accompagnate da altre parole simili tra loro
+  - Classi chiuse o aperte
+    - Classi chiuse: numero di termini abbastanza fissi, come le preposizioni. In genere sono parole corte ed hanno funzione strutturale nella grammatica. Differiscono anche di più da una lingua all'altra rispetto alle classi aperte
+    - Classi aperte: termini nuovi coniati spesso come nomi, verbi, aggettivi e avverbi
+  - Treebank tagset: insieme di 45 parti di discorso usate per etichettare diverse corpora (plurale di corpus)
+    - Brown corpus: 1 milione di parole da 500 testi scritti di diverso genere negli USA nel 1971
+    - WSJ: milioni di parole pubblicate dal WSJ nel 1989
+  - Part-of-speech tagging: il processo di assegnazione di un marcatore di parte di discorso ad ogni parola del testo di input. L'input è una sequenza di token e l'output è una sequenza di tags
+    - La difficoltà è causata dall'ambiguità del tagging, una parola può avere diversi tag. I.e. _book_
+    - In corpus Brown, 15% delle parole è ambiguo
+  - Most Frequent Class: assegna ad ogni parola il tag più probabile, ovvero più frequente nel training corpus 
+    - Accuracy 92.34%
+    - Viene usato come baseline per confrontare altri algoritmi più accurati. Lo stato dell'arte ha accuracy 97%
+  - Rule based tagging
+    - Dato un dizionario, assegna tutti i tag possibili alle parole del dizionario
+    - Utilizza poi regole scritte a mano per rimuovere selettivamente i tag, cercando di lasciare quello corretto per ogni parola
+  - Approccio statistico alternativo: 95-95% accuracy
+    - Bayes $argmax P(W|T)P(T)$ o con assunzione di Markov $P(T) = \prod_k^n P(t_k|t_{k-1})$
+  - Classificazione con sliding window: una finestra a dimensione fissa, ie 3, assegna il tag più probabile durante lo sliding in avanti usando la categoria del token precedente o successiva
+    - Corregge ambiguità andando indietro
+
+- Constituency Parsing
+  - **Context-free-grammar** (CFG): consiste di un insieme di regole o produzioni, ognuna esprime i modi in cui i simboli del linguaggio possono essere raggruppati e ordinati insieme
+    - Una grammatica specifica quali stringhe sono legali
+    - Le regole possono essere combinate tra di loro
+    - I simboli si dividono in **terminali**, che corrispondono alle parole del linguaggio tramite part-of-speech, o **non-terminali**, che esprimono astrazioni sui terminali
+    - In una regola, come $NP \rarr Det\ Nominal$, a sinistra c'è un simbolo non-terminale e a destra 1+ simboli terminali o non terminali.
+    - Una CFG può essere usata per generare frasi o per assegnare una struttura ad una frase, tramite un parse tree
+    - Permettono di esprimere relazioni soffisticate tra le parole di un linguaggio, pur mantenendo la trattabilità computazione con efficienti algoritmi di parsing di frasi
+    - In linguistica: l'uso di linguaggi formali per modellare linguaggi naturali si chiama **generative grammar**, in quanto il linguaggio è definito come l'insieme delle frasi "generate" dalla grammatica
+    - Una CFG è in Chomsky normal form (CNF) se è privata del simbolo $\epsilon$ e le produzioni hanno nella parte destra solo 2 dimboli non terminali o un simbolo terminale.
+      - I parse tree risultanti sono binari
+  - Constituency: astrazione di gruppi di parole che si comportano come single unità, costituenti
+    - Frasi nominali (noun phrases): sequenze di parole che circondano almeno un nome. I.e. "Harry the corse", "Three parties from Brooklyn"
+    - Compaiono anche in struttura sintattiche simili, ad esempio prima di un verbo, ovvero hanno simile distribuzione. Oppure possono sostituirsi a vicenda o essere uno l'espansione di un altro.
+  - Penn Treebank: collezioni di testi di cui sono stati generati i parse tree, poi corretti a mano
+  - Syntactic parsing è il task che assegna una struttura sintattica ad una frase basata su una CFG
+    - Utile in controllo grammaticale: una frase che non può essere parserizzata probabilmente è errata grammaticalmente
+    - Utile soprattutto come step intermedio per l'analisi semantica e l'information extraction: per rispondere alla domanda "What books were written by British women before 1800?" serve sapere chi è il soggetto e che "by British women" è un complemento d'agente
+    - Anche il parsing sintattico soffre di ambiguità, come per il POS tagging, che in questo caso è **ambiguità strutturale**
+      - L'ambiguità strutturale si presenta quando una grammatica può assegnare più di un parse tree ad una frase
+  - Algoritmo CKY
+    1. Conversione della grammatica in CNF
+    2. Ogni non nodo terminale avrà quindi nel parse tree esattamente 2 figli
+    3. Viene usata una matrice per codificare la struttura del parse-tree, di dimensione $(n+1) \times (n+1)$ per una frase di $n$ parole. Si usa la triangolare superiore.
+       - Ogni cella $[i, j]$ contiene l'insieme di simboli non temrinali che rappresenta tutti i costituenti the vanno dalla posizione $i$ alla $j$ dell'input. Quindi ad esempio la cella $[0, n]$ rappresenta l'intero input.
+       - La diagonale principale nella matrice contiene le parti del discorso per ogni parola dell'input
+       - Le successive diagoli sopra alla diagonale contengono i costituenti che via viano rappresentano porzioni di lunghezza crescente dell'input.
+    4. L'algoritmo CKY riempie la matrice da sinistra a destra e dal basso verso l'alto. Quando si riempie la cella $[i, j]$ le celle contenenti le parti che contribuiscono ad essa sono già riempite.
+    5. Per ogni coppia di cella controlla se i contenuti possono essere combinati secondo una produzione della grammatica
+    - Per generare tutti i possibili parse tree si aggiungono due modifiche all'algoritmo
+      1. I simboli non terminali hanno puntatori che indicano da quali celle derivano
+      2. È possibile avere più versioni dello stesso simbolo non terminale nella tabella
+    - CKY permette di rappresentare le ambiguità ma non di risolverle
+    - Complessità $O(n^k|G|)$ con $n$ lunghezza della stringa e $|G|$ dimensione della CFG
+      - Complessità media migliore per versioni più avanzate dell'algoritmo
+  - Probabilistic context-free grammar (PCFG): ogni produzione della CFG è associata ad una probabilità
+    - $A \rarr \beta\ [p]$, $p$ è la probabilità condizionale della derivazione $\beta$ dato il non-terminale $A$
+      - $\sum_\beta P(A \rarr \beta) = 1$
+    - Permette di risolvere le ambiguità strutturali scegliendo l'interpretazione più probabile
+    - Un PCFG consistente ha la somma delle probabilità di tutte le frasi di un linguaggio pari a 1.
+    - PCFG assegna una probabilità all'intero parse tree per disambiguare
+      - La probabilità di un parse tree $T$ per la frase $S$ è data da: $P(T, S) = \prod_i^n P(RHS_i|LHS_i)$, ovvero dal prodotto delle probabilità di tutte le $n$ regole usate per espandere gli $n$ nodi non-terminali 
+      - Probabilità della stringa $S$ è data dalla somma delle probabilità dei parse tree $P(S) = \sum P(T, S)$
+      - La probabilità risultante è sia la probabilità congiunta del parse che della frase. Scegliamo il parse tree con probabilità più alta
+      - Un aspetto interessante è la possibilità di assegnare probabilità a sottostringhe di una frase, in maniera simile agli N-gram.
+        - Tuttavia è più flessibile perché gli N-gram possono usare solo poche parole del contesto, mentre una PCFG può sfruttare l'informazione strutturale dell'intera frase per predire una parola.
+        - I.e. "The contract _ended_ with a loss of 7 cents _after_ trading as low as 9 cents".
+    - Il modo più semplice per apprendere le probabilità delle produzioni è usare un treebank con un corpus già parsato come il Penn Treebank, contando il numero di volte che una derivazione avviene e normalizzando.
+      - $P(\alpha \rarr \beta| \alpha) = {Count(\alpha \rarr \beta) \over Count(\alpha)}$
+- Dependency Parsing
+  - Invece di descrivere la struttura sintattica della frase tramite costituenti, si usano le parole della frase a cui sono associate un insieme di relazioni binario tra di esse
+  - **Typed dependency structure**: le relazioni sono rappresentate con archi direzionati ed etichettati dalla testa alla parola dipendente
+    - Il nodo _root_ fa da radice dell'albero, ovvero la testa dell'intera struttura
+    - Le relazioni codificano importanti informazioni che altrimenti sarebbero implicite e "seppellite" nella struttura costituency, soprattutto nel caso di termini connessi ma distanti tra loro. "I prefer the morning flight through Denver"
+  - Le grammatiche per dipendenza permettono di gestire linguaggio morfologicamente ricchi e che hanno relativa libertà d'ordine delle parole, come il ceco, a dispetto dell'inglese che ha una struttura piuttosto fissa
+    - Una struttura a phrases richiederebbe una regola per ogni possibile posizione di un avverbio nel parse tree
+    - Una struttura basata sulle dipendenze invece avrebbe semplice un solo tipo di collegamento rappresentate quel tipo di avverbio
+  - Le relazioni testa-dipendente forniscono anche un'approssimazione alla relazione semantica tra predicati e i loro argomenti, molte utile per problemi di information extraction o question answering
+    - Approcci basati sui costituenti forniscono informazioni simili ma vanno estratte indirettamente dai parse tree usando tecniche specifiche
+  - Relazioni di dipendenza
+    - Sono alla base delle relazioni grammatica, formate da una testa (**head**) e un termine dipendente (**dependent**)
+    - Analogo ai costituenti dove il nome primario che fa da testa in una frase nominale oppure un verbo in una frase verbale, solo che invece di connettere le parole dipendenti formando gruppi costituenti, si aggiunge un collegamento diretto tra le parole relazionate a quelle head
+    - Ogni relazione rappresenta un tipo di funzione grammatica, come soggetto, oggetto diretto/indiretto ma anche relazioni più complesse. Il progetto **Universal Dependencies** fornisce un inventorio di relazioni di dipendenza presenti nei diversi linguaggi naturali e computazionalmente utili
+      - Le relazioni grammaticali si dividono in due gruppi principali:
+        1. Relazioni di clausola che descrivono il ruolo rispetto ad un predicato (verbo)
+        2. Relazioni di modifica che describono il modo in cui le parole possono modificare le teste (aggettivi)
+  - Come per i costituenti, sono state creati dei dependency treebanks, in particolare per linguaggi morfologicamente ricchi come ceco, hindi o filandese.
+    - Il maggior dependency treebank per l'inglese è stato generato dal WSJ corpus del Penn Treebank
+  - Algoritmo di parsing **shift-reduce**:  si adotta un approccio semplice ed elegante delle CFG
+    1. Data una CFG, uno stack ed il testo da parserizzare come lista di tokens
+    2. I tokens sono aggiunti alla pila man mano e i primi due elementi della pila sono cercati nella right-hand side delle regole della grammatica. Quando è stato trovato un match, i due elementi sono rimpiazzati (_reduced_) nello stack dal simbolo non-terminale della lhs della regola
+    3. Nel caso di un parsing delle dipendenze, invece di aggiungere il simbolo terminale, l'operazione di riduzione introduce una relazione di dipendenza tra la parola e la sua testa o viceversa
+  - Algoritmi alternativi con programmazione dinamica: ricerca efficiente nello spazio degli alberi, usando ad esempio le dipendenze come componenti in CKY oppure un'euristica di somma dei punteggi degli archi, come MST
+- Question answering:
+  - Approccio basato su Information-retrieval (IR): sfrutta la vastita quantità di informazione testuale nel web o in collezioni come PubMed
+    - L'obiettivo principale è estrarre la query (**query formulation**), le parole chiavi da utilizzare per trovare i documenti rilevanti
+    - Tecniche per trovare i documenti rilevanti, che vengono letti da reti neurali o altre tecniche per trarre una risposta da porzioni di testo
+    - L'IR query viene passata all'IR engine che trova i documenti rilevanti ordinati per grado di rilevanza ed e suddivisi in genere in paragrafi o frasi. I passaggi che non contengono sicuramente la risposta vengono scartati.
+    - Il passo finale è estrarre la risposta specifica da ogni passaggio (**span labeling**), ad esempio utilizzando l'apprendimento automatico per apprendere un classificatore che decida se una porzione di testo o frase contenga la risposta
+  - Approccio knowledge-based: viene costruita una rappresentazione semantica della domanda in forma logica, usata poi come query in database di fatti
+    - Nato per rispondere a domande sul BASEBALL usando il database di partite e statistiche
+    - I sistemi che mappano una stringa di testo ad una forma logica sono chiamati parser semantici.
+      - Ad esempio mappano ad una query SQL
+    - I database possono essere relazioni o strutturati come insieme di triplette RDF
+      - **Tripletta RDF**: è una 3-tupla costituita da un predicato con 2 argomenti, in modo da esprimere una relazione semplice o una proposizione. _"Ada Lovelace - birth place - 1815."_
+      - La task quindi è trovare una tripletta RDF che risposta ad una domanda che consiste nel trovare l'argomento mancante della tripletta. _"When was Ada Lovelace born?"_ $\rarr \text{birth year (Ada Lovelace, ?x)}$ 
+  - IBM Watson: fornisce un approccio ibrido in cui trova le risposte candidate e valuta la bontà di ciascuna.
+    1. Question processing: la domanda viene parsata e le informazioni estratte, come ad esempio il tipo di risposta, relazioni tra i termini o named entity tagging
+        - Viene estratto il **focus** della domanda, ovvero la parte correlata alla risposta ed usata ad esempio per trovare il passaggio rilevante nell'IR
+        - Il type della risposta fornisce indicazioni sulla semantica della risposta
+    2. Candidate answer generation: la domande parsata viene combinata con documenti esterni ed altre fonti di conoscenza (IMDB, DBpedia etc.) per generare un vettore delle potenziali risposte, contenenti le evidenze di ognuna
+    3. Candidate answer scoring: usa diverse fonti di evidenze da assegnare ad ogni risposta candidata
+    4. Answer merging and scoring
+        - Unisce la risposte equivalenti
+          - Sono usati dizionari di sinonimi creati quando termini simili puntano alla stessa pagina Wikipedia oppure, per nomi comuni, possiamo usare la somiglianza morfologica (Word2vec embedding)
+        - Unisce anche le evidenze di ciascuna risposta assegnando un valore di confidence per ogni risposta tramite un classificatore appreso precedentemente che assegna la probabilità che la risposta sia corretta
+  - Recurrent Neural Networks (RNN):
+    - I linguaggi sono fenomeni temporali, le parole di una frase hanno relazioni hanno relazioni temporali, mentre molti approcci di ML invece assumono di avere tutti gli aspetti dell'input contemporaneamente per fare sentiment analysis o classificazione
+    - L'approccio sliding window per il POS tagging processa il testo usando una finestra di dimensione fissa che slitta sull'input man mano. La decisione presa da una finestra non ha impatto sulle decisioni future
+      - Problema: come per l'assunzione di Marjov, non è in grado di estrarre informazione fuori dal contesto/finestra. Nei linguaggi comuni invece le parti di un'informazione possono essere arbitrariamente distante
+    - I RNN sono una classe di reti neurali capaci di tenere in conto dell'aspetto temporale dei linguaggi usando cicli all'interno della rete
+    - Simple RNN: una normale rete feed-forward in cui il hidden layer è collegato al hidden-layer del passo precedente, fornendo una sorta di memoria, che codifica il processing precedente e informa delle decisioni da prendere più in avanti
+      - Il nuovo insieme di pesi $U$ che connette il hidden layer del precedente passo temporale al corrente determina il contesto del passato da usare nel calcolo dell'input corrente
+    - Stacked RNN: un insieme di molteplici RNN in cui usiamo una sequenza di output da una RNN come input di un'altra RNN
+      - Stacked RNN sono più efficaci di una sola RNN in quanto sono capaci di creare rappresentazioni ai livelli di astrazione. I layers iniziali possono creare rappresentazioni più utili dell'input originale da usare come astrazioni per i layers futuri
+      - RNN bi-direzionale: poiché il hidden layer rappresenta la conoscenza della rete fino ad un certo punto della sequenza, possiamo vederlo come il contesto della rete da sinistra fino al tempo corrente.
+        - Usando una seconda RNN con la sequenza rovescia, possiamo usare anche il contesto da destra. Otteniamo una combinazione bidirezionale usando la **rete forward e backward**
+          - Un modo semplice per combinare i due contesti è usare l'addizione o moltiplicazione element-wise o anche la concatenazione per il labeling
+      - LSTM e GRU:
+        - Nella pratica è difficile apprendere una RNN per usare informazioni distanti dal punto corrente del processing
+          - L'informazione codificate negli hidden states tende ad essere locale e più rilevanti per le parti recenti della sequenza e per le decisioni recenti
+          - _"**The flights** the ariline was cancelling **were** full"_
+          - Idealmente una rete dovrebbe conservare le informazioni distanti finché non sono necessarie, mentre ancora processa parti intermedie
+            - Si richiede alla RNN di fare due cose in contemporanea: mantenere le informazioni per decisioni future e fornisce informazioni utili per la decisione corrente
+        - **Long short-term memory**
+          - adotta una strategia di gestione del contesto dividendolo in due sottoproblemi:
+            1. Rimuovere l'informazione che non è più necessaria nel contesto
+            2. Aggiungere l'informazione che probabilmente sarà utile per future decisioni
+          - Sfrutta un layer aggiuntivo composto da unità specializzate che usano gates per controllare il flusso di informazione in input ed output dai layers della rete, una sorta di maschera binaria
+            - Forget gate: cancella le informazioni del contesto che non sono più utili, calcolando una sommata pesante dello stato del precedente hidden layer e dell'input corrente
+            - Add gate: seleziona l'informazione dal hidden layer precedente e dall'input corrente necessaria per la decisione corrente. Tale informazione viene aggiunta al contesto corrente
+            - Output gate: decide quale informazione è richiesta per lo stato corrente del hidden layer
+        - **Gated Recurrent Units**
+          - LSTM introduce un numero considerevole di parametri gggiuntivi alla RNN, causando un alto maggior costo di training
+          - GRU riduce il numero di gates a 2:
+            - Reset gate: decide quali aspetti del hidden layer precedente sono rilevanti per il contesto corrente e cosa può essere ignorato 
+            - Update gate: decide quali aspetti del nuovo contesto saranno usati nel hidden layer e quali devono essere preservati per il futuro
+    - Machine translation (MT)
+      - Si usano reti encoder-decoder che prendono un input e creano una rappresentazione contestualizzata, passato poi al decoder che genera l'opportuna sequenza di output (traduzione in questo caso)
+        - Encoder e decoder sono in genere implementati con la stessa architettura come LSTMs o GRUs o architetture stacked di questi
+      - Istruiamo una rete a predire la parola successiva in una sequenza, usando un corpus (modelli autoregressive)
+        - Condizioniamo a generare le parole seguenti usando sia il hidden state della sequenza prefisso che l'embedding della parola appena generata
+      - L'idea geniale della MT è usare coppie di testi (**bitexts**) composte da frasi in lingue differenti di cui una è la traduzione dell'altra (source-target).
+        - Queste coppie sono concatenate da un token di fine sequenza e usate come dati di training dal modello autoregressivo
+        - Tradurre una frase successivamente si tratta quindi di calcolar il hidden layer state per il source e chiedere di predire parola per parola, man mano, il testo target, ovver la traduzione.
+        - L'encoder genera il hidden state del source come rappresentazione contestualizzata, il decoder utilizza questo stato per autoregressivamente generare l'output.
+
+### Domande primo appello
+
+1. RBFS spiegare in dettaglio l'algoritmo e le sue proprietà (completezza/ottimalità). Spiegare le ragioni computazionali per cui si usa.
+2. Parlare delle euristiche e delle loro proprietà e come si usano nei vari algoritmi di ricerca
+3. Spiegare in cosa consiste il processo di proposizionalizzazione e come si usa quando bisogna fare inferenza in FOL
+4. Spiegare cosa sono i constraint satisfaction problems e illustrare gli algoritmi visti per risolverli
+5. Spiegare che ruolo ha dal punto di vista computazionale l'indipendenza condizionale nell'ambito della gestione dell'incertezza
+6. Spiegare i vari metodi e algoritmi di syntactic parsing
