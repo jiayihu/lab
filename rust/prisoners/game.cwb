@@ -1,0 +1,323 @@
+**************************************
+* Prisoner's game
+**************************************
+
+**************************************
+* Logic
+**************************************
+
+TauLoop max= <tau>TauLoop;
+LiveLock min= TauLoop or <->LiveLock;
+
+ObsLoop max= <<'xchance, 'xenter, 'xleave, 'xclose, 'xfree, 'xlock>>ObsLoop;
+ObsLiveLock min= ObsLoop or <->ObsLiveLock;
+
+Deadlock min= [-]ff or <->Deadlock;
+
+WeakEvenUnlock max=['xenter]WeakEven and [-]WeakEvenUnlock;
+WeakEven min=<<'xleave>>tt or (<<'xchance, 'xenter, 'xleave, 'xclose, 'xfree, 'xlock>>tt and [['xchance, 'xenter, 'xleave, 'xclose, 'xfree, 'xlock]]WeakEven);
+
+WeakEvenFree max=['xchance]WeakEven and [-]WeakEvenFree;
+WeakEven min=<<'xfree>>tt or (<<'xchance, 'xenter, 'xleave, 'xfree, 'xlock>>tt and [['xchance, 'xenter, 'xleave, 'xfree, 'xlock]]WeakEven);
+
+NoRace max= ([['xenter]][['xenter]]ff) and [-]NoRace;
+
+PosFree min=<'xfree>tt or <->PosFree;
+
+PosAllFree min= (<<'xfree>>S) or (<->PosAllFree);
+S min= (<<'xfree>>tt) or (<->S);
+
+Fairness max=['xwill1]WeakEven and [-]Fairness;
+WeakEven min=<<'xenter1>>tt or (<<'xchance, 'xenter, 'xleave, 'xclose, 'xfree, 'xlock>>tt and [['xchance, 'xenter, 'xleave, 'xclose, 'xfree, 'xlock]]WeakEven);
+
+NoEnterAfterClose max= ['xclose]Inv and [-]NoEnterAfterClose;
+Inv max= ['xenter]ff and [-]Inv;
+
+set ObsL = 'xchance, 'xenter, 'xleave, 'xclose, 'xfree, 'xlock
+
+***************************************
+* Initial system with only one prisoner
+******************************************
+agent Light1 = on.off.Light1;
+agent Light = tau.off.Light1 + tau.Light1;
+
+agent P1Start = 'enter.'xenter.'once.P1InRoom + lock.0;
+agent P1InCell = 'enter.'xenter.P1InRoom + P1Verdict;
+agent P1Verdict = free.0 + lock.0;
+agent P1InRoom = 'on.P1Choice +  'off.P1Choice + tau.P1Choice;
+agent P1Choice = 'close.'xclose.'xleave.'leave.'xchance.'chance.P1Verdict + 'xleave.'leave.P1InCell;
+
+agent Room = enter.(leave.Room + close.leave.'final.0);
+
+agent Trap = chance.Lost;
+agent Warden = once.chance.Won + Trap;
+agent Won = 'free.'xfree.Won;
+agent Lost = 'lock.'xlock.Lost;
+
+set L = { on, off, once, enter, leave, close, chance, free, lock };
+
+agent Sys = (P1Start | P2Start | Room | Warden) \ L;
+
+************************************
+* Initial system with two prisoners
+************************************
+
+agent Light1 = on.off.Light1;
+agent Light = tau.off.Light1 + tau.Light1;
+
+agent P1Start = 'enter.'xenter.'once.P1InRoom + lock.0;
+agent P1InCell = 'enter.'xenter.P1InRoom + P1Verdict;
+agent P1Verdict = free.0 + lock.0;
+agent P1InRoom = 'on.P1Choice +  'off.P1Choice + tau.P1Choice;
+agent P1Choice = 'close.'xclose.'xleave.'leave.'xchance.'chance.P1Verdict + 'xleave.'leave.P1InCell;
+
+agent P2Start = 'enter.'xenter.'once.P2InRoom + lock.0;
+agent P2InCell = 'enter.'xenter.P2InRoom + P2Verdict;
+agent P2Verdict = free.0 + lock.0;
+agent P2InRoom = 'on.P2Choice +  'off.P2Choice + tau.P2Choice;
+agent P2Choice = 'close.'xclose.'xleave.'leave.'xchance.'chance.P2Verdict + 'xleave.'leave.P2InCell;
+
+agent Room = enter.(leave.Room + close.leave.'final.0);
+
+agent Trap = chance.Lost;
+agent Warden = once.(once.chance.Won + Trap) + Trap;
+agent Won = 'free.'xfree.Won;
+agent Lost = 'lock.'xlock.Lost;
+
+set L = { on, off, once, enter, leave, close, chance, free, lock };
+
+agent Sys = (P1Start | P2Start | Room | Warden) \ L;
+
+
+************
+* Strategy
+************
+
+* Prisoner: spegne una volta la luce se la trova accesa, poi non fa più niente
+* n - 1, la luce potrebbe essere già spenta
+
+* initialState noto, C è l'unico che può switchare a S=initialState
+_C_3_4_C_1_1_5_C_3_5_C_1_3_C_1_1_5_C_4_C
+O_O_F_F_O_F_F_F_O_O_F_O_O_O_O_O_O_O_O_F_O
+        +       +     +                 + = 4 = n - 1
+
+
+   |-------------- *
+   |
+   |     |-------- **
+   |     |
+   |     |                 |-------- ***
+                           |
+_C_1_C_1_C_2_C_2_C_3_C_3_C_4_C
+F_O_F_O_F_O_F_O_F_O_F_O_F_O_F_O
+  +   +   +   +   +   +   +   +  = 8 = 2(n - 1)
+
+*: 1 non sa se C è già entrato
+**: 1 sa che C è entrato e sa che mettendo a OFF verrà contato. Da qui in poi non interagisce più con la luce.
+***: 4 non sa se C è entrato, però la prossima volta C saprà che era l'ultimo rimasto da contare
+
+Tutti i prigionieri non-counter possono creare duplicazione, tranne l'ultimo. 
+2(n-1-1) +1 + 1 = 2n -4 +2 = 2(n-1)
+   |     |    |
+   |     |    potenziale OFF iniziale da mettere a ON
+   |     |
+   |     ultimo da contare 1 volta
+   |
+   prigionieri escluso counter e ultimo dei non-counter
+
+Nel caso in cui lo stato iniziale sia ON, il Counter non lo conterà ma comunque aspetterà l'ultimo prigioniero che torni nella stanza per la seconda volta e spenga la luce. Il conteggio finale rimane quindi 2(n-1).
+
+
+
+
+
+***************************
+* Solution with 2 prisoners
+***************************
+
+
+agent LightOn = off.LightOff;
+agent LightOff = on.LightOn;
+agent Light = tau.LightOn + tau.LightOff;
+
+agent P1Start = 'enter.'xenter.'once.P1InRoom;
+agent P1InRoom = 'off.'xleave.'leave.P1InCellX + 'on.'off.'xleave.'leave.P1InCell;
+agent P1InRoomX = 'off.'xleave.'leave.0 + 'on.'off.'xleave.'leave.P1InCellX;
+agent P1InCellX = 'enter.'xenter.P1InRoomX;
+agent P1InCell = 'enter.'xenter.P1InRoom;
+
+agent PCounter = 'enter.'xenter.'once.PCInRoom;
+agent PCInRoom = 'on.'xleave.'leave.PCInCell1 + 'off.'on.'xleave.'leave.PCInCell;
+agent PCInRoom1 = 'on.'xleave.'leave.'xchance.'chance.0 + 'off.'on.'xleave.'leave.PCInCell1;
+agent PCInCell = 'enter.'xenter.PCInRoom;
+agent PCInCell1 = 'enter.'xenter.PCInRoom1;
+
+agent Room = enter.leave.Room;
+
+agent Trap = chance.Lost;
+agent Warden = once.(once.chance.Won + Trap) + Trap;
+agent Won = 'xfree.0;
+agent Lost = 'xlock.0;
+
+set L = { on, off, once, enter, leave, chance, free, lock };
+
+agent Sys = (P1Start | PCounter | LightOn | Room | Warden) \ L;
+
+agent Spec = 'xfree.0;
+
+
+***************************
+* Solution with 3 prisoners
+***************************
+
+
+agent LightOn = off.LightOff;
+agent LightOff = on.LightOn;
+agent Light = tau.LightOn + tau.LightOff;
+
+agent P1Start = 'enter.'xenter.'once.P1InRoom;
+agent P1InRoom = 'off.'xleave.'leave.P1InCellX + 'on.'off.'xleave.'leave.P1InCell;
+agent P1InRoomX = 'off.'xleave.'leave.0 + 'on.'off.'xleave.'leave.P1InCellX;
+agent P1InCellX = 'enter.'xenter.P1InRoomX;
+agent P1InCell = 'enter.'xenter.P1InRoom;
+
+agent P2Start = 'enter.'xenter.'once.P2InRoom;
+agent P2InRoom = 'off.'xleave.'leave.P2InCellX + 'on.'off.'xleave.'leave.P2InCell;
+agent P2InRoomX = 'off.'xleave.'leave.0 + 'on.'off.'xleave.'leave.P2InCellX;
+agent P2InCellX = 'enter.'xenter.P2InRoomX;
+agent P2InCell = 'enter.'xenter.P2InRoom;
+
+agent PCounter = 'enter.'xenter.'once.PCInRoom;
+agent PCInRoom = 'on.'xleave.'leave.PCInCell1 + 'off.'on.'xleave.'leave.PCInCell;
+agent PCInRoom1 = 'on.'xleave.'leave.PCInCell2 + 'off.'on.'xleave.'leave.PCInCell1;
+agent PCInRoom2 = 'on.'xleave.'leave.PCInCell3 + 'off.'on.'xleave.'leave.PCInCell2;
+agent PCInRoom3 = 'on.'xleave.'leave.'xchance.'chance.0 + 'off.'on.'xleave.'leave.PCInCell3;
+agent PCInCell = 'enter.'xenter.PCInRoom;
+agent PCInCell1 = 'enter.'xenter.PCInRoom1;
+agent PCInCell2 = 'enter.'xenter.PCInRoom2;
+agent PCInCell3 = 'enter.'xenter.PCInRoom3;
+
+agent Room = enter.leave.Room;
+
+agent Trap = chance.Lost;
+agent Warden = once.(once.(once.chance.Won + Trap) + Trap) + Trap;
+agent Won = 'xfree.0;
+agent Lost = 'xlock.0;
+
+set L = { on, off, once, enter, leave, chance, free, lock };
+
+agent Sys = (P1Start | P2Start | PCounter | Light | Room | Warden) \ L;
+
+agent Spec = 'xfree.0;
+
+
+
+********************************************
+* Solution with 3 prisoners without outputs
+********************************************
+
+
+agent LightOn = off.LightOff;
+agent LightOff = on.LightOn;
+agent Light = tau.LightOn + tau.LightOff;
+
+agent P1Start = 'enter.'once.P1InRoom;
+agent P1InRoom = 'off.'leave.P1InCellX + 'on.'off.'leave.P1InCell;
+agent P1InRoomX = 'off.'leave.0 + 'on.'off.'leave.P1InCellX;
+agent P1InCellX = 'enter.P1InRoomX;
+agent P1InCell = 'enter.P1InRoom;
+
+agent P2Start = 'enter.'once.P2InRoom;
+agent P2InRoom = 'off.'leave.P2InCellX + 'on.'off.'leave.P2InCell;
+agent P2InRoomX = 'off.'leave.0 + 'on.'off.'leave.P2InCellX;
+agent P2InCellX = 'enter.P2InRoomX;
+agent P2InCell = 'enter.P2InRoom;
+
+agent PCounter = 'enter.'once.PCInRoom;
+agent PCInRoom = 'on.'leave.PCInCell1 + 'off.'on.'leave.PCInCell;
+agent PCInRoom1 = 'on.'leave.PCInCell2 + 'off.'on.'leave.PCInCell1;
+agent PCInRoom2 = 'on.'leave.PCInCell3 + 'off.'on.'leave.PCInCell2;
+agent PCInRoom3 = 'on.'leave.'chance.0 + 'off.'on.'leave.PCInCell3;
+agent PCInCell = 'enter.PCInRoom;
+agent PCInCell1 = 'enter.PCInRoom1;
+agent PCInCell2 = 'enter.PCInRoom2;
+agent PCInCell3 = 'enter.PCInRoom3;
+
+agent Room = enter.leave.Room;
+
+agent Trap = chance.Lost;
+agent Warden = once.(once.(once.chance.Won + Trap) + Trap) + Trap;
+agent Won = 'xfree.0;
+agent Lost = 'xlock.0;
+
+set L = { on, off, once, enter, leave, chance, free, lock };
+
+agent Sys = (P1Start | P2Start | PCounter | Light | Room | Warden) \ L;
+
+agent Spec = 'xfree.0;
+
+
+
+********************************************
+* Solution with 5 prisoners without outputs
+********************************************
+
+
+agent LightOn = off.LightOff;
+agent LightOff = on.LightOn;
+agent Light = tau.LightOn + tau.LightOff;
+
+agent P1Start = 'enter.'once.P1InRoom;
+agent P1InRoom = 'off.'leave.P1InCellX + 'on.'off.'leave.P1InCell;
+agent P1InRoomX = 'off.'leave.0 + 'on.'off.'leave.P1InCellX;
+agent P1InCellX = 'enter.P1InRoomX;
+agent P1InCell = 'enter.P1InRoom;
+
+agent P2Start = 'enter.'once.P2InRoom;
+agent P2InRoom = 'off.'leave.P2InCellX + 'on.'off.'leave.P2InCell;
+agent P2InRoomX = 'off.'leave.0 + 'on.'off.'leave.P2InCellX;
+agent P2InCellX = 'enter.P2InRoomX;
+agent P2InCell = 'enter.P2InRoom;
+
+agent P3Start = 'enter.'once.P3InRoom;
+agent P3InRoom = 'off.'leave.P3InCellX + 'on.'off.'leave.P3InCell;
+agent P3InRoomX = 'off.'leave.0 + 'on.'off.'leave.P3InCellX;
+agent P3InCellX = 'enter.P3InRoomX;
+agent P3InCell = 'enter.P3InRoom;
+
+agent P4Start = 'enter.'once.P4InRoom;
+agent P4InRoom = 'off.'leave.P4InCellX + 'on.'off.'leave.P4InCell;
+agent P4InRoomX = 'off.'leave.0 + 'on.'off.'leave.P4InCellX;
+agent P4InCellX = 'enter.P4InRoomX;
+agent P4InCell = 'enter.P4InRoom;
+
+agent PCounter = 'enter.'once.PCInRoom;
+agent PCInRoom = 'on.'leave.PCInCell1 + 'off.'on.'leave.PCInCell;
+agent PCInRoom1 = 'on.'leave.PCInCell2 + 'off.'on.'leave.PCInCell1;
+agent PCInRoom2 = 'on.'leave.PCInCell3 + 'off.'on.'leave.PCInCell2;
+agent PCInRoom3 = 'on.'leave.PCInCell4 + 'off.'on.'leave.PCInCell3;
+agent PCInRoom4 = 'on.'leave.PCInCell5 + 'off.'on.'leave.PCInCell4;
+agent PCInRoom5 = 'on.'leave.PCInCell6 + 'off.'on.'leave.PCInCell5;
+agent PCInRoom6 = 'on.'leave.PCInCell7 + 'off.'on.'leave.PCInCell6;
+agent PCInRoom7 = 'on.'leave.'chance.0 + 'off.'on.'leave.PCInCell7;
+agent PCInCell = 'enter.PCInRoom;
+agent PCInCell1 = 'enter.PCInRoom1;
+agent PCInCell2 = 'enter.PCInRoom2;
+agent PCInCell3 = 'enter.PCInRoom3;
+agent PCInCell4 = 'enter.PCInRoom4;
+agent PCInCell5 = 'enter.PCInRoom5;
+agent PCInCell6 = 'enter.PCInRoom6;
+agent PCInCell7 = 'enter.PCInRoom7;
+
+agent Room = enter.leave.Room;
+
+agent Trap = chance.Lost;
+agent Warden = once.(once.(once.(once.(once.chance.Won + Trap ) + Trap) + Trap) + Trap) + Trap;
+agent Won = 'xfree.0;
+agent Lost = 'xlock.0;
+
+set L = { on, off, once, enter, leave, chance, free, lock };
+
+agent Sys = (P1Start | P2Start | P3Start | P4Start | PCounter | Light | Room | Warden) \ L;
+
+agent Spec = 'xfree.0;
