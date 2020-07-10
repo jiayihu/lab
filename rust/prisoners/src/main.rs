@@ -1,5 +1,6 @@
+pub mod agents;
+use agents::*;
 use crossbeam::crossbeam_channel::bounded;
-use prisoners::*;
 use std::thread;
 
 fn main() {
@@ -27,6 +28,8 @@ fn main() {
     );
     let warden = Warden::new(num_prisoners, r_once, r_chance);
 
+    let mut thread_handles = vec![];
+
     for id in 1..=num_prisoners - 1 {
         let prisoner = Prisoner::new(
             id,
@@ -37,14 +40,14 @@ fn main() {
             s_once.clone(),
         );
 
-        thread::spawn(move || {
+        thread_handles.push(thread::spawn(move || {
             prisoner.run();
-        });
+        }));
     }
 
-    thread::spawn(move || {
+    thread_handles.push(thread::spawn(move || {
         counter_prisoner.run();
-    });
+    }));
 
     thread::spawn(move || {
         light.run();
@@ -54,9 +57,11 @@ fn main() {
         room.run();
     });
 
-    let handle = thread::spawn(move || {
+    thread_handles.push(thread::spawn(move || {
         warden.run();
-    });
+    }));
 
-    handle.join().unwrap();
+    for handle in thread_handles {
+        handle.join().unwrap();
+    }
 }
