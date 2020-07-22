@@ -15,7 +15,7 @@ fn main() {
     let (s_once, r_once): Channel = bounded(0);
     let (s_chance, r_chance): Channel = bounded(0);
 
-    let num_prisoners = 50;
+    let num_prisoners = 100;
 
     let counter_prisoner = CounterPrisoner::new(
         num_prisoners,

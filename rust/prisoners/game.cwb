@@ -35,35 +35,13 @@ Inv max= ['xenter]ff and [-]Inv;
 
 set ObsL = 'xchance, 'xenter, 'xleave, 'xclose, 'xfree, 'xlock
 
-***************************************
-* Initial system with only one prisoner
-******************************************
-agent Light1 = on.off.Light1;
-agent Light = tau.off.Light1 + tau.Light1;
-
-agent P1Start = 'enter.'xenter.'once.P1InRoom + lock.0;
-agent P1InCell = 'enter.'xenter.P1InRoom + P1Verdict;
-agent P1Verdict = free.0 + lock.0;
-agent P1InRoom = 'on.P1Choice +  'off.P1Choice + tau.P1Choice;
-agent P1Choice = 'close.'xclose.'xleave.'leave.'xchance.'chance.P1Verdict + 'xleave.'leave.P1InCell;
-
-agent Room = enter.(leave.Room + close.leave.'final.0);
-
-agent Trap = chance.Lost;
-agent Warden = once.chance.Won + Trap;
-agent Won = 'free.'xfree.Won;
-agent Lost = 'lock.'xlock.Lost;
-
-set L = { on, off, once, enter, leave, close, chance, free, lock };
-
-agent Sys = (P1Start | P2Start | Room | Warden) \ L;
-
 ************************************
 * Initial system with two prisoners
 ************************************
 
-agent Light1 = on.off.Light1;
-agent Light = tau.off.Light1 + tau.Light1;
+agent LightOn = off.LightOff;
+agent LightOff = on.LightOn;
+agent Light = tau.LightOn + tau.LightOff;
 
 agent P1Start = 'enter.'xenter.'once.P1InRoom + lock.0;
 agent P1InCell = 'enter.'xenter.P1InRoom + P1Verdict;
@@ -94,13 +72,14 @@ agent Sys = (P1Start | P2Start | Room | Warden) \ L;
 ************
 
 * Prisoner: spegne una volta la luce se la trova accesa, poi non fa più niente
-* n - 1, la luce potrebbe essere già spenta
 
 * initialState noto, C è l'unico che può switchare a S=initialState
 _C_3_4_C_1_1_5_C_3_5_C_1_3_C_1_1_5_C_4_C
 O_O_F_F_O_F_F_F_O_O_F_O_O_O_O_O_O_O_O_F_O
         +       +     +                 + = 4 = n - 1
 
+
+* initialState non noto
 
    |-------------- *
    |
