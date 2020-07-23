@@ -85,9 +85,7 @@ impl DamageSystem {
         dc: &mut DamageComponent,
         cycle: u32,
     ) {
-        let mcs = readlock(&game_state.motion_components);
-        let mc_opt = mcs.get(player);
-        match mc_opt {
+        match readlock(&game_state.motion_components).get(player) {
             Some(mc) => match mc.collision {
                 Some(CollisionType::Player(ref p)) => {
                     dc.add_damage(DAMAGE_COLLISION);
@@ -153,12 +151,10 @@ impl DamageSystem {
 
 impl System for DamageSystem {
     fn apply(&self, cycle: u32, game_state: &Arc<GameState>) {
-        println!("Apply damage");
         game_state.players.read().unwrap().iter().for_each(|p| {
             writelock(&game_state.damage_components)
                 .entry(p.to_string())
                 .and_modify(|dc| self.advance(p, game_state, dc, cycle));
         });
-        println!("End Apply damage");
     }
 }

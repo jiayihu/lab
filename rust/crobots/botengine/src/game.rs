@@ -44,24 +44,16 @@ impl GameState {
 
     pub fn combatant_entered(&self, module_name: &str) {
         self.players.write().unwrap().push(module_name.to_string());
-        self.motion_components
-            .write()
-            .unwrap()
+        writelock(&self.motion_components)
             .entry(module_name.to_string())
             .or_insert(MotionComponent::new());
-        self.damage_components
-            .write()
-            .unwrap()
+        writelock(&self.damage_components)
             .entry(module_name.to_string())
             .or_insert(DamageComponent::new());
-        self.scanner_components
-            .write()
-            .unwrap()
+        writelock(&self.scanner_components)
             .entry(module_name.to_string())
             .or_insert(ScannerComponent::new());
-        self.projectile_components
-            .write()
-            .unwrap()
+        writelock(&self.projectile_components)
             .entry(module_name.to_string())
             .or_insert(ProjectileComponent::new());
     }

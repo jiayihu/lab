@@ -221,10 +221,9 @@ impl ProjectileSystem {
     // Damage is placed in a "queue" for damage syste to actuallly inflict
     fn inflict_splash_damage(&self, projectile: &mut Projectile, gs: &Arc<GameState>) {
         if projectile.status == ProjectileStatus::Exploding {
-            let mcs = gs.motion_components.read().unwrap();
             projectile.clear_hits();
 
-            for (p, mc) in mcs.iter() {
+            for (p, mc) in gs.motion_components.read().unwrap().iter() {
                 let distance = ScannerSystem::range_to_target(&projectile.position, &mc.position);
 
                 for idx in 0..2 {
@@ -252,13 +251,8 @@ impl ProjectileSystem {
 
 impl System for ProjectileSystem {
     fn apply(&self, cycle: u32, game_state: &Arc<GameState>) {
-        println!("Apply projectile");
-
         game_state.players.read().unwrap().iter().for_each(|p| {
-            game_state
-                .projectile_components
-                .write()
-                .unwrap()
+            writelock(&game_state.projectile_components)
                 .entry(p.to_string())
                 .and_modify(|pc| {
                     self.advance(&mut pc.projectiles[0], game_state, cycle, p);

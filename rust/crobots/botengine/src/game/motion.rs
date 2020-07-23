@@ -132,15 +132,12 @@ impl MotionSystem {
 
 impl System for MotionSystem {
     fn apply(&self, _cycle: u32, game_state: &Arc<GameState>) {
-        println!("Apply motion");
-
         game_state.players.read().unwrap().iter().for_each(|p| {
-            game_state
-                .motion_components
-                .write()
-                .unwrap()
+            writelock(&game_state.motion_components)
                 .entry(p.to_string())
-                .and_modify(|mc| Self::advance(mc));
+                .and_modify(|mc| {
+                    Self::advance(mc);
+                });
         });
     }
 }

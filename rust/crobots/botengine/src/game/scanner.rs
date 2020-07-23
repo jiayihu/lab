@@ -28,9 +28,9 @@ impl ScannerSystem {
     pub fn scan(game_state: &Arc<GameState>, player: &str, degree: f32, resolution: f32) -> i32 {
         let resolution = resolution.min(RES_LIMIT);
 
-        let mcs = game_state.motion_components.read().unwrap();
-        let source = mcs.get(player).unwrap();
         let dcs = game_state.damage_components.read().unwrap();
+        let mcs = game_state.motion_components.read().unwrap(); // Acquire mcs lock only after dmc lock
+        let source = mcs.get(player).unwrap();
         let living_players: Vec<_> = game_state
             .players
             .read()
@@ -103,6 +103,5 @@ impl ScannerSystem {
 impl System for ScannerSystem {
     fn apply(&self, _cycle: u32, _game_state: &Arc<GameState>) {
         // Noop
-        println!("Apply scanner");
     }
 }

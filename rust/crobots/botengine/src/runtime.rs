@@ -214,11 +214,13 @@ impl Runtime {
 
         let angle = ScannerSystem::to_real_heading(angle);
         let mut launch_result = 0;
-        let mc = &self.game_state.motion_components.read().unwrap()[&self.module_name];
 
         writelock(&self.game_state.projectile_components)
             .entry(self.module_name.to_string())
-            .and_modify(|pc| launch_result = pc.launch(&mc.position, angle, range as u32));
+            .and_modify(|pc| {
+                let mc = &self.game_state.motion_components.read().unwrap()[&self.module_name];
+                launch_result = pc.launch(&mc.position, angle, range as u32);
+            });
 
         Ok(Some(RuntimeValue::from(launch_result)))
     }
@@ -231,10 +233,7 @@ impl Runtime {
         let angle = ScannerSystem::to_real_heading(angle);
         let speed = speed.min(super::game::motion::MAX_ENGINE);
 
-        self.game_state
-            .motion_components
-            .write()
-            .unwrap()
+        writelock(&self.game_state.motion_components)
             .entry(self.module_name.to_string())
             .and_modify(|mc| {
                 mc.origin = mc.position.clone();
