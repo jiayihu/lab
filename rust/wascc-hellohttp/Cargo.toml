@@ -1,0 +1,16 @@
+[package]
+name = "hellohttp"
+version = "0.0.1"
+authors = ["Jiayi Hu <jiayi.ghu@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wascc-actor = "0.7.1"
+serde_json = "1.0.56"
+
+[profile.release]
+# Optimize for small code size
+opt-level = "s"
