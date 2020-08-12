@@ -1,0 +1,17 @@
+[package]
+name = "mget-tcp"
+version = "0.1.0"
+authors = ["jiayi"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "0.7.3"
+clap = "2.33.2"
+url = "2.0.0"
+log = "0.4"
+env_logger = "0.6"
+
+trust-dns = { version = "0.16", default-features = false }
+smoltcp = { version = "0.6", default-features = true, features = ["proto-igmp", "proto-ipv4", "verbose", "log"] }
