@@ -9,3 +9,9 @@ edition = "2018"
 [dependencies]
 chrono = "0.4.13"
 clap = "2.33.2"
+
+[target.'cfg(windows)'.dependencies]
+winapi = "0.3.9"
+
+[target.'cfg(not(windows))'.dependencies]
+libc = "0.2.74"
