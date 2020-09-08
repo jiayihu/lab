@@ -10,17 +10,20 @@ use fledge_os::println;
 #[panic_handler]
 fn panic(info: &core::panic::PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    fledge_os::hlt_loop();
 }
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Windows is shit");
 
+    fledge_os::init();
+
     #[cfg(test)]
     test_main();
 
-    loop {}
+    println!("It did not crash!");
+    fledge_os::hlt_loop();
 }
 
 #[cfg(test)]

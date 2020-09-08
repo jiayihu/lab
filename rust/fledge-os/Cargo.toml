@@ -14,6 +14,8 @@ volatile = "0.3.0"
 lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
 spin = "0.5.2"
 uart_16550 = "0.2.7"
+pic8259_simple = "0.2.0"
+pc-keyboard = "0.5.1"
 
 [package.metadata.bootimage]
 test-args = [
@@ -22,3 +24,11 @@ test-args = [
   "-display", "none"
 ]
 test-success-exit-code = 33         # (0x10 << 1) | 1
+
+[[test]]
+name = "should_panic"
+harness = false # Disable test runner
+
+[[test]]
+name = "stack_overflow"
+harness = false # Disable test runner

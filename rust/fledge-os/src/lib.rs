@@ -1,3 +1,4 @@
+#![feature(abi_x86_interrupt)]
 #![no_std]
 #![cfg_attr(test, no_main)]
 #![feature(custom_test_frameworks)]
@@ -6,8 +7,23 @@
 
 extern crate rlibc;
 
+pub mod gdt;
+pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
+
+pub fn hlt_loop() -> ! {
+    loop {
+        x86_64::instructions::hlt();
+    }
+}
+
+pub fn init() {
+    gdt::init();
+    interrupts::init_idt();
+    interrupts::init_pics();
+    x86_64::instructions::interrupts::enable();
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
@@ -50,8 +66,9 @@ pub fn test_runner(tests: &[&dyn Testable]) {
 #[cfg(test)]
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
+    init();
     test_main();
-    loop {}
+    hlt_loop();
 }
 
 pub fn test_panic_handler(info: &core::panic::PanicInfo) -> ! {
@@ -59,7 +76,7 @@ pub fn test_panic_handler(info: &core::panic::PanicInfo) -> ! {
     serial_println!("Error: {}\n", info);
     exit_qemu(QemuExitCode::Failed);
 
-    loop {}
+    hlt_loop();
 }
 
 #[cfg(test)]
