@@ -4,13 +4,29 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
+#![feature(alloc_error_handler)]
+#![feature(const_fn)]
+#![feature(const_in_array_repeat_expressions)]
+#![feature(wake_trait)]
 
+extern crate alloc;
 extern crate rlibc;
 
+#[cfg(test)]
+use bootloader::{entry_point, BootInfo};
+
+pub mod allocator;
 pub mod gdt;
 pub mod interrupts;
+pub mod memory;
 pub mod serial;
+pub mod task;
 pub mod vga_buffer;
+
+#[alloc_error_handler]
+fn alloc_error_handler(layout: alloc::alloc::Layout) -> ! {
+    panic!("allocation error: {:?}", layout)
+}
 
 pub fn hlt_loop() -> ! {
     loop {
@@ -64,8 +80,10 @@ pub fn test_runner(tests: &[&dyn Testable]) {
 }
 
 #[cfg(test)]
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
+entry_point!(test_kernel_main);
+
+#[cfg(test)]
+fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
     init();
     test_main();
     hlt_loop();
