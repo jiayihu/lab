@@ -9,5 +9,5 @@ edition = "2018"
 [dependencies]
 wasmi = "0.6.2"
 rand = "0.7.3"
-nalgebra = "0.21.1"
+nalgebra = "0.27.1"
 approx = "0.3.2"
